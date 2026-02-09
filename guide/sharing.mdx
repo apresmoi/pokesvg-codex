@@ -1,0 +1,30 @@
+# Sharing (Export and Import)
+
+PokeSVG is local-first, so sharing is done by copying and pasting a genome JSON.
+
+## Export
+
+1. Open a mon in **detail view**.
+2. Press `EXPORT`.
+3. You should see a `COPIED` toast on the screen.
+
+This copies the selected mon's genome JSON to your clipboard.
+
+## Import
+
+1. Copy a genome JSON to your clipboard.
+2. Focus the PokeSVG tab.
+3. Paste with `Ctrl+V` (or `Cmd+V` on macOS).
+
+Import feedback:
+
+- `IMPORTED`: added to your dex
+- `ALREADY`: you already have it (duplicate seed)
+- `INVALID`: the JSON payload was invalid or out of bounds
+
+## Troubleshooting
+
+- Clipboard permissions can behave differently on `localhost` vs `https`.
+- If paste isn't working, make sure your cursor is not in an input/textarea (PokeSVG ignores paste into editable fields).
+<!-- unpack:1.0.0 -->
+

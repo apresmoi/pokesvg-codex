@@ -51,7 +51,9 @@ export function MonHead({
       ? [headCx]
       : genome.face.eyeCount === 2
         ? [headCx - eyeSpacing / 2, headCx + eyeSpacing / 2]
-        : distribute(genome.face.eyeCount, eyeSpacing * 1.35).map((dx) => headCx + dx);
+        : distribute(genome.face.eyeCount, eyeSpacing * 1.35).map(
+            (dx) => headCx + dx,
+          );
 
   const mouthY = headTop + headH * 0.7;
   const mouthW = Math.max(16, headW * 0.26);

@@ -36,4 +36,3 @@ export function pickAbilities(plan: BodyPlan, seed: number): [string, string] {
     ABILITIES[(seed + 1) % ABILITIES.length];
   return a === b ? [a, "Gleam"] : [a, b];
 }
-

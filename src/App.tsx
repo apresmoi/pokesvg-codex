@@ -1,26 +1,32 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
+import {
+  POKEDEX_SCREEN,
+  PokedexDeviceSvg,
+} from "@/components/PokedexDeviceSvg";
 import { SoothingBackground } from "@/components/SoothingBackground";
 import {
   DexDetailScreen,
   DexListScreen,
-  SystemConfigScreen,
   type ScreenId,
+  SystemConfigScreen,
 } from "@/components/screens";
-import { PokedexDeviceSvg, POKEDEX_SCREEN } from "@/components/PokedexDeviceSvg";
 import type { Genome } from "@/lib/genome";
 import { generateGenome, generateUniqueSeed } from "@/lib/genome";
+import { parseGenomeJsonOrRegenerate } from "@/lib/genome/parseGenome";
 import type { Settings } from "@/lib/settings";
 import { loadDex, saveDex } from "@/lib/storage/dexStorage";
 import { loadSettings, saveSettings } from "@/lib/storage/settingsStorage";
-import { parseGenomeJsonOrRegenerate } from "@/lib/genome/parseGenome";
 
 const CONFIG_OPTIONS = ["preset", "background", "animations"] as const;
 type ConfigOption = (typeof CONFIG_OPTIONS)[number];
 
 function nextInCycle<T>(items: readonly T[], current: T): T {
   const idx = items.indexOf(current);
-  return items[(idx + 1) % items.length]!;
+  if (items.length === 0) {
+    throw new Error("nextInCycle requires a non-empty list");
+  }
+  const next = items[(idx + 1) % items.length];
+  return next ?? items[0];
 }
 
 function isEditableTarget(target: EventTarget | null) {
@@ -103,7 +109,9 @@ export function App() {
 
   const handleUp = useCallback(() => {
     if (screen === "config") {
-      setConfigIndex((idx) => (idx + CONFIG_OPTIONS.length - 1) % CONFIG_OPTIONS.length);
+      setConfigIndex(
+        (idx) => (idx + CONFIG_OPTIONS.length - 1) % CONFIG_OPTIONS.length,
+      );
       return;
     }
     if (screen === "dex_list") setSelectedIndex((idx) => Math.max(0, idx - 1));
@@ -131,10 +139,15 @@ export function App() {
     }
 
     if (screen === "config") {
-      const opt: ConfigOption = CONFIG_OPTIONS[configIndex % CONFIG_OPTIONS.length]!;
+      const opt: ConfigOption =
+        CONFIG_OPTIONS[configIndex % CONFIG_OPTIONS.length] ??
+        CONFIG_OPTIONS[0];
 
       if (opt === "preset") {
-        const next = nextInCycle(["classic", "cute", "weird"] as const, settings.generatorPreset);
+        const next = nextInCycle(
+          ["classic", "cute", "weird"] as const,
+          settings.generatorPreset,
+        );
         setSettings({ ...settings, generatorPreset: next });
         showToast(`PRESET:${next.toUpperCase()}`);
         return;

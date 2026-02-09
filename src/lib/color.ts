@@ -33,4 +33,3 @@ export function hslToHex(h: number, s: number, l: number) {
 
   return `#${toHexByte(r)}${toHexByte(g)}${toHexByte(b)}`;
 }
-

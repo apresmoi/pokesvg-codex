@@ -105,9 +105,7 @@ export function DexListScreen({
 
       <g opacity="0.35">
         <path
-          d={`M ${width - 18} ${height + 20} L ${width + 40} ${
-            height - 40
-          }`}
+          d={`M ${width - 18} ${height + 20} L ${width + 40} ${height - 40}`}
           stroke="#93c5fd"
           strokeWidth="40"
           strokeLinecap="round"

@@ -17,7 +17,11 @@ export function SystemConfigScreen({
   const rowH = 18;
 
   const options = [
-    { key: "preset", label: "PRESET", value: settings.generatorPreset.toUpperCase() },
+    {
+      key: "preset",
+      label: "PRESET",
+      value: settings.generatorPreset.toUpperCase(),
+    },
     { key: "bg", label: "BG", value: settings.backgroundVariant.toUpperCase() },
     { key: "anim", label: "ANIM", value: settings.animations ? "ON" : "OFF" },
   ];
@@ -75,7 +79,7 @@ export function SystemConfigScreen({
         fontSize="11"
         fill="#6b7280"
       >
-        DPAD: MOVE  A: TOGGLE  B: BACK
+        DPAD: MOVE A: TOGGLE B: BACK
       </text>
     </g>
   );

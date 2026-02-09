@@ -41,7 +41,12 @@ export function DexDetailScreen({
       {genome ? (
         <>
           <g transform="translate(14, 52)">
-            <MonSvg genome={genome} width={120} height={120} animate={animate} />
+            <MonSvg
+              genome={genome}
+              width={120}
+              height={120}
+              animate={animate}
+            />
           </g>
 
           <g transform="translate(148, 60)">
@@ -92,7 +97,7 @@ export function DexDetailScreen({
         fontSize="11"
         fill="#6b7280"
       >
-        EXPORT: BUTTON  |  IMPORT: PASTE (CTRL+V)
+        EXPORT: BUTTON | IMPORT: PASTE (CTRL+V)
       </text>
     </g>
   );

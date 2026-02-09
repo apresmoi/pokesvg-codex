@@ -84,7 +84,12 @@ export function MonBody({
       {/* Wings behind body */}
       {wing !== "none" ? (
         <g opacity="0.95">
-          <path d={wingPath} fill={accent} stroke={outline} strokeWidth={strokeW} />
+          <path
+            d={wingPath}
+            fill={accent}
+            stroke={outline}
+            strokeWidth={strokeW}
+          />
           <path
             d={wingPath}
             fill="none"

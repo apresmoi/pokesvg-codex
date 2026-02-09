@@ -68,6 +68,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .mon-bob,
   .mon-blink {
-    animation: none !important;
+    animation: none;
   }
 }

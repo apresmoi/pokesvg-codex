@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 
+import { DeviceControlsLeft } from "./DeviceControlsLeft";
+import { DeviceControlsRight } from "./DeviceControlsRight";
 import { POKEDEX_SCREEN } from "./geometry";
+import { ScreenToast } from "./ScreenToast";
 
 type PokedexDeviceSvgProps = {
   screen: ReactNode;
@@ -94,9 +97,30 @@ export function PokedexDeviceSvg({
       <g transform="translate(68, 70)">
         <circle r="34" fill="#e5e7eb" stroke={stroke} strokeWidth="5" />
         <circle r="26" fill="url(#lens-grad)" stroke={stroke} strokeWidth="3" />
-        <circle cx="-62" cy="-18" r="10" fill="#22c55e" stroke={stroke} strokeWidth="3" />
-        <circle cx="-36" cy="-32" r="10" fill="#f59e0b" stroke={stroke} strokeWidth="3" />
-        <circle cx="-10" cy="-18" r="10" fill="#ef4444" stroke={stroke} strokeWidth="3" />
+        <circle
+          cx="-62"
+          cy="-18"
+          r="10"
+          fill="#22c55e"
+          stroke={stroke}
+          strokeWidth="3"
+        />
+        <circle
+          cx="-36"
+          cy="-32"
+          r="10"
+          fill="#f59e0b"
+          stroke={stroke}
+          strokeWidth="3"
+        />
+        <circle
+          cx="-10"
+          cy="-18"
+          r="10"
+          fill="#ef4444"
+          stroke={stroke}
+          strokeWidth="3"
+        />
       </g>
 
       {/* Screen bezel */}
@@ -125,40 +149,7 @@ export function PokedexDeviceSvg({
         <g transform={`translate(${POKEDEX_SCREEN.x}, ${POKEDEX_SCREEN.y})`}>
           {screen}
         </g>
-        {toast ? (() => {
-          const padX = 8;
-          const charW = 7; // approx for 12px monospace in SVG
-          const pillW = Math.min(
-            POKEDEX_SCREEN.width - 20,
-            toast.length * charW + padX * 2,
-          );
-          const x = POKEDEX_SCREEN.x + POKEDEX_SCREEN.width - 10 - pillW;
-          const y = POKEDEX_SCREEN.y + 6;
-          return (
-            <g opacity="0.95">
-              <rect
-                x={x}
-                y={y}
-                width={pillW}
-                height={18}
-                rx={9}
-                fill="#0b1110"
-                stroke="#93c5fd"
-                strokeOpacity="0.35"
-              />
-              <text
-                x={x + pillW - padX}
-                y={y + 13}
-                textAnchor="end"
-                fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-                fontSize="12"
-                fill="#e5e7eb"
-              >
-                {toast}
-              </text>
-            </g>
-          );
-        })() : null}
+        {toast ? <ScreenToast toast={toast} /> : null}
       </g>
 
       {/* Top label */}
@@ -173,205 +164,21 @@ export function PokedexDeviceSvg({
         POKESVG
       </text>
 
-      {/* Left controls panel */}
-      <g transform="translate(78, 232)">
-        {/* D-pad base */}
-        <rect
-          x="8"
-          y="8"
-          width="132"
-          height="132"
-          rx="18"
-          fill="#b31724"
-          stroke={stroke}
-          strokeWidth="6"
-        />
+      <DeviceControlsLeft
+        stroke={stroke}
+        onDpadUp={onDpadUp}
+        onDpadDown={onDpadDown}
+        onList={onList}
+        onConfig={onConfig}
+      />
 
-        {/* D-pad center */}
-        <g transform="translate(74, 74)">
-          <rect x="-22" y="-18" width="44" height="36" rx="10" fill="#111827" />
-          <rect x="-18" y="-54" width="36" height="108" rx="10" fill="#111827" />
-
-          {/* Up */}
-          <rect
-            x="-18"
-            y="-54"
-            width="36"
-            height="34"
-            rx="10"
-            fill="#1f2937"
-            onClick={onDpadUp}
-            style={{ cursor: "pointer" }}
-          />
-          <path d="M 0 -44 L -8 -32 H 8 Z" fill="#e5e7eb" opacity="0.85" pointerEvents="none" />
-
-          {/* Down */}
-          <rect
-            x="-18"
-            y="20"
-            width="36"
-            height="34"
-            rx="10"
-            fill="#1f2937"
-            onClick={onDpadDown}
-            style={{ cursor: "pointer" }}
-          />
-          <path d="M 0 44 L -8 32 H 8 Z" fill="#e5e7eb" opacity="0.85" pointerEvents="none" />
-        </g>
-
-        {/* Function buttons */}
-        <g transform="translate(0, 154)">
-          <g
-            onClick={onList}
-            style={{ cursor: "pointer" }}
-            role="button"
-            aria-label="List screen"
-          >
-            <rect
-              x="0"
-              y="0"
-              width="82"
-              height="26"
-              rx="13"
-              fill="#111827"
-              stroke={stroke}
-              strokeWidth="4"
-            />
-            <text
-              x="41"
-              y="18"
-              textAnchor="middle"
-              fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-              fontSize="12"
-              fill="#e5e7eb"
-            >
-              LIST
-            </text>
-          </g>
-
-          <g
-            transform="translate(88, 0)"
-            onClick={onConfig}
-            style={{ cursor: "pointer" }}
-            role="button"
-            aria-label="System config screen"
-          >
-            <rect
-              x="0"
-              y="0"
-              width="82"
-              height="26"
-              rx="13"
-              fill="#111827"
-              stroke={stroke}
-              strokeWidth="4"
-            />
-            <text
-              x="41"
-              y="18"
-              textAnchor="middle"
-              fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-              fontSize="12"
-              fill="#e5e7eb"
-            >
-              CFG
-            </text>
-          </g>
-        </g>
-      </g>
-
-      {/* Right controls */}
-      <g transform="translate(424, 312)">
-        {/* A button */}
-        <g onClick={onA} style={{ cursor: "pointer" }} role="button" aria-label="A">
-          <circle cx="98" cy="30" r="22" fill="#2563eb" stroke={stroke} strokeWidth="6" />
-          <text
-            x="98"
-            y="36"
-            textAnchor="middle"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-            fontSize="16"
-            fill="#e5e7eb"
-          >
-            A
-          </text>
-        </g>
-
-        {/* B button */}
-        <g onClick={onB} style={{ cursor: "pointer" }} role="button" aria-label="B">
-          <circle cx="150" cy="68" r="22" fill="#ef4444" stroke={stroke} strokeWidth="6" />
-          <text
-            x="150"
-            y="74"
-            textAnchor="middle"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-            fontSize="16"
-            fill="#111827"
-          >
-            B
-          </text>
-        </g>
-
-        {/* Discover */}
-        <g
-          transform="translate(-16, 60)"
-          onClick={onDiscover}
-          style={{ cursor: "pointer" }}
-          role="button"
-          aria-label="Discover"
-        >
-          <rect
-            x="0"
-            y="0"
-            width="122"
-            height="28"
-            rx="14"
-            fill="#111827"
-            stroke={stroke}
-            strokeWidth="4"
-          />
-          <text
-            x="61"
-            y="19"
-            textAnchor="middle"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-            fontSize="12"
-            fill="#fde68a"
-          >
-            DISCOVER
-          </text>
-        </g>
-
-        {/* Export */}
-        <g
-          transform="translate(-16, 94)"
-          onClick={onExport}
-          style={{ cursor: "pointer" }}
-          role="button"
-          aria-label="Export genome"
-        >
-          <rect
-            x="0"
-            y="0"
-            width="122"
-            height="28"
-            rx="14"
-            fill="#111827"
-            stroke={stroke}
-            strokeWidth="4"
-          />
-          <text
-            x="61"
-            y="19"
-            textAnchor="middle"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-            fontSize="12"
-            fill="#93c5fd"
-          >
-            EXPORT
-          </text>
-        </g>
-      </g>
+      <DeviceControlsRight
+        stroke={stroke}
+        onA={onA}
+        onB={onB}
+        onDiscover={onDiscover}
+        onExport={onExport}
+      />
     </svg>
   );
 }

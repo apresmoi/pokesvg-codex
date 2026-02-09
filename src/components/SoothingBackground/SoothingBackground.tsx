@@ -83,12 +83,7 @@ export function SoothingBackground({ variant }: SoothingBackgroundProps) {
           <feGaussianBlur stdDeviation="24" />
         </filter>
 
-        <pattern
-          id="grid"
-          width="36"
-          height="36"
-          patternUnits="userSpaceOnUse"
-        >
+        <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
           <path
             d="M 36 0 L 0 0 0 36"
             fill="none"

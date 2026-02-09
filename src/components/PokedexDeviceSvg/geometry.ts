@@ -5,4 +5,3 @@ export const POKEDEX_SCREEN = {
   height: 190,
   rx: 12,
 } as const;
-

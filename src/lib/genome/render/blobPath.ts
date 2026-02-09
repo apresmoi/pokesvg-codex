@@ -34,16 +34,27 @@ export function makeBlobPath(
 
   const mids: Point[] = [];
   for (let i = 0; i < k; i++) {
-    mids.push(midpoint(points[i]!, points[(i + 1) % k]!));
+    const a = points[i];
+    const b = points[(i + 1) % k];
+    if (!a || !b) {
+      throw new Error("makeBlobPath internal error: missing point");
+    }
+    mids.push(midpoint(a, b));
   }
 
-  let d = `M ${fmt(mids[0]!.x)} ${fmt(mids[0]!.y)}`;
+  const first = mids[0];
+  if (!first) {
+    throw new Error("makeBlobPath internal error: missing midpoint");
+  }
+  let d = `M ${fmt(first.x)} ${fmt(first.y)}`;
   for (let i = 0; i < k; i++) {
-    const p = points[(i + 1) % k]!;
-    const m = mids[(i + 1) % k]!;
+    const p = points[(i + 1) % k];
+    const m = mids[(i + 1) % k];
+    if (!p || !m) {
+      throw new Error("makeBlobPath internal error: missing point/midpoint");
+    }
     d += ` Q ${fmt(p.x)} ${fmt(p.y)} ${fmt(m.x)} ${fmt(m.y)}`;
   }
   d += " Z";
   return d;
 }
-

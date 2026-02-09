@@ -23,4 +23,3 @@ describe("createPrng", () => {
     expect(seqA).not.toEqual(seqB);
   });
 });
-

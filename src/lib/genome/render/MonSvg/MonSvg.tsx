@@ -13,7 +13,12 @@ type MonSvgProps = {
   animate?: boolean;
 };
 
-export function MonSvg({ genome, width, height, animate = false }: MonSvgProps) {
+export function MonSvg({
+  genome,
+  width,
+  height,
+  animate = false,
+}: MonSvgProps) {
   const vb = 256;
 
   const bodyW = genome.body.shape.width;
@@ -32,8 +37,7 @@ export function MonSvg({ genome, width, height, animate = false }: MonSvgProps) 
     genome.body.shape.jitter,
   );
 
-  const headCx =
-    genome.plan === "serpentine" ? bodyCx - bodyW * 0.28 : bodyCx;
+  const headCx = genome.plan === "serpentine" ? bodyCx - bodyW * 0.28 : bodyCx;
   const headCy =
     bodyCy - bodyH / 2 - headH / 2 + (genome.plan === "serpentine" ? 20 : 24);
 
@@ -59,6 +63,7 @@ export function MonSvg({ genome, width, height, animate = false }: MonSvgProps) 
 
   return (
     <svg
+      aria-hidden="true"
       viewBox={`0 0 ${vb} ${vb}`}
       width={width}
       height={height}
@@ -106,4 +111,3 @@ export function MonSvg({ genome, width, height, animate = false }: MonSvgProps) 
     </svg>
   );
 }
-

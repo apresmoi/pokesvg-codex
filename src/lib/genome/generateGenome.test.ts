@@ -26,7 +26,9 @@ describe("generateGenome", () => {
     for (let seed = 0; seed < 64; seed++) {
       const g = generateGenome(seed, { preset: "classic" });
       expect(g.head.shape.width).toBeLessThanOrEqual(g.body.shape.width);
-      expect(g.head.shape.height).toBeLessThanOrEqual(Math.floor(g.body.shape.height * 1.4));
+      expect(g.head.shape.height).toBeLessThanOrEqual(
+        Math.floor(g.body.shape.height * 1.4),
+      );
 
       if (g.limbs.tail) {
         expect(g.limbs.tailStyle).toBeDefined();

@@ -1,4 +1,8 @@
-import { DEFAULT_SETTINGS, type Settings, type SettingsV1 } from "@/lib/settings";
+import {
+  DEFAULT_SETTINGS,
+  type Settings,
+  type SettingsV1,
+} from "@/lib/settings";
 
 export const SETTINGS_STORAGE_KEY = "pokesvg.settings.v1";
 

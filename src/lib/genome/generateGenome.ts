@@ -1,15 +1,14 @@
 import { hslToHex } from "@/lib/color";
 import { createPrng } from "@/lib/prng";
 import type { GeneratorPreset } from "@/lib/settings";
-
 import { pickAbilities } from "./abilities";
+import { generateAccessory, pickTailStyle } from "./accessories";
 import { generateName } from "./name";
 import type {
-  AccessoryGene,
+  AnimGene,
   BlobShape,
   BodyGene,
   BodyPlan,
-  AnimGene,
   FaceGene,
   Genome,
   HeadGene,
@@ -17,7 +16,6 @@ import type {
   Palette,
   PatternGene,
   Spot,
-  TailStyle,
 } from "./types";
 
 const BODY_PLANS: readonly BodyPlan[] = [
@@ -114,7 +112,8 @@ function generatePattern(seed: number): PatternGene {
   const prng = createPrng(seed);
   const roll = prng.nextFloat();
   if (roll < 0.55) return { kind: "none" };
-  if (roll < 0.85) return { kind: "spots", spots: generateSpots(seed ^ 0xa5a5a5a5) };
+  if (roll < 0.85)
+    return { kind: "spots", spots: generateSpots(seed ^ 0xa5a5a5a5) };
   return {
     kind: "stripes",
     angleDeg: prng.nextInt(-25, 25),
@@ -123,7 +122,11 @@ function generatePattern(seed: number): PatternGene {
   };
 }
 
-function generateBody(seed: number, plan: BodyPlan, preset: GeneratorPreset): BodyGene {
+function generateBody(
+  seed: number,
+  plan: BodyPlan,
+  preset: GeneratorPreset,
+): BodyGene {
   const baseSeed = seed ^ 0x1337b00b;
   const shape =
     plan === "serpentine"
@@ -178,18 +181,28 @@ function generateHead(
       ? prng.pick(["round", "pointy", "round", "none"] as const)
       : prng.pick(["none", "pointy", "round"] as const);
 
-  const hornChance = preset === "cute" ? 0.18 : preset === "weird" ? 0.75 : 0.55;
-  const hornCount = (prng.nextFloat() < hornChance
-    ? prng.pick([0, 1, 2] as const)
-    : 0) as 0 | 1 | 2;
+  const hornChance =
+    preset === "cute" ? 0.18 : preset === "weird" ? 0.75 : 0.55;
+  const hornCount = (
+    prng.nextFloat() < hornChance ? prng.pick([0, 1, 2] as const) : 0
+  ) as 0 | 1 | 2;
 
   // Keep some plans more themed.
   if (plan === "avian") return { shape, earType: "none", hornCount: 0 };
-  if (plan === "insectoid") return { shape, earType: prng.pick(["none", "pointy"] as const), hornCount: 0 };
+  if (plan === "insectoid")
+    return {
+      shape,
+      earType: prng.pick(["none", "pointy"] as const),
+      hornCount: 0,
+    };
   return { shape, earType, hornCount };
 }
 
-function generateFace(seed: number, plan: BodyPlan, preset: GeneratorPreset): FaceGene {
+function generateFace(
+  seed: number,
+  plan: BodyPlan,
+  preset: GeneratorPreset,
+): FaceGene {
   const prng = createPrng(seed ^ 0x3c6ef372);
 
   const eyeType =
@@ -209,7 +222,8 @@ function generateFace(seed: number, plan: BodyPlan, preset: GeneratorPreset): Fa
   const eyeSpacing = 0.18 + prng.nextFloat() * 0.26;
   const eyeSize = 0.06 + prng.nextFloat() * 0.08;
 
-  const mouthType = plan === "avian" ? "beak" : prng.pick(["smile", "frown"] as const);
+  const mouthType =
+    plan === "avian" ? "beak" : prng.pick(["smile", "frown"] as const);
   const fangs =
     plan === "avian"
       ? 0
@@ -220,16 +234,11 @@ function generateFace(seed: number, plan: BodyPlan, preset: GeneratorPreset): Fa
   return { eyeType, eyeCount, eyeSpacing, eyeSize, mouthType, fangs };
 }
 
-function pickTailStyle(
-  prng: ReturnType<typeof createPrng>,
+function generateLimbs(
+  seed: number,
+  plan: BodyPlan,
   preset: GeneratorPreset,
-): TailStyle {
-  if (preset === "cute") return prng.pick(["leaf", "taper", "leaf"] as const);
-  if (preset === "weird") return prng.pick(["club", "taper", "leaf"] as const);
-  return prng.pick(["taper", "leaf", "club"] as const);
-}
-
-function generateLimbs(seed: number, plan: BodyPlan, preset: GeneratorPreset): LimbsGene {
+): LimbsGene {
   const prng = createPrng(seed ^ 0xdaa66d2b);
 
   if (plan === "serpentine") {
@@ -237,7 +246,13 @@ function generateLimbs(seed: number, plan: BodyPlan, preset: GeneratorPreset): L
   }
 
   if (plan === "quadruped") {
-    return { arms: 0, legs: 4, wingType: "none", tail: true, tailStyle: pickTailStyle(prng, preset) };
+    return {
+      arms: 0,
+      legs: 4,
+      wingType: "none",
+      tail: true,
+      tailStyle: pickTailStyle(prng, preset),
+    };
   }
 
   if (plan === "avian") {
@@ -268,30 +283,23 @@ function generateLimbs(seed: number, plan: BodyPlan, preset: GeneratorPreset): L
       ? prng.pick([0, 1, 2, 2] as const)
       : prng.pick([0, 1, 2] as const);
   const legs =
-    plan === "blob" ? prng.pick([0, 2, 0] as const) : prng.pick([0, 2] as const);
+    plan === "blob"
+      ? prng.pick([0, 2, 0] as const)
+      : prng.pick([0, 2] as const);
   const tail = prng.bool(0.55);
-  return { arms, legs, wingType: "none", tail, tailStyle: tail ? pickTailStyle(prng, preset) : undefined };
+  return {
+    arms,
+    legs,
+    wingType: "none",
+    tail,
+    tailStyle: tail ? pickTailStyle(prng, preset) : undefined,
+  };
 }
 
-function generateAccessory(seed: number, plan: BodyPlan, preset: GeneratorPreset): AccessoryGene {
-  const prng = createPrng(seed ^ 0x243f6a88);
-
-  // Keep accessories sparse so the baseline remains readable.
-  const roll = prng.nextFloat();
-  const noneChance = preset === "cute" ? 0.65 : preset === "weird" ? 0.55 : 0.6;
-  if (roll < noneChance) {
-    return { kind: "none" };
-  }
-
-  if (plan === "insectoid" && prng.nextFloat() < 0.7) {
-    return { kind: "antenna", count: prng.pick([1, 2] as const) };
-  }
-
-  if (prng.nextFloat() < 0.55) return { kind: "gem" };
-  return { kind: "collar" };
-}
-
-function pickPlan(prng: ReturnType<typeof createPrng>, preset: GeneratorPreset): BodyPlan {
+function pickPlan(
+  prng: ReturnType<typeof createPrng>,
+  preset: GeneratorPreset,
+): BodyPlan {
   if (preset === "cute") {
     return prng.pick([
       "blob",
@@ -326,7 +334,10 @@ export function deriveAnim(seed: number): AnimGene {
   };
 }
 
-export function generateGenome(seed: number, settings?: GeneratorSettings): Genome {
+export function generateGenome(
+  seed: number,
+  settings?: GeneratorSettings,
+): Genome {
   const prng = createPrng(seed);
   const preset: GeneratorPreset = settings?.preset ?? "classic";
   const plan = pickPlan(prng, preset);

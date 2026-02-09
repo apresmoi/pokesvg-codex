@@ -14,8 +14,7 @@ describe("parseGenome", () => {
 
   it("fills missing anim from seed (back-compat)", () => {
     const g = generateGenome(42);
-    const legacy = { ...g } as any;
-    delete legacy.anim;
+    const { anim: _anim, ...legacy } = g;
 
     const res = parseGenomeValue(legacy);
     expect(res.ok).toBe(true);
@@ -28,8 +27,7 @@ describe("parseGenome", () => {
 
   it("defaults missing accessory to none (back-compat)", () => {
     const g = generateGenome(77);
-    const legacy = { ...g } as any;
-    delete legacy.accessory;
+    const { accessory: _accessory, ...legacy } = g;
 
     const res = parseGenomeValue(legacy);
     expect(res.ok).toBe(true);

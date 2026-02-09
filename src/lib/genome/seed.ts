@@ -20,4 +20,3 @@ export function generateUniqueSeed(usedSeeds: ReadonlySet<number>) {
   while (usedSeeds.has(seed)) seed = (seed + 1) >>> 0;
   return seed;
 }
-

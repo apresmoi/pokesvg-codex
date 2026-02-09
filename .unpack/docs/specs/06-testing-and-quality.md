@@ -29,8 +29,9 @@ Current setup (inferred from implementation):
 
 - Typecheck: `tsc --noEmit` via `npm run typecheck`
 - Unit tests: Vitest via `npm test`
+- Lint/format: Biome via `npm run lint` / `npm run format`
 
-Not yet set up:
+CI (inferred from implementation):
 
-- Lint/format (ESLint/Prettier planned)
+- GitHub Actions runs lint/typecheck/tests/build on pushes and pull requests.
 <!-- unpack:1.0.0 -->

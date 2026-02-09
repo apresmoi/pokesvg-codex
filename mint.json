@@ -3,7 +3,13 @@
   "navigation": [
     {
       "group": "Guide",
-      "pages": ["guide/index"]
+      "pages": [
+        "guide/index",
+        "guide/controls",
+        "guide/sharing",
+        "guide/settings",
+        "guide/privacy"
+      ]
     }
   ]
 }

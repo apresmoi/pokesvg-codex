@@ -3,16 +3,23 @@
 ## Environments
 
 - **Local development**: run the React dev server locally (exact commands TBD in Phase 1).
-- **Production**: static build deployed to hosting (user preference: GitHub Pages, needs confirmation).
+- **Production**: static build deployed to hosting (GitHub Pages via GitHub Actions).
 
-## Deployment (needs confirmation)
+## Deployment
 
-User setup preference (from `/up-init`): GitHub Pages.
+Deployment target (inferred from `/up-init`): GitHub Pages.
 
-Open items:
+Mechanism (implemented):
 
-- Decide deployment mechanism (likely GitHub Actions -> build -> publish to `gh-pages`).
-- Decide base path handling (GitHub Pages often requires non-root base paths).
+- GitHub Actions workflow builds the Vite app and deploys `dist/` to GitHub Pages.
+- Vite `base` is set automatically in `vite.config.ts` when running in GitHub Actions:
+  - user/org pages (`<owner>.github.io`) use `/`
+  - project pages use `/<repo>/`
+  - can be overridden by setting `VITE_BASE`
+
+Notes:
+
+- The repository must have GitHub Pages configured to "Deploy from GitHub Actions".
 
 ## Docs
 

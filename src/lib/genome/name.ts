@@ -45,4 +45,3 @@ export function generateName(prng: Prng) {
   out = out.slice(0, prng.nextInt(4, 9));
   return capitalize(out);
 }
-

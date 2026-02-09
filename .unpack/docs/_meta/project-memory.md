@@ -199,4 +199,32 @@ Append-only log of decisions, constraints, and rationale.
 - Decision: Render only the visible slice of the dex list rows instead of rendering thumbnails for the entire collection.
 - Rationale: Avoid performance cliffs as the collection grows.
 - Evidence: (implemented during Phase 4)
+
+### D-029 - Lint/format tooling: Biome (Inferred)
+
+- Date: 2026-02-10
+- Decision: Use Biome for baseline linting and formatting, exposed via `npm run lint` and `npm run format`.
+- Rationale: Single dev tool that covers lint + format while keeping runtime deps unchanged.
+- Evidence: (implemented during Phase 5)
+
+### D-030 - CI via GitHub Actions (Inferred)
+
+- Date: 2026-02-10
+- Decision: Add a GitHub Actions CI workflow that runs lint, typecheck, unit tests, and build on pushes and pull requests.
+- Rationale: Prevent regressions and ensure the app stays buildable.
+- Evidence: (implemented during Phase 5)
+
+### D-031 - Deploy to GitHub Pages via Actions + Vite base auto-detection (Inferred)
+
+- Date: 2026-02-10
+- Decision: Deploy the static Vite build (`dist/`) to GitHub Pages using an Actions workflow, with Vite `base` automatically derived from `GITHUB_REPOSITORY` when running in GitHub Actions (override via `VITE_BASE`).
+- Rationale: Simple, local-first static hosting for sharing.
+- Evidence: (implemented during Phase 5)
+
+### D-032 - End-user docs live under guide/ (Mintlify) (Inferred)
+
+- Date: 2026-02-10
+- Decision: Maintain end-user documentation as Mintlify pages under `guide/` and index them via `mint.json`.
+- Rationale: Keep core flows documented for users (discover, settings, export/import, privacy).
+- Evidence: (implemented during Phase 5)
 <!-- unpack:1.0.0 -->

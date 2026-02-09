@@ -40,4 +40,3 @@ export function createPrng(seed: number): Prng {
 
   return { nextFloat, nextInt, pick, bool };
 }
-
