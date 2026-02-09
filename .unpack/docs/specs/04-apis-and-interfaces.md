@@ -29,9 +29,7 @@ Keys (implemented):
 Planned (v2; explicit):
 
 - Introduce `schemaVersion: 2` genomes and deprecate v1 collections (no migration required).
-- Storage key strategy is to be decided in Phase 7:
-  - bump to a new key (e.g. `pokesvg.collection.v2`), or
-  - reuse the key and clear on schema mismatch.
+- Store v2 dex under a new key: `pokesvg.collection.v2` (see D-038).
 
 ## Genome JSON interface (explicit)
 
@@ -46,7 +44,7 @@ Validation rules (inferred; implemented in v1 import):
 Planned (v2; explicit):
 
 - Import/export will move to `schemaVersion: 2` with a topology-first genome shape (spine/segments/slots/part families).
-- v1 payload handling is expected to be “no migration” (reject or seed-regenerate only), per D-035.
+- v1 payload handling is “seed-regenerate” (see D-039).
 
 ---
 ## Change log

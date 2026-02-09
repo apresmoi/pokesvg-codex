@@ -50,6 +50,8 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 - [ADR Template](./decisions/adr-0000-template.md)
 - [ADR-0001: React Component Practices Alignment](./decisions/adr-0001-react-component-practices.md)
 - [ADR-0002: GenomeV2 Topology-First Generator + No-Migration Break](./decisions/adr-0002-genomev2-topology-schema-break.md)
+- [ADR-0003: Dex Storage v2 Key + Import Seed-Regenerate Fallback](./decisions/adr-0003-dex-storage-v2-key-and-import-fallback.md)
+- [ADR-0004: Vertical Clamshell Pokedex UI (Device UI v2)](./decisions/adr-0004-vertical-clamshell-pokedex-ui.md)
 
 ---
 
@@ -66,16 +68,15 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 | [4](./phases/phase-4.md) | Art and UX Polish (Generator Quality + Background Variants) | delivery | done | 3 | 2026-02-10 |
 | [5](./phases/phase-5.md) | Quality Baseline + CI + GitHub Pages Deploy + End-User Docs | delivery | done | 4 | 2026-02-10 |
 | [6](./phases/phase-6.md) | Steering: React Component Practices Alignment | steering | done | 5 | 2026-02-10 |
-| [7](./phases/phase-7.md) | Steering: GenomeV2 + Device UI Redesign | steering | planned | 6 | 2026-02-10 |
+| [7](./phases/phase-7.md) | Steering: GenomeV2 + Device UI Redesign | steering | done | 6 | 2026-02-10 |
 | [8](./phases/phase-8.md) | GenomeV2: Topology Generator + Renderer | delivery | planned | 7 | 2026-02-10 |
 | [9](./phases/phase-9.md) | Device UI v2: Vertical Pokedex + Control Feedback | delivery | planned | 7 | 2026-02-10 |
 
 ### Current focus
 
-- Next runnable phase: **phase-7**
+- Next runnable phase: **phase-8**
 - Blockers / open questions:
-  - Device form factor choice for UI v2 (vertical clamshell vs other)
-  - Storage/deprecation strategy for v2 (`localStorage` key + v1 import behavior)
+  - (none)
 
 ---
 

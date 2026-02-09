@@ -33,7 +33,7 @@
 ## Needs confirmation
 
 - Exact control mapping for device buttons (D-pad/A/B + any extra buttons).
-- Target device form factor for the next UI iteration (current horizontal vs a more iconic layout).
+- Device UI v2 is vertical clamshell (confirmed; see D-037).
 - What "no more libraries" means in practice:
   - runtime dependencies only, or also dev dependencies (Vite/TypeScript/test tooling).
 - Default generator presets (cute/classic/weird) and outline/shading defaults.

@@ -9,7 +9,7 @@
 
 Planned UI direction (explicit; see D-036):
 
-- Move toward a more iconic/recognizable Pokedex device layout (current horizontal device may be replaced).
+- Move toward a more iconic/recognizable Pokedex device layout (vertical clamshell; see D-037).
 - Ensure controls are device-native (inside casing) and have press feedback/animations.
 - Improve screen hierarchy (layout/typography) and consider optional screen effects (e.g., scanlines) if they support the vibe.
 

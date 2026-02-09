@@ -41,7 +41,7 @@ Make monsters structurally diverse by shipping a v2 procedural system: spine/seg
 
 ## Decision refs
 
-- D-034, D-035
+- D-034, D-035, D-038, D-039
 
 ## Work items (ordered)
 
@@ -71,9 +71,8 @@ Make monsters structurally diverse by shipping a v2 procedural system: spine/seg
 
 ## Open questions / blockers
 
-- Depends on Phase 7 decisions for deprecation/storage/import strategy.
+- (none)
 
 ## Notes / steering log
 
 - Focus on silhouette/topology variety first; add deep variety libraries later.
-

@@ -257,5 +257,32 @@ Append-only log of decisions, constraints, and rationale.
 - Date: 2026-02-10
 - Decision: Redesign the device UI toward a more common/recognizable Pokedex form factor, keep all controls inside the SVG casing, add press feedback/animations, and improve screen layout hierarchy.
 - Rationale: Current UI feels messy (controls outside casing, no press feedback) and needs polish.
-- Evidence: User request; specific form factor (e.g., vertical clamshell) still needs confirmation.
+- Evidence: User request; form factor confirmed as vertical clamshell (see D-037).
+- → Promoted to ADR-0004
+
+### D-037 - UI v2 form factor: vertical clamshell Pokedex (Explicit)
+
+- Date: 2026-02-10
+- Decision: UI v2 uses a vertical “clamshell” Pokedex layout (Gen 1 Kanto-style proportions are the primary reference).
+- Rationale: More iconic and readable; better placement for screen + controls.
+- Evidence: User: “vertical is ok”.
+- → Promoted to ADR-0004
+
+### D-038 - Dex collection storage key for v2: `pokesvg.collection.v2` (Explicit)
+
+- Date: 2026-02-10
+- Decision: Store the v2 dex collection under a new `localStorage` key: `pokesvg.collection.v2` (keep v1 data untouched).
+- Rationale: Clean break with no migration; avoids schema mismatch headaches.
+- Evidence: User: “new key in localstorage is ok”.
+- → Promoted to ADR-0003
+
+### D-039 - Import behavior across schema versions: v2 strict + v1 seed-regenerate (Explicit)
+
+- Date: 2026-02-10
+- Decision: Import accepts `schemaVersion: 2` genomes. For older payloads, use a seed-regenerate fallback:
+  - if the pasted JSON is a number, treat it as a seed and generate a v2 mon
+  - if the pasted JSON is a v1-like object with a numeric `seed`, generate a v2 mon from that seed (ignore v1 fields)
+- Rationale: Keeps sharing easy without maintaining v1 compatibility/migrations.
+- Evidence: Decision needed to complete Phase 7; aligns with the “no migration” stance while preserving a low-friction import path.
+- → Promoted to ADR-0003
 <!-- unpack:1.0.0 -->

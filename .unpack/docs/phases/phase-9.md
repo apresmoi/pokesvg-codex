@@ -40,7 +40,7 @@ Make the app feel like a real Pokedex: redesign the device to a more iconic layo
 
 ## Decision refs
 
-- D-036
+- D-036, D-037
 
 ## Work items (ordered)
 
@@ -70,9 +70,8 @@ Make the app feel like a real Pokedex: redesign the device to a more iconic layo
 
 ## Open questions / blockers
 
-- Depends on Phase 7: final form factor choice and any layout constraints.
+- (none)
 
 ## Notes / steering log
 
 - Primary motivation: current UI feels messy; needs a more cohesive, device-native control layout with tactile feedback.
-

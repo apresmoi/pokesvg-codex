@@ -2,7 +2,7 @@
 id: phase-7
 title: "Steering: GenomeV2 + Device UI Redesign"
 kind: steering
-status: planned
+status: done
 depends_on: ["phase-6"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -45,19 +45,19 @@ Record and formalize the next major direction change: a topology-first monster g
 
 ## Work items (ordered)
 
-- [ ] Specify `GenomeV2` schema at the doc level: spine/segments/slots + part families [S: 02-domain-model]
-- [ ] Decide the deprecation story:
+- [x] Specify `GenomeV2` schema at the doc level: spine/segments/slots + part families [S: 02-domain-model]
+- [x] Decide the deprecation story:
   - storage key strategy (new key vs clear on mismatch)
   - import/export handling of v1 payloads (reject vs regenerate-from-seed) [S: 04-apis-and-interfaces]
-- [ ] Choose target device form factor (more iconic Pokedex layout) and control affordances (press feedback, transitions) [S: 05-ux-and-flows]
-- [ ] Patch the affected specs + add change-log entries referencing this steering [S: 00-overview, 01-requirements, 03-architecture]
-- [ ] Ensure `.unpack/docs/index.md` points to the new phases and sets current focus correctly
+- [x] Choose target device form factor (more iconic Pokedex layout) and control affordances (press feedback, transitions) [S: 05-ux-and-flows]
+- [x] Patch the affected specs + add change-log entries referencing this steering [S: 00-overview, 01-requirements, 03-architecture]
+- [x] Ensure `.unpack/docs/index.md` points to the new phases and sets current focus correctly
 
 ## Completion criteria (must all be true)
 
-- [ ] Specs reflect the intended v2 direction and clearly label what is “current (v1)” vs “planned (v2)”.
-- [ ] Open questions are either resolved or explicitly listed in this phase.
-- [ ] Phase 8 and Phase 9 exist with clear scope and test plans.
+- [x] Specs reflect the intended v2 direction and clearly label what is “current (v1)” vs “planned (v2)”.
+- [x] Open questions are either resolved or explicitly listed in this phase.
+- [x] Phase 8 and Phase 9 exist with clear scope and test plans.
 
 ## Test plan
 
@@ -65,11 +65,12 @@ Docs-only.
 
 ## Open questions / blockers
 
-- Exact device form factor: vertical clamshell (Gen 1 style) vs a different “iconic” layout?
-- Storage/deprecation strategy: new `localStorage` key for v2 (`pokesvg.collection.v2`) vs reusing the key and clearing on schema mismatch?
-- Import/export behavior for v1 genomes: hard reject, or accept “seed-only” input to regenerate with v2?
+- (none)
 
 ## Notes / steering log
 
 - This steering phase comes from a follow-up research conversation requesting “wilder” monsters and a more polished, more recognizable device UI.
-
+- Decisions locked:
+  - Device UI v2 is vertical clamshell (D-037).
+  - v2 uses a new dex `localStorage` key (D-038).
+  - Import seed-regenerate fallback for older payloads (D-039).
