@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import { generateGenome } from "./generateGenome";
-import { parseGenomeJson, parseGenomeValue } from "./parseGenome";
+import {
+  parseGenomeJson,
+  parseGenomeJsonOrRegenerate,
+  parseGenomeValue,
+} from "./parseGenome";
 
 describe("parseGenome", () => {
   it("accepts a generated genome JSON payload", () => {
@@ -12,7 +16,7 @@ describe("parseGenome", () => {
     expect(res.genome).toEqual(g);
   });
 
-  it("fills missing anim from seed (back-compat)", () => {
+  it("fills missing anim from seed", () => {
     const g = generateGenome(42);
     const { anim: _anim, ...legacy } = g;
 
@@ -25,7 +29,7 @@ describe("parseGenome", () => {
     expect(res.genome.anim).toBeDefined();
   });
 
-  it("defaults missing accessory to none (back-compat)", () => {
+  it("defaults missing accessory to none", () => {
     const g = generateGenome(77);
     const { accessory: _accessory, ...legacy } = g;
 
@@ -45,16 +49,37 @@ describe("parseGenome", () => {
     expect(res.genome.id).toBe("seed_0000002a");
   });
 
+  it("accepts seed-only imports (JSON number)", () => {
+    const res = parseGenomeJsonOrRegenerate("123");
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+    expect(res.genome.seed).toBe(123);
+    expect(res.genome.schemaVersion).toBe(2);
+  });
+
+  it("accepts v1-like objects with a numeric seed (seed-regenerate)", () => {
+    const res = parseGenomeJsonOrRegenerate(
+      JSON.stringify({ schemaVersion: 1, seed: 555, plan: "biped" }),
+    );
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+    expect(res.genome.seed).toBe(555);
+    expect(res.genome.schemaVersion).toBe(2);
+  });
+
   it("rejects invalid JSON", () => {
     const res = parseGenomeJson("{");
     expect(res.ok).toBe(false);
   });
 
-  it("rejects unsafe blob jitter arrays", () => {
+  it("rejects unsafe spine arrays", () => {
     const g = generateGenome(99);
     const mutated = {
       ...g,
-      body: { ...g.body, shape: { ...g.body.shape, jitter: [1, 1] } },
+      spine: {
+        ...g.spine,
+        points: [...g.spine.points, { x: 10, y: 10 }, { x: 20, y: 20 }],
+      },
     };
     const res = parseGenomeValue(mutated);
     expect(res.ok).toBe(false);

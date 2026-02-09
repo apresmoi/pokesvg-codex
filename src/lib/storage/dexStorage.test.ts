@@ -13,7 +13,7 @@ describe("dexStorage", () => {
 
   it("returns empty for invalid payloads", () => {
     expect(deserializeDex("null")).toEqual([]);
-    expect(deserializeDex('{"schemaVersion":2,"genomes":[]}')).toEqual([]);
-    expect(deserializeDex('{"schemaVersion":1,"genomes":{}}')).toEqual([]);
+    expect(deserializeDex('{"schemaVersion":1,"genomes":[]}')).toEqual([]);
+    expect(deserializeDex('{"schemaVersion":2,"genomes":{}}')).toEqual([]);
   });
 });

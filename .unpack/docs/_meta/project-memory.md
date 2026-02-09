@@ -285,4 +285,15 @@ Append-only log of decisions, constraints, and rationale.
 - Rationale: Keeps sharing easy without maintaining v1 compatibility/migrations.
 - Evidence: Decision needed to complete Phase 7; aligns with the “no migration” stance while preserving a low-friction import path.
 - → Promoted to ADR-0003
+
+### D-040 - GenomeV2 JSON schema stores explicit topology geometry (Inferred)
+
+- Date: 2026-02-10
+- Decision: Represent `GenomeV2` as a topology-first object that stores explicit geometry and attachments:
+  - `spine: { curve, points: {x,y}[], radii: number[] }` (2–6 points)
+  - `limbs: LimbGene[]` (slot + segment + side + family + params)
+  - `tail: { family, length, curl }`
+  - `surface: { placements: SurfacePlacement[] }`
+- Rationale: Keep `genome -> SVG` deterministic and make the v2 topology explicit in exports/imports.
+- Evidence: Implemented during Phase 8 to realize D-034.
 <!-- unpack:1.0.0 -->

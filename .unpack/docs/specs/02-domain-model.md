@@ -16,18 +16,18 @@ The genome should encode both:
 - **structure**: body plan, parts, proportions, anchors-relative params
 - **style**: palette, outline/shading params, patterns
 - **behavior**: animation params (blink, idle bob)
-- **details** (inferred): small optional modifiers like tail style and accessories
+- **details** (inferred): small optional modifiers like tail and accessories
 
 Implemented additions (inferred):
 
-- `limbs.tailStyle`: `taper` | `leaf` | `club` (optional; defaults to `taper` when absent)
+- `tail`: `{ family, length, curl }` (or `family: none`)
 - `accessory`: `none` | `gem` | `antenna` | `collar` (defaults to `none` when absent)
 
-> Note: Implementation currently uses `schemaVersion: 1` (v1). A clean-break `schemaVersion: 2` is planned (see D-035).
+> Note: Implementation uses `schemaVersion: 2` (GenomeV2). v1 genomes/collections are deprecated with no migration requirement (see D-035).
 
-#### Genome V2 (planned; topology-first) (explicit)
+#### Genome V2 (implemented; topology-first) (explicit)
 
-The next intended iteration is a clean-break `GenomeV2` (`schemaVersion: 2`) focused on **structural diversity**:
+The current iteration is a clean-break `GenomeV2` (`schemaVersion: 2`) focused on **structural diversity**:
 
 - **Spine / topology**: a seeded curve with 2–N body segments (posture + thickness profile).
 - **Segments**: per-segment radii/width profile (taper, bulges, etc.).
@@ -90,7 +90,8 @@ Persist the collection by storing genomes in `localStorage`.
 
 Suggested (inferred) storage keys:
 
-- `pokesvg.collection.v1` (implemented)
+- `pokesvg.collection.v2` (implemented)
+- `pokesvg.collection.v1` (deprecated)
 - `pokesvg.settings.v1` (implemented)
 
 ---

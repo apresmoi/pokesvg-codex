@@ -1,37 +1,73 @@
 import type { CSSProperties } from "react";
 
+import { createPrng } from "@/lib/prng";
+
 import type { Genome } from "../../types";
+import { makeBlobPath } from "../blobPath";
+import type { SpineFrame } from "../tubePath";
 
 type MonHeadProps = {
   genome: Genome;
+  frames: SpineFrame[];
   strokeW: number;
-  headCx: number;
-  headCy: number;
-  headW: number;
-  headH: number;
-  headPath: string;
   animate: boolean;
 };
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
 
 function distribute(count: number, span: number) {
   if (count <= 1) return [0];
   const out: number[] = [];
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < count; i++)
     out.push(-span / 2 + (span * i) / (count - 1));
-  }
   return out;
 }
 
-export function MonHead({
-  genome,
-  strokeW,
-  headCx,
-  headCy,
-  headW,
-  headH,
-  headPath,
-  animate,
-}: MonHeadProps) {
+function makeHeadJitter(family: Genome["head"]["family"], seed: number) {
+  const prng = createPrng((seed ^ 0x2c1b3c6d) >>> 0);
+
+  const k = family === "angular" ? 8 : family === "star" ? 12 : 10;
+  const jitter: number[] = [];
+
+  for (let i = 0; i < k; i++) {
+    const noise = 1 + (prng.nextFloat() - 0.5) * 0.16;
+
+    if (family === "round") {
+      jitter.push(1 * noise);
+      continue;
+    }
+
+    if (family === "angular") {
+      jitter.push((i % 2 === 0 ? 0.78 : 1.22) * noise);
+      continue;
+    }
+
+    if (family === "flat") {
+      jitter.push((0.92 + (i % 2 === 0 ? 0.06 : -0.06)) * noise);
+      continue;
+    }
+
+    if (family === "star") {
+      jitter.push((i % 2 === 0 ? 1.5 : 0.64) * noise);
+      continue;
+    }
+
+    // pointed
+    if (i === 0) jitter.push((1.55 + prng.nextFloat() * 0.35) * noise);
+    else if (i === 1 || i === k - 1) jitter.push(1.18 * noise);
+    else if (i === Math.floor(k / 2)) jitter.push(0.78 * noise);
+    else jitter.push(0.98 * noise);
+  }
+
+  return jitter;
+}
+
+export function MonHead({ genome, frames, strokeW, animate }: MonHeadProps) {
+  const headFrame = frames[frames.length - 1];
+  if (!headFrame) return null;
+
   const accessory = genome.accessory;
   const outline = genome.palette.outline;
   const base = genome.palette.base;
@@ -39,8 +75,24 @@ export function MonHead({
   const accent = genome.palette.accent;
   const eye = genome.palette.eye;
 
+  const headCx = headFrame.p.x + headFrame.t.x * headFrame.r * 0.75;
+  const headCy = headFrame.p.y + headFrame.t.y * headFrame.r * 0.75;
+  const headW = clamp(headFrame.r * 2 * genome.head.size, 52, 190);
+  const headH = clamp(headW * genome.head.aspect, 42, 190);
+
   const headLeft = headCx - headW / 2;
   const headTop = headCy - headH / 2;
+
+  const facingDeg = (Math.atan2(headFrame.t.y, headFrame.t.x) * 180) / Math.PI;
+  const headRot = facingDeg + genome.head.tiltDeg;
+
+  const headPath = makeBlobPath(
+    headCx,
+    headCy,
+    headW,
+    headH,
+    makeHeadJitter(genome.head.family, genome.seed),
+  );
 
   const eyeY = headTop + headH * 0.48;
   const eyeSpacing = genome.face.eyeSpacing * headW;
@@ -72,7 +124,7 @@ export function MonHead({
           } Z`;
 
   return (
-    <>
+    <g transform={`rotate(${headRot} ${headCx} ${headCy})`}>
       {/* Head */}
       <path d={headPath} fill={base} stroke={outline} strokeWidth={strokeW} />
 
@@ -81,18 +133,22 @@ export function MonHead({
         genome.head.earType === "pointy" ? (
           <>
             <path
-              d={`M ${headLeft + headW * 0.18} ${headTop + 16} L ${
+              d={`M ${headLeft + headW * 0.18} ${headTop + headH * 0.22} L ${
                 headLeft + headW * 0.05
-              } ${headTop - 14} L ${headLeft + headW * 0.28} ${headTop + 6} Z`}
+              } ${headTop - headH * 0.12} L ${headLeft + headW * 0.28} ${
+                headTop + headH * 0.12
+              } Z`}
               fill={accent}
               stroke={outline}
               strokeWidth={strokeW}
               strokeLinejoin="round"
             />
             <path
-              d={`M ${headLeft + headW * 0.82} ${headTop + 16} L ${
+              d={`M ${headLeft + headW * 0.82} ${headTop + headH * 0.22} L ${
                 headLeft + headW * 0.95
-              } ${headTop - 14} L ${headLeft + headW * 0.72} ${headTop + 6} Z`}
+              } ${headTop - headH * 0.12} L ${headLeft + headW * 0.72} ${
+                headTop + headH * 0.12
+              } Z`}
               fill={accent}
               stroke={outline}
               strokeWidth={strokeW}
@@ -103,16 +159,16 @@ export function MonHead({
           <>
             <circle
               cx={headLeft + headW * 0.18}
-              cy={headTop + 10}
-              r={12}
+              cy={headTop + headH * 0.18}
+              r={Math.max(10, Math.round(headW * 0.09))}
               fill={accent}
               stroke={outline}
               strokeWidth={strokeW}
             />
             <circle
               cx={headLeft + headW * 0.82}
-              cy={headTop + 10}
-              r={12}
+              cy={headTop + headH * 0.18}
+              r={Math.max(10, Math.round(headW * 0.09))}
               fill={accent}
               stroke={outline}
               strokeWidth={strokeW}
@@ -133,10 +189,10 @@ export function MonHead({
                   : headCx + headW * 0.18;
             return (
               <path
-                key={i}
-                d={`M ${x} ${headTop + 8} L ${x - 10} ${headTop - 18} L ${x + 10} ${
-                  headTop - 18
-                } Z`}
+                key={`horn-${i}`}
+                d={`M ${x} ${headTop + headH * 0.1} L ${x - headW * 0.08} ${
+                  headTop - headH * 0.16
+                } L ${x + headW * 0.08} ${headTop - headH * 0.16} Z`}
                 fill={shade}
                 stroke={outline}
                 strokeWidth={strokeW}
@@ -152,11 +208,9 @@ export function MonHead({
         <path
           d={`M ${headCx} ${headTop + headH * 0.16} L ${
             headCx - Math.max(10, Math.round(headW * 0.08))
-          } ${headTop + headH * 0.24} L ${headCx} ${
-            headTop + headH * 0.32
-          } L ${headCx + Math.max(10, Math.round(headW * 0.08))} ${
-            headTop + headH * 0.24
-          } Z`}
+          } ${headTop + headH * 0.24} L ${headCx} ${headTop + headH * 0.32} L ${
+            headCx + Math.max(10, Math.round(headW * 0.08))
+          } ${headTop + headH * 0.24} Z`}
           fill={accent}
           stroke={outline}
           strokeWidth={strokeW}
@@ -178,7 +232,7 @@ export function MonHead({
             const y0 = headTop + headH * 0.08;
             const y1 = headTop - headH * 0.18;
             return (
-              <g key={i}>
+              <g key={`ant-${i}`}>
                 <path
                   d={`M ${x} ${y0} C ${x + dx * 0.12} ${(y0 + y1) / 2} ${x} ${y1} ${x} ${y1}`}
                   fill="none"
@@ -213,7 +267,7 @@ export function MonHead({
           if (genome.face.eyeType === "dot") {
             return (
               <g
-                key={i}
+                key={`eye-${i}`}
                 className={animate ? "mon-blink" : undefined}
                 style={blinkStyle}
               >
@@ -231,7 +285,7 @@ export function MonHead({
           if (genome.face.eyeType === "slit") {
             return (
               <g
-                key={i}
+                key={`eye-${i}`}
                 className={animate ? "mon-blink" : undefined}
                 style={blinkStyle}
               >
@@ -255,7 +309,7 @@ export function MonHead({
 
           return (
             <g
-              key={i}
+              key={`eye-${i}`}
               className={animate ? "mon-blink" : undefined}
               style={blinkStyle}
             >
@@ -309,7 +363,7 @@ export function MonHead({
             const y = mouthY + 2;
             return (
               <path
-                key={i}
+                key={`fang-${i}`}
                 d={`M ${x} ${y} L ${x - 6} ${y + 12} L ${x + 6} ${y + 12} Z`}
                 fill={eye}
                 stroke={outline}
@@ -320,6 +374,6 @@ export function MonHead({
           })}
         </g>
       ) : null}
-    </>
+    </g>
   );
 }

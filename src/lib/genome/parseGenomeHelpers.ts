@@ -6,8 +6,6 @@ import type {
   EarType,
   EyeType,
   MouthType,
-  TailStyle,
-  WingType,
 } from "./types";
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
@@ -59,20 +57,6 @@ export function parseMouthType(value: unknown): MouthType | null {
   if (value === "smile") return "smile";
   if (value === "frown") return "frown";
   if (value === "beak") return "beak";
-  return null;
-}
-
-export function parseWingType(value: unknown): WingType | null {
-  if (value === "none") return "none";
-  if (value === "small") return "small";
-  if (value === "big") return "big";
-  return null;
-}
-
-export function parseTailStyle(value: unknown): TailStyle | null {
-  if (value === "taper") return "taper";
-  if (value === "leaf") return "leaf";
-  if (value === "club") return "club";
   return null;
 }
 

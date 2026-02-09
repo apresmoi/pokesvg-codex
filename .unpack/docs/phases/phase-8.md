@@ -2,7 +2,7 @@
 id: phase-8
 title: "GenomeV2: Topology Generator + Renderer"
 kind: delivery
-status: planned
+status: done
 depends_on: ["phase-7"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -45,19 +45,19 @@ Make monsters structurally diverse by shipping a v2 procedural system: spine/seg
 
 ## Work items (ordered)
 
-- [ ] Define `GenomeV2` types and generator entrypoints [S: 02-domain-model#genome-explicit]
-- [ ] Implement spine/segments body silhouette generator (2–N segments along a curve) [S: 01-requirements#non-functional-requirements]
-- [ ] Implement attachment slots and 3–6 part families per slot (head/limbs/tail/surface) [S: 02-domain-model]
-- [ ] Update renderer to dispatch to part-family renderers and keep SVG style consistent [S: 03-architecture]
-- [ ] Update storage + import/export parsing for v2; remove/disable v1 migration requirements [S: 04-apis-and-interfaces]
-- [ ] Add/extend unit tests for determinism and import validation [S: 06-testing-and-quality]
+- [x] Define `GenomeV2` types and generator entrypoints [S: 02-domain-model#genome-explicit]
+- [x] Implement spine/segments body silhouette generator (2–N segments along a curve) [S: 01-requirements#non-functional-requirements]
+- [x] Implement attachment slots and 3–6 part families per slot (head/limbs/tail/surface) [S: 02-domain-model]
+- [x] Update renderer to dispatch to part-family renderers and keep SVG style consistent [S: 03-architecture]
+- [x] Update storage + import/export parsing for v2; remove/disable v1 migration requirements [S: 04-apis-and-interfaces]
+- [x] Add/extend unit tests for determinism and import validation [S: 06-testing-and-quality]
 
 ## Completion criteria (must all be true)
 
-- [ ] Discover produces GenomeV2 mons that have meaningfully different silhouettes by default.
-- [ ] `genome -> SVG` determinism holds for v2.
-- [ ] Import/export works for v2 payloads per the chosen deprecation strategy.
-- [ ] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
+- [x] Discover produces GenomeV2 mons that have meaningfully different silhouettes by default.
+- [x] `genome -> SVG` determinism holds for v2.
+- [x] Import/export works for v2 payloads per the chosen deprecation strategy.
+- [x] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
 
 ## Test plan
 

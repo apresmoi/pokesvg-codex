@@ -1,16 +1,7 @@
 import { createPrng } from "@/lib/prng";
 import type { GeneratorPreset } from "@/lib/settings";
 
-import type { AccessoryGene, BodyPlan, TailStyle } from "./types";
-
-export function pickTailStyle(
-  prng: ReturnType<typeof createPrng>,
-  preset: GeneratorPreset,
-): TailStyle {
-  if (preset === "cute") return prng.pick(["leaf", "taper", "leaf"] as const);
-  if (preset === "weird") return prng.pick(["club", "taper", "leaf"] as const);
-  return prng.pick(["taper", "leaf", "club"] as const);
-}
+import type { AccessoryGene, BodyPlan } from "./types";
 
 export function generateAccessory(
   seed: number,

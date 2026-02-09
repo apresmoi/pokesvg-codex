@@ -1,4 +1,4 @@
-export type SchemaVersion = 1;
+export type SchemaVersion = 2;
 
 export type BodyPlan =
   | "biped"
@@ -16,36 +16,33 @@ export type Palette = {
   outline: string;
 };
 
-export type BlobShape = {
-  kind: "blob";
-  width: number;
-  height: number;
-  points: number;
-  // Radius multiplier per point (length === points). Example: 0.85 .. 1.2
-  jitter: number[];
-};
+export type Vec2 = { x: number; y: number };
 
-export type Spot = {
-  x: number; // -1..1, relative to body center
-  y: number; // -1..1
-  r: number; // 0..1, relative to min(bodyRx, bodyRy)
-};
+export type SpineCurve =
+  | "upright"
+  | "horizontal"
+  | "hunched"
+  | "coiled"
+  | "s-bend";
 
-export type PatternGene =
-  | { kind: "none" }
-  | { kind: "spots"; spots: Spot[] }
-  | { kind: "stripes"; angleDeg: number; count: number; width: number };
-
-export type BodyGene = {
-  shape: BlobShape;
-  belly: boolean;
-  pattern: PatternGene;
+export type SpineGene = {
+  curve: SpineCurve;
+  // Points are in the MonSvg viewBox coordinate space (0..256-ish).
+  points: Vec2[];
+  // Radius per point (same length as points).
+  radii: number[];
 };
 
 export type EarType = "none" | "pointy" | "round";
+export type HeadFamily = "round" | "angular" | "pointed" | "flat" | "star";
 
 export type HeadGene = {
-  shape: BlobShape;
+  family: HeadFamily;
+  // Ratio relative to spine radius at the head segment.
+  size: number;
+  // Head height ratio relative to width.
+  aspect: number;
+  tiltDeg: number;
   earType: EarType;
   hornCount: 0 | 1 | 2;
 };
@@ -56,22 +53,53 @@ export type MouthType = "smile" | "frown" | "beak";
 export type FaceGene = {
   eyeType: EyeType;
   eyeCount: 1 | 2 | 3 | 4;
-  eyeSpacing: number; // 0.18 .. 0.5, relative to head width
-  eyeSize: number; // 0.05 .. 0.16, relative to head width
+  eyeSpacing: number; // relative to head width
+  eyeSize: number; // relative to head width
   mouthType: MouthType;
   fangs: 0 | 1 | 2;
 };
 
-export type WingType = "none" | "small" | "big";
+export type LimbSlot = "arm" | "leg" | "wing";
+export type LimbSide = "left" | "right";
+export type LimbFamily =
+  | "stub"
+  | "claw"
+  | "tentacle"
+  | "fin"
+  | "pincer"
+  | "wing";
 
-export type TailStyle = "taper" | "leaf" | "club";
+export type LimbGene = {
+  slot: LimbSlot;
+  segment: number;
+  side: LimbSide;
+  family: LimbFamily;
+  scale: number;
+  length: number;
+  angleDeg: number;
+};
 
-export type LimbsGene = {
-  arms: 0 | 1 | 2;
-  legs: 0 | 2 | 4 | 6;
-  wingType: WingType;
-  tail: boolean;
-  tailStyle?: TailStyle;
+export type TailFamily = "none" | "taper" | "leaf" | "club" | "stinger";
+
+export type TailGene = {
+  family: TailFamily;
+  length: number;
+  curl: number;
+};
+
+export type SurfaceFamily = "spikes" | "bumps" | "ridges" | "crystals";
+export type SurfaceSide = "dorsal" | "ventral";
+
+export type SurfacePlacement = {
+  family: SurfaceFamily;
+  segment: number;
+  side: SurfaceSide;
+  count: number;
+  scale: number;
+};
+
+export type SurfaceGene = {
+  placements: SurfacePlacement[];
 };
 
 export type AnimGene = {
@@ -92,19 +120,21 @@ export type MetaGene = {
   lore: string;
 };
 
-export type GenomeV1 = {
+export type GenomeV2 = {
   schemaVersion: SchemaVersion;
   id: string;
   seed: number;
   plan: BodyPlan;
   palette: Palette;
-  body: BodyGene;
+  spine: SpineGene;
   head: HeadGene;
   face: FaceGene;
-  limbs: LimbsGene;
+  limbs: LimbGene[];
+  tail: TailGene;
+  surface: SurfaceGene;
   accessory: AccessoryGene;
   anim: AnimGene;
   meta: MetaGene;
 };
 
-export type Genome = GenomeV1;
+export type Genome = GenomeV2;

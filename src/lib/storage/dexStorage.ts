@@ -1,11 +1,11 @@
-import type { Genome, GenomeV1 } from "@/lib/genome";
+import type { Genome } from "@/lib/genome";
 import { parseGenomeValue } from "@/lib/genome/parseGenome";
 
-export const DEX_STORAGE_KEY = "pokesvg.collection.v1";
+export const DEX_STORAGE_KEY = "pokesvg.collection.v2";
 
-type DexStorageV1 = {
-  schemaVersion: 1;
-  genomes: GenomeV1[];
+type DexStorageV2 = {
+  schemaVersion: 2;
+  genomes: Genome[];
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -13,9 +13,9 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 export function serializeDex(genomes: Genome[]) {
-  const payload: DexStorageV1 = {
-    schemaVersion: 1,
-    genomes: genomes as GenomeV1[],
+  const payload: DexStorageV2 = {
+    schemaVersion: 2,
+    genomes,
   };
   return JSON.stringify(payload);
 }
@@ -32,7 +32,7 @@ export function deserializeDex(raw: string): Genome[] {
   }
 
   if (!isRecord(parsed)) return [];
-  if (parsed.schemaVersion !== 1) return [];
+  if (parsed.schemaVersion !== 2) return [];
   if (!Array.isArray(parsed.genomes)) return [];
 
   return parsed.genomes

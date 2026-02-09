@@ -1,274 +1,112 @@
 import type { Genome } from "../../types";
+import type { SpineFrame } from "../tubePath";
+import { MonLimb } from "./MonLimb";
+import { MonSurfaceFeatures } from "./MonSurfaceFeatures";
+import { MonTail } from "./MonTail";
+import { clamp } from "./monMath";
 
 type MonBodyProps = {
   genome: Genome;
+  frames: SpineFrame[];
   strokeW: number;
   bodyClipId: string;
-  bodyCx: number;
-  bodyCy: number;
-  bodyW: number;
-  bodyH: number;
   bodyPath: string;
 };
 
-function distribute(count: number, span: number) {
-  if (count <= 1) return [0];
-  const out: number[] = [];
-  for (let i = 0; i < count; i++) {
-    out.push(-span / 2 + (span * i) / (count - 1));
-  }
-  return out;
-}
-
 export function MonBody({
   genome,
+  frames,
   strokeW,
   bodyClipId,
-  bodyCx,
-  bodyCy,
-  bodyW,
-  bodyH,
   bodyPath,
 }: MonBodyProps) {
   const outline = genome.palette.outline;
   const base = genome.palette.base;
-  const shade = genome.palette.shade;
   const accent = genome.palette.accent;
-  const eye = genome.palette.eye;
 
-  const pattern = genome.body.pattern;
+  const backLimbs = genome.limbs.filter(
+    (l) => l.slot === "wing" || l.side === "left",
+  );
+  const frontLimbs = genome.limbs.filter(
+    (l) => l.slot !== "wing" && l.side === "right",
+  );
 
-  const legCount = genome.limbs.legs;
-  const legXs = distribute(legCount, bodyW * 0.8);
-  const legH = Math.max(18, Math.round(bodyH * 0.22));
-  const legW = Math.max(10, Math.round(bodyW * 0.1));
-  const legY = bodyCy + bodyH * 0.22;
-
-  const armCount = genome.limbs.arms;
-  const armSpan = bodyW * 0.55;
-  const armW = Math.max(10, Math.round(bodyW * 0.1));
-  const armL = Math.max(18, Math.round(bodyH * 0.18));
-  const armY = bodyCy - bodyH * 0.15;
-
-  const hasLeftArm =
-    armCount === 2 || (armCount === 1 && (genome.seed & 1) === 0);
-  const hasRightArm =
-    armCount === 2 || (armCount === 1 && (genome.seed & 1) === 1);
-
-  const tailAnchorX = bodyCx + bodyW * 0.48;
-  const tailAnchorY = bodyCy + bodyH * 0.06;
-  const tailTipX = tailAnchorX + bodyW * 0.55;
-  const tailTipY = tailAnchorY + bodyH * 0.25;
-  const tailW = Math.max(10, Math.round(bodyW * 0.08));
-  const tailStyle = genome.limbs.tailStyle ?? "taper";
-  const tailD = `M ${tailAnchorX} ${tailAnchorY} C ${
-    tailAnchorX + bodyW * 0.25
-  } ${tailAnchorY - bodyH * 0.12}, ${tailTipX - bodyW * 0.18} ${
-    tailTipY + bodyH * 0.1
-  }, ${tailTipX} ${tailTipY}`;
-
-  const wing = genome.limbs.wingType;
-  const wingSize = wing === "big" ? 52 : 36;
-  const wingY = bodyCy - bodyH * 0.12;
-  const wingX = bodyCx + bodyW * 0.28;
-  const wingPath = `M ${wingX} ${wingY} C ${wingX + wingSize} ${
-    wingY - wingSize * 0.6
-  }, ${wingX + wingSize} ${wingY + wingSize * 0.6}, ${wingX} ${
-    wingY + wingSize
-  } C ${wingX - wingSize * 0.45} ${wingY + wingSize * 0.5}, ${
-    wingX - wingSize * 0.45
-  } ${wingY - wingSize * 0.2}, ${wingX} ${wingY} Z`;
+  const neckFrame =
+    frames.length >= 2 ? frames[frames.length - 2] : frames[frames.length - 1];
+  const collarX = neckFrame ? neckFrame.p.x : 0;
+  const collarY = neckFrame ? neckFrame.p.y : 0;
+  const collarRx = neckFrame ? neckFrame.r * 0.95 : 0;
+  const collarRy = neckFrame ? clamp(neckFrame.r * 0.38, 8, 22) : 0;
 
   return (
     <>
-      {/* Wings behind body */}
-      {wing !== "none" ? (
-        <g opacity="0.95">
-          <path
-            d={wingPath}
-            fill={accent}
-            stroke={outline}
-            strokeWidth={strokeW}
-          />
-          <path
-            d={wingPath}
-            fill="none"
-            stroke={eye}
-            strokeOpacity="0.22"
-            strokeWidth={2}
-          />
-        </g>
-      ) : null}
-
       {/* Tail behind body */}
-      {genome.limbs.tail ? (
-        <>
-          <path
-            d={tailD}
-            fill="none"
-            stroke={outline}
-            strokeWidth={tailW + 6}
-            strokeLinecap="round"
-          />
-          <path
-            d={tailD}
-            fill="none"
-            stroke={base}
-            strokeWidth={tailW}
-            strokeLinecap="round"
-          />
-          {tailStyle === "club" ? (
-            <circle
-              cx={tailTipX}
-              cy={tailTipY}
-              r={Math.max(9, Math.round(tailW * 0.9))}
-              fill={accent}
-              stroke={outline}
-              strokeWidth={strokeW}
-            />
-          ) : null}
-          {tailStyle === "leaf" ? (
-            <ellipse
-              cx={tailTipX}
-              cy={tailTipY}
-              rx={Math.max(10, Math.round(tailW * 1.2))}
-              ry={Math.max(14, Math.round(tailW * 1.85))}
-              fill={accent}
-              stroke={outline}
-              strokeWidth={strokeW}
-              transform={`rotate(-18 ${tailTipX} ${tailTipY})`}
-            />
-          ) : null}
-        </>
-      ) : null}
+      <MonTail genome={genome} strokeW={strokeW} baseFrame={frames[0]} />
 
-      {/* Legs behind body */}
-      <g>
-        {legXs.map((dx, i) => (
-          <rect
-            key={i}
-            x={bodyCx + dx - legW / 2}
-            y={legY}
-            width={legW}
-            height={legH}
-            rx={legW / 2}
-            fill={shade}
-            stroke={outline}
-            strokeWidth={strokeW}
-          />
-        ))}
-      </g>
-
-      {/* Arms behind body */}
-      <g>
-        {hasLeftArm ? (
-          <g transform={`rotate(-18 ${bodyCx - armSpan} ${armY})`}>
-            <rect
-              x={bodyCx - armSpan - armL}
-              y={armY}
-              width={armL}
-              height={armW}
-              rx={armW / 2}
-              fill={shade}
-              stroke={outline}
-              strokeWidth={strokeW}
+      {/* Limbs behind body */}
+      <g opacity="0.98">
+        {backLimbs.map((limb) => {
+          const frame = frames[clamp(limb.segment, 0, frames.length - 1)];
+          if (!frame) return null;
+          return (
+            <MonLimb
+              key={`${limb.segment}-${limb.side}-${limb.slot}-${limb.family}-${limb.angleDeg}`}
+              genome={genome}
+              strokeW={strokeW}
+              frame={frame}
+              limb={limb}
             />
-          </g>
-        ) : null}
-        {hasRightArm ? (
-          <g transform={`rotate(18 ${bodyCx + armSpan} ${armY})`}>
-            <rect
-              x={bodyCx + armSpan}
-              y={armY}
-              width={armL}
-              height={armW}
-              rx={armW / 2}
-              fill={shade}
-              stroke={outline}
-              strokeWidth={strokeW}
-            />
-          </g>
-        ) : null}
+          );
+        })}
       </g>
 
       {/* Body */}
       <path d={bodyPath} fill={base} stroke={outline} strokeWidth={strokeW} />
 
-      {/* Patterns */}
-      {pattern.kind !== "none" ? (
-        <g clipPath={`url(#${bodyClipId})`} opacity="0.35">
-          {pattern.kind === "spots"
-            ? pattern.spots.map((s, i) => {
-                const r = s.r * Math.min(bodyW, bodyH) * 0.5;
-                return (
-                  <circle
-                    key={i}
-                    cx={bodyCx + s.x * (bodyW * 0.48)}
-                    cy={bodyCy + s.y * (bodyH * 0.48)}
-                    r={r}
-                    fill={accent}
-                  />
-                );
-              })
-            : null}
-
-          {pattern.kind === "stripes" ? (
-            <g transform={`rotate(${pattern.angleDeg} ${bodyCx} ${bodyCy})`}>
-              {Array.from({ length: pattern.count }).map((_, i) => {
-                const gap = (bodyW * 1.25) / (pattern.count + 1);
-                const x = bodyCx - bodyW * 0.62 + gap * (i + 1);
-                return (
-                  <rect
-                    key={i}
-                    x={x - pattern.width / 2}
-                    y={bodyCy - bodyH}
-                    width={pattern.width}
-                    height={bodyH * 2}
-                    fill={accent}
-                  />
-                );
-              })}
-            </g>
-          ) : null}
-        </g>
-      ) : null}
-
-      {/* Belly patch */}
-      {genome.body.belly ? (
-        <ellipse
-          cx={bodyCx}
-          cy={bodyCy + bodyH * 0.12}
-          rx={bodyW * 0.22}
-          ry={bodyH * 0.18}
-          fill={eye}
-          opacity="0.18"
-        />
-      ) : null}
+      {/* Surface overlays that change silhouette */}
+      <MonSurfaceFeatures genome={genome} frames={frames} strokeW={strokeW} />
 
       {/* Collar accessory */}
-      {genome.accessory.kind === "collar" ? (
-        <g opacity="0.95">
+      {genome.accessory.kind === "collar" && neckFrame ? (
+        <g opacity="0.95" clipPath={`url(#${bodyClipId})`}>
           <ellipse
-            cx={bodyCx}
-            cy={bodyCy - bodyH * 0.36}
-            rx={bodyW * 0.28}
-            ry={Math.max(8, Math.round(bodyH * 0.08))}
+            cx={collarX}
+            cy={collarY}
+            rx={collarRx}
+            ry={collarRy}
             fill={accent}
             stroke={outline}
             strokeWidth={strokeW}
           />
           <ellipse
-            cx={bodyCx}
-            cy={bodyCy - bodyH * 0.36}
-            rx={bodyW * 0.2}
-            ry={Math.max(5, Math.round(bodyH * 0.055))}
+            cx={collarX}
+            cy={collarY + collarRy * 0.2}
+            rx={collarRx * 0.75}
+            ry={collarRy * 0.55}
             fill="none"
-            stroke={eye}
+            stroke={base}
             strokeOpacity="0.18"
             strokeWidth={2}
           />
         </g>
       ) : null}
+
+      {/* Limbs in front */}
+      <g opacity="0.98">
+        {frontLimbs.map((limb) => {
+          const frame = frames[clamp(limb.segment, 0, frames.length - 1)];
+          if (!frame) return null;
+          return (
+            <MonLimb
+              key={`${limb.segment}-${limb.side}-${limb.slot}-${limb.family}-${limb.angleDeg}`}
+              genome={genome}
+              strokeW={strokeW}
+              frame={frame}
+              limb={limb}
+            />
+          );
+        })}
+      </g>
     </>
   );
 }
