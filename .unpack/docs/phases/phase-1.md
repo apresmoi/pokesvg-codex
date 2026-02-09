@@ -2,7 +2,7 @@
 id: phase-1
 title: "Scaffold App + Pokedex SVG Shell"
 kind: delivery
-status: planned
+status: done
 depends_on: ["phase-0"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -42,23 +42,23 @@ Create a runnable React app with the core layout and a static (but interactive) 
 
 ## Work items (ordered)
 
-- [ ] Confirm tooling choices (Vite vs other; TypeScript vs JS) [S: 01-requirements#needs-confirmation]
-- [ ] Scaffold the React app and define `npm` scripts (`dev`, `build`, `preview`) [S: 03-architecture]
-- [ ] Implement centered layout (device ~80vh) and soothing SVG background [S: 01-requirements#functional-requirements]
-- [ ] Implement Pokedex device SVG (outer casing + buttons as SVG elements) [S: 01-requirements#functional-requirements]
-- [ ] Implement screen viewport via `clipPath` and placeholder Screen routing (list/detail/config) [S: 03-architecture]
-- [ ] Wire button interactions to on-screen state (no-op actions are OK, but must be visible) [S: 05-ux-and-flows]
+- [x] Confirm tooling choices (Vite vs other; TypeScript vs JS) [S: 01-requirements#needs-confirmation]
+- [x] Scaffold the React app and define `npm` scripts (`dev`, `build`, `preview`) [S: 03-architecture]
+- [x] Implement centered layout (device ~80vh) and soothing SVG background [S: 01-requirements#functional-requirements]
+- [x] Implement Pokedex device SVG (outer casing + buttons as SVG elements) [S: 01-requirements#functional-requirements]
+- [x] Implement screen viewport via `clipPath` and placeholder Screen routing (list/detail/config) [S: 03-architecture]
+- [x] Wire button interactions to on-screen state (no-op actions are OK, but must be visible) [S: 05-ux-and-flows]
 
 ## Completion criteria (must all be true)
 
-- [ ] `npm run dev` starts successfully and renders the centered Pokedex device with background.
-- [ ] Buttons are clickable and visibly affect UI state (screen routing and/or selection).
-- [ ] Device screen content is clipped to the intended viewport.
+- [x] `npm run dev` starts successfully and renders the centered Pokedex device with background.
+- [x] Buttons are clickable and visibly affect UI state (screen routing and/or selection).
+- [x] Device screen content is clipped to the intended viewport.
 
 ## Test plan
 
 - Unit / type / lint:
-  - (TBD after toolchain choice)
+  - `npm run typecheck`
 - Integration / e2e:
   - Manual: start dev server and verify layout, button click handling, and clipPath behavior.
 - Notes:
@@ -66,8 +66,9 @@ Create a runnable React app with the core layout and a static (but interactive) 
 
 ## Open questions / blockers
 
-- What does "no more libraries" mean for dev tooling (TypeScript, ESLint, test runner)?
+- (none)
 
 ## Notes / steering log
 
-- (none)
+- Toolchain chosen: Vite + React + TypeScript.
+- Interpreted "no more libraries" as "no additional runtime libraries beyond React"; dev tooling deps are allowed (recorded in project memory).

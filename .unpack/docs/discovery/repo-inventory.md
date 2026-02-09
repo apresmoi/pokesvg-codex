@@ -2,7 +2,7 @@
 
 ## Summary
 
-This repository is currently an Unpack-initialized scaffold. No application source code exists yet.
+This repository contains a Vite + React + TypeScript single-page app scaffold plus the Unpack docs system.
 
 ## Notable files and directories
 
@@ -11,12 +11,31 @@ This repository is currently an Unpack-initialized scaffold. No application sour
 - `.unpack/docs/`: docs/specs/phases (source of truth)
 - `.unpack/conversations/`: archived research conversations
 - `guide/`: human-readable docs (Mintlify)
+- `package.json`: app manifest and scripts
+- `vite.config.ts`: Vite config
+- `tsconfig.json`: TypeScript config
+- `src/`: application source (React)
 
-## Application code status
+## Stack detected
 
-- `package.json`: not present yet
-- `src/`: not present yet
-- CI/deploy workflows: not present yet
+- Language: TypeScript
+- UI: React 18
+- Tooling: Vite 5
 
-These will be introduced during implementation phases.
+## Entrypoints
+
+- HTML entry: `index.html`
+- React entry: `src/main.tsx`
+- App root: `src/App.tsx`
+
+## Key components (Phase 1)
+
+- Background: `src/components/SoothingBackground/SoothingBackground.tsx`
+- Pokedex device SVG shell: `src/components/PokedexDeviceSvg/PokedexDeviceSvg.tsx`
+- Placeholder screens: `src/components/screens/*`
+
+## CI/deploy status
+
+- No CI workflows yet (planned in later phases).
+- No deployment workflow yet (planned in later phases).
 <!-- unpack:1.0.0 -->

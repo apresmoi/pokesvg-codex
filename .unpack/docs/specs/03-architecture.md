@@ -10,16 +10,20 @@
 ## Major components (inferred, based on conversation)
 
 - `App`: owns top-level state (collection, selection, current screen, settings).
+  - Implemented scaffold: `src/App.tsx`
 - `Background`: renders a soothing SVG background behind the floating device.
+  - Implemented scaffold: `src/components/SoothingBackground/SoothingBackground.tsx`
 - `PokedexDeviceSvg`:
   - outer casing + buttons (SVG groups with handlers)
   - screen viewport (clipPath)
   - routes the current "screen" content (list/detail/config/import UI)
+  - Implemented scaffold: `src/components/PokedexDeviceSvg/PokedexDeviceSvg.tsx`
 - `Screen` variants:
   - `DexListScreen` (thumbnails, scroll/selection)
   - `DexDetailScreen` (large mon + properties + export)
   - `SystemConfigScreen` (settings list, toggles)
   - `ImportOverlay` (on paste: validate + feedback)
+  - Implemented placeholders: `src/components/screens/*`
 - `Generator` (pure functions):
   - `generateGenome(seed, settings)` -> `Genome`
   - `renderGenomeSvg(genome)` -> React SVG elements

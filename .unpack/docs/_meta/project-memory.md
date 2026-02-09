@@ -94,4 +94,18 @@ Append-only log of decisions, constraints, and rationale.
 - Decision: Include a `schemaVersion` field in genomes from day 1.
 - Rationale: Future-proof generator changes without breaking old mons.
 - Evidence: (suggested in conversation; not explicitly accepted)
+
+### D-014 - Toolchain: Vite + React + TypeScript (Inferred)
+
+- Date: 2026-02-10
+- Decision: Use Vite for the React app scaffold and TypeScript for implementation.
+- Rationale: Fast dev/build loop and strong typing for the procedural generator and data model.
+- Evidence: (selected during Phase 1 based on typical React SPA defaults)
+
+### D-015 - "No more libraries" applies to runtime deps, not dev tooling (Inferred)
+
+- Date: 2026-02-10
+- Decision: Treat the "no more libraries" constraint as "no additional runtime libraries beyond React"; allow dev tooling dependencies (Vite/TypeScript/etc).
+- Rationale: A modern React project still needs a bundler and build pipeline; this keeps runtime minimal while staying practical.
+- Evidence: (interpretation during Phase 1; can be revised if desired)
 <!-- unpack:1.0.0 -->

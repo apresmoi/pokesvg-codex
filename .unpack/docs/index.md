@@ -57,7 +57,7 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 | Phase | Title | Kind | Status | Depends On | Last Updated |
 |------:|-------|------|--------|------------|-------------|
 | [0](./phases/phase-0.md) | Bootstrap: setup docs + phase plan | bootstrap | done | - | 2026-02-10 |
-| [1](./phases/phase-1.md) | Scaffold App + Pokedex SVG Shell | delivery | planned | 0 | 2026-02-10 |
+| [1](./phases/phase-1.md) | Scaffold App + Pokedex SVG Shell | delivery | done | 0 | 2026-02-10 |
 | [2](./phases/phase-2.md) | Genome + Generator v1 + Dex List/Detail + Persistence | delivery | planned | 1 | 2026-02-10 |
 | [3](./phases/phase-3.md) | System Config + Import/Export + MVP Animations | delivery | planned | 2 | 2026-02-10 |
 | [4](./phases/phase-4.md) | Art and UX Polish (Generator Quality + Background Variants) | delivery | planned | 3 | 2026-02-10 |
@@ -65,10 +65,9 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 
 ### Current focus
 
-- Next runnable phase: **phase-1**
+- Next runnable phase: **phase-2**
 - Blockers / open questions:
-  - Clarify what "no more libraries" means for dev tooling.
-  - Choose toolchain (Vite vs other; TypeScript vs JS).
+  - Confirm whether genomes must include a `schemaVersion` (recommended).
   - Confirm deployment target (GitHub Pages vs other).
 
 ---
