@@ -71,10 +71,13 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 | [7](./phases/phase-7.md) | Steering: GenomeV2 + Device UI Redesign | steering | done | 6 | 2026-02-10 |
 | [8](./phases/phase-8.md) | GenomeV2: Topology Generator + Renderer | delivery | done | 7 | 2026-02-10 |
 | [9](./phases/phase-9.md) | Device UI v2: Vertical Pokedex + Control Feedback | delivery | done | 7 | 2026-02-10 |
+| [10](./phases/phase-10.md) | Steering: Catch/Let Go Flow + Device Control Polish | steering | done | 9 | 2026-02-10 |
+| [11](./phases/phase-11.md) | Catch/Let Go: Encounter Flow + Persistence | delivery | planned | 10 | 2026-02-10 |
+| [12](./phases/phase-12.md) | Device Polish: Indicator Lights + Iconic Controls | delivery | planned | 10 | 2026-02-10 |
 
 ### Current focus
 
-- Next runnable phase: (none)
+- Next runnable phase: [11](./phases/phase-11.md)
 - Blockers / open questions:
   - (none)
 

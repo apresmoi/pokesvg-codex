@@ -39,17 +39,23 @@ Deprecation (explicit):
 
 - v1 genomes/collections do not need migration; old collections can be discarded when moving to v2.
 
-### Mon (inferred)
+### Encounter (explicit)
 
-A "mon" is a discovered instance in the user's local collection.
+An "encounter" is the most recently discovered mon before it is caught. It is ephemeral UI state (not part of the persisted dex) until the user explicitly chooses to Catch it.
 
 Minimum: `genome`.
 
-Likely additional fields (inferred): `discoveredAt`, `favorite`, `notes`.
+### Mon (explicit)
+
+A "mon" is a caught instance in the user's local collection (dex).
+
+Minimum: `genome`.
+
+Likely additional fields (inferred): `caughtAt` (or `discoveredAt`), `favorite`, `notes`.
 
 ### Dex collection (explicit)
 
-The user's local PokeSVG "dex" is an ordered list of discovered mons, persisted locally.
+The user's local PokeSVG "dex" is an ordered list of caught mons, persisted locally.
 
 ### System settings (explicit)
 
@@ -58,7 +64,7 @@ The app has a System Config screen with global settings that affect:
 - UI presentation (theme/background variant)
 - generator defaults for future discoveries (preset, ranges)
 
-**Invariant (inferred):** settings should not mutate previously discovered mons; old genomes should re-render exactly as discovered.
+**Invariant (inferred):** settings should not mutate previously caught mons; old genomes should re-render exactly as discovered.
 
 Implemented (inferred):
 
@@ -86,7 +92,7 @@ The generator relies on a normalized internal coordinate system and anchor point
 
 ## Local persistence (explicit)
 
-Persist the collection by storing genomes in `localStorage`.
+Persist the collection by storing caught genomes in `localStorage`.
 
 Suggested (inferred) storage keys:
 
@@ -101,4 +107,9 @@ Suggested (inferred) storage keys:
 
 **ADDED: planned GenomeV2**
 - Added a topology-first `GenomeV2` direction (spine/segments/slots/part families) and recorded the explicit “no migration” stance for v1.
+
+### Phase 10 — Catch/Let Go Flow + Device Control Polish (D-041, D-042)
+
+**ADDED: encounter vs caught**
+- Added the "encounter" concept as ephemeral state; clarified that the dex collection contains caught mons only.
 <!-- unpack:1.0.0 -->

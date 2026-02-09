@@ -2,10 +2,10 @@
 
 ## Screens (explicit)
 
-- **Dex List**: thumbnails of discovered mons; scroll/selection inside the device screen.
-- **Dex Detail**: one selected mon large; shows properties; supports export.
+- **Dex List**: thumbnails of caught mons; scroll/selection inside the device screen.
+- **Dex Detail**: one selected mon large; shows properties; supports export. When showing the current encounter, provides **Catch** / **Let Go** actions.
 - **System Config**: configurable settings inside the Pokedex UI.
-- **Import**: initiated by paste (Ctrl+V); shows feedback (valid/invalid/already discovered).
+- **Import**: initiated by paste (Ctrl+V); shows feedback (valid/invalid/already caught).
 
 Planned UI direction (explicit; see D-036):
 
@@ -26,9 +26,10 @@ Planned UI direction (explicit; see D-036):
 ### Flow: discover a new mon (explicit)
 
 1. User presses the Discover button.
-2. App generates a new genome and adds it to the collection.
-3. App persists the updated collection to `localStorage`.
-4. UI updates list and selection (behavior TBD: select new mon or keep current).
+2. App generates a new genome and shows it as the current encounter (not yet in the collection).
+3. User chooses:
+   - **Catch**: add encounter to the collection, persist, and select it.
+   - **Let Go**: discard encounter and return to the list (no persistence).
 
 ### Flow: browse list -> detail -> back (explicit)
 
@@ -47,7 +48,7 @@ Planned UI direction (explicit; see D-036):
 
 1. User pastes JSON (Ctrl+V) while focused on the app.
 2. App parses and validates the genome.
-3. If valid and not already owned: add to collection, persist, and select it.
+3. If valid and not already owned: add to collection, persist, and select it (equivalent to an explicit Catch).
 4. If already owned: show a duplicate warning ("ALREADY DISCOVERED" or equivalent).
 5. If invalid: show an invalid warning ("INVALID GENOME" or equivalent).
 
@@ -68,6 +69,7 @@ Current settings (inferred; implemented in v1):
 - Empty collection: list view should handle "no mons yet" state and prompt to Discover.
 - LocalStorage failure/quota: show error and keep in-memory state.
 - Import payload too large: reject with error feedback.
+- Reload/route during an encounter: the encounter is ephemeral and is discarded unless caught.
 
 ---
 ## Change log
@@ -76,4 +78,13 @@ Current settings (inferred; implemented in v1):
 
 **ADDED: planned UI redesign direction**
 - Captured the intent to redesign the device layout to be more iconic and to add control press feedback and screen polish.
+
+### Phase 10 — Catch/Let Go Flow + Device Control Polish (D-041, D-042, D-043, D-044, D-045)
+
+**MODIFIED: discover flow**
+- Was: Discover always added to the collection and persisted immediately.
+- Now: Discover creates an encounter; the user must Catch (persist) or Let Go (discard).
+
+**ADDED: polish targets**
+- Captured the intent to increase list density (3 visible items) and to align device controls/indicator lights more closely to an iconic Pokedex concept.
 <!-- unpack:1.0.0 -->

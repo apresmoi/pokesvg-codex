@@ -18,7 +18,7 @@ Implementation notes (inferred):
 
 Persist:
 
-- discovered collection (genomes)
+- caught collection (genomes)
 - system settings
 
 Keys (implemented):
@@ -29,6 +29,11 @@ Keys (implemented):
 Deprecated:
 
 - `pokesvg.collection.v1` (v1 collection key; no migration required)
+
+Persistence semantics (explicit):
+
+- Discover creates an encounter but does not write to `localStorage`.
+- Catch (and other explicit adds like Import) writes the updated collection.
 
 ## Genome JSON interface (explicit)
 
@@ -54,4 +59,10 @@ Import compatibility (explicit):
 
 **ADDED: v2 deprecation notes**
 - Documented the intent to move to `schemaVersion: 2` and deprecate v1 collections without migration.
+
+### Phase 10 — Catch/Let Go Flow + Device Control Polish (D-041, D-042)
+
+**MODIFIED: when collection persistence happens**
+- Was: collection persistence was implied on Discover.
+- Now: persistence occurs only on explicit Catch/Import actions (no autosave).
 <!-- unpack:1.0.0 -->

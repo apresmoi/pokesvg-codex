@@ -35,7 +35,7 @@
   - Planned v2:
     - Topology-first generator (`GenomeV2`, `schemaVersion: 2`) driven by spine/segments/slots and part families (see D-034, D-035)
 - `Storage`:
-  - load/save `collection` and `settings` from `localStorage`
+  - load/save `collection` (caught mons) and `settings` from `localStorage`
   - Implemented (collection): `src/lib/storage/dexStorage.ts`
   - Implemented (settings): `src/lib/storage/settingsStorage.ts`
 - `ImportExport`:
@@ -46,7 +46,7 @@
 
 1. On startup: load `collection/settings` from `localStorage` -> hydrate React state.
 2. Render: `state -> PokedexDeviceSvg -> Screen -> (genome -> SVG)`.
-3. On actions (buttons/paste): update state -> persist to `localStorage`.
+3. On actions (buttons/paste): update state; persist to `localStorage` only on explicit collection mutations (Catch, Import, etc), not on Discover.
 
 ## Styling conventions (explicit, per D-033)
 
@@ -80,4 +80,10 @@ The conversation requests "React, no more libraries" for the web app. Implicatio
 
 **ADDED: planned device UI redesign direction**
 - Recorded the intent to redesign `PokedexDeviceSvg` to a more iconic layout with device-native controls and press feedback.
+
+### Phase 10 — Catch/Let Go Flow + Device Control Polish (D-041, D-042)
+
+**MODIFIED: persistence timing**
+- Was: Discover implied "update state -> persist" as part of the core loop.
+- Now: Discover can be ephemeral (encounter); persistence happens on explicit Catch/Import actions only.
 <!-- unpack:1.0.0 -->

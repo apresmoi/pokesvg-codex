@@ -296,4 +296,39 @@ Append-only log of decisions, constraints, and rationale.
   - `surface: { placements: SurfacePlacement[] }`
 - Rationale: Keep `genome -> SVG` deterministic and make the v2 topology explicit in exports/imports.
 - Evidence: Implemented during Phase 8 to realize D-034.
+
+### D-041 - Discover produces an encounter; user chooses Catch or Let Go (Explicit)
+
+- Date: 2026-02-10
+- Decision: After Discover generates a new mon, treat it as an **encounter** and require an explicit user choice: **Catch** (add to dex) or **Let Go** (discard).
+- Rationale: Lets users curate their dex instead of accumulating every roll.
+- Evidence: User request: “after discovering a new pokemon... ‘CATCH’ or ‘LET GO’... we shouldn't autosave”.
+
+### D-042 - No autosave on Discover; persist only on explicit Catch/Import (Explicit)
+
+- Date: 2026-02-10
+- Decision: Do not write to `localStorage` on Discover. Persist only when the user explicitly catches (and on other explicit adds like Import).
+- Rationale: Prevents "junk dex" and aligns persistence with intentional user actions.
+- Evidence: User request: “we shouldn't autosave”.
+
+### D-043 - Dex list density target: 3 visible items (Explicit)
+
+- Date: 2026-02-10
+- Decision: Adjust Dex List layout so the device screen can show ~3 list items at once (default viewport), instead of only 2.
+- Rationale: Better use of limited screen real estate; improves browsing speed.
+- Evidence: User feedback: “you can only see two items... should be space for 3”.
+
+### D-044 - Device indicator lights belong in the top-right; fix overlap/misalignment (Explicit)
+
+- Date: 2026-02-10
+- Decision: The green/orange/red indicator lights should not overlap the top-left lens and should be placed/aligned as a top-right cluster.
+- Rationale: Match the expected "iconic Pokedex" read and avoid visual collisions.
+- Evidence: User feedback: “green orange and red buttons... misaligned... on top of the lightblue circle... should be in the top-right”.
+
+### D-045 - Prefer iconic, unlabeled Pokedex-like controls over text-labeled buttons (Explicit)
+
+- Date: 2026-02-10
+- Decision: Move away from visible text labels like `CFG` / `DISCOVERY` / `EXPORT` / `LIST` and toward iconic, mostly unlabeled Pokedex-like controls (D-pad plus + center, round button, horizontal bar buttons, etc). Keep accessible labels via `aria-label` / `title`.
+- Rationale: Better matches the concept of a real device and reduces UI "app button" vibes.
+- Evidence: User feedback: “it would be nice if the buttons are not like CFG DISCOVERY EXPORT LIST... unlabeled buttons... + control with the button in the middle...”.
 <!-- unpack:1.0.0 -->
