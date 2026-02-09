@@ -35,21 +35,27 @@
 
 1. In detail view, user triggers Export.
 2. App copies the genome JSON to clipboard.
-3. App shows lightweight confirmation feedback in-screen ("COPIED").
+3. App shows lightweight confirmation feedback in-screen ("COPIED" or equivalent).
 
 ### Flow: import genome via paste (explicit)
 
 1. User pastes JSON (Ctrl+V) while focused on the app.
 2. App parses and validates the genome.
 3. If valid and not already owned: add to collection, persist, and select it.
-4. If already owned: show "ALREADY DISCOVERED".
-5. If invalid: show "INVALID GENOME".
+4. If already owned: show a duplicate warning ("ALREADY DISCOVERED" or equivalent).
+5. If invalid: show an invalid warning ("INVALID GENOME" or equivalent).
 
 ### Flow: configure settings (explicit)
 
 1. User navigates to System Config screen.
 2. Settings are shown as a selectable list inside the device screen.
 3. D-pad moves selection; A toggles/changes; B goes back.
+
+Current settings (inferred; implemented in v1):
+
+- Generator preset: `classic` | `cute` | `weird`
+- Background variant: `aurora` | `grid`
+- Animations: `on` | `off`
 
 ## Edge cases (inferred)
 

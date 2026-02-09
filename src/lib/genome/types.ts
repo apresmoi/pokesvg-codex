@@ -71,6 +71,12 @@ export type LimbsGene = {
   tail: boolean;
 };
 
+export type AnimGene = {
+  blinkMs: number;
+  bobMs: number;
+  bobAmpPx: number;
+};
+
 export type MetaGene = {
   name: string;
   abilities: [string, string];
@@ -87,8 +93,8 @@ export type GenomeV1 = {
   head: HeadGene;
   face: FaceGene;
   limbs: LimbsGene;
+  anim: AnimGene;
   meta: MetaGene;
 };
 
 export type Genome = GenomeV1;
-

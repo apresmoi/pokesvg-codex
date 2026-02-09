@@ -122,4 +122,53 @@ Append-only log of decisions, constraints, and rationale.
 - Decision: Use Vitest for minimal unit tests (PRNG determinism, genome determinism, storage round-trip).
 - Rationale: Fast, TS-friendly tests without adding runtime dependencies.
 - Evidence: (implemented during Phase 2)
+
+### D-018 - Persist System Config settings in localStorage (Inferred)
+
+- Date: 2026-02-10
+- Decision: Store global System Config settings separately from the dex collection under `pokesvg.settings.v1` and do not mutate previously discovered genomes when settings change.
+- Rationale: Preserve deterministic re-rendering of discovered mons while allowing global presentation/generation defaults to evolve.
+- Evidence: (implemented during Phase 3)
+
+### D-019 - Generator presets: classic | cute | weird (Inferred)
+
+- Date: 2026-02-10
+- Decision: Provide generator presets (`classic`, `cute`, `weird`) as a global setting that affects future `generateGenome(...)` calls; default to `classic`.
+- Rationale: Make the "art direction" choice iterable without introducing per-mon mutation.
+- Evidence: (conversation asked to lock down art direction, but did not finalize; implemented during Phase 3)
+
+### D-020 - Background variants: aurora | grid (Inferred)
+
+- Date: 2026-02-10
+- Decision: Provide a background variant setting (`aurora`, `grid`) that affects the page background; default to `aurora`.
+- Rationale: Allow quick mood shifts while keeping the device front-and-center.
+- Evidence: (implemented during Phase 3)
+
+### D-021 - Import genomes via paste with strict validation and dedupe (Inferred)
+
+- Date: 2026-02-10
+- Decision: Import genomes on paste (Ctrl+V) via a global `paste` listener (excluding editable targets), validate and normalize payloads, reject invalid input, and dedupe by `seed`.
+- Rationale: Minimal UI footprint with safe, predictable import behavior.
+- Evidence: (conversation requested Ctrl+V import; implemented during Phase 3)
+
+### D-022 - Export genomes via clipboard button (Inferred)
+
+- Date: 2026-02-10
+- Decision: Add an Export button that copies `JSON.stringify(genome)` to the clipboard using `navigator.clipboard.writeText(...)` and shows in-screen feedback.
+- Rationale: Fast sharing without a backend or file download flows.
+- Evidence: (conversation requested export/import; implemented during Phase 3)
+
+### D-023 - MVP animations implemented via CSS keyframes (Inferred)
+
+- Date: 2026-02-10
+- Decision: Implement blink + idle bob using CSS keyframes applied to SVG groups, driven by per-genome animation params derived from seed, with a global `animations` toggle and `prefers-reduced-motion` support.
+- Rationale: Keep the SVG renderer simple while making animation deterministic and accessible.
+- Evidence: (conversation asked for blink + idle; implemented during Phase 3)
+
+### D-024 - Import/back-compat: canonicalize id, derive missing anim (Inferred)
+
+- Date: 2026-02-10
+- Decision: Canonicalize genome `id` from `seed` on import/load and fill missing `anim` from seed for backward compatibility.
+- Rationale: Prevent collisions and allow older stored/exported genomes to keep working as the schema evolves.
+- Evidence: (implemented during Phase 3)
 <!-- unpack:1.0.0 -->

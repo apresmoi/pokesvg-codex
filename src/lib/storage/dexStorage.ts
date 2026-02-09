@@ -1,4 +1,5 @@
 import type { Genome, GenomeV1 } from "@/lib/genome";
+import { parseGenomeValue } from "@/lib/genome/parseGenome";
 
 export const DEX_STORAGE_KEY = "pokesvg.collection.v1";
 
@@ -9,29 +10,6 @@ type DexStorageV1 = {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
-}
-
-function isStringRecord(value: unknown): value is Record<string, string> {
-  if (!isRecord(value)) return false;
-  return Object.values(value).every((v) => typeof v === "string");
-}
-
-function isGenomeV1(value: unknown): value is GenomeV1 {
-  if (!isRecord(value)) return false;
-
-  if (value.schemaVersion !== 1) return false;
-  if (typeof value.id !== "string") return false;
-  if (typeof value.seed !== "number") return false;
-  if (typeof value.plan !== "string") return false;
-
-  if (!isStringRecord(value.palette)) return false;
-  if (!isRecord(value.body)) return false;
-  if (!isRecord(value.head)) return false;
-  if (!isRecord(value.face)) return false;
-  if (!isRecord(value.limbs)) return false;
-  if (!isRecord(value.meta)) return false;
-
-  return true;
 }
 
 export function serializeDex(genomes: Genome[]) {
@@ -47,14 +25,20 @@ export function deserializeDex(raw: string): Genome[] {
 
   // Back-compat: allow a bare array payload.
   if (Array.isArray(parsed)) {
-    return parsed.filter(isGenomeV1);
+    return parsed
+      .map(parseGenomeValue)
+      .filter((r) => r.ok)
+      .map((r) => r.genome);
   }
 
   if (!isRecord(parsed)) return [];
   if (parsed.schemaVersion !== 1) return [];
   if (!Array.isArray(parsed.genomes)) return [];
 
-  return parsed.genomes.filter(isGenomeV1);
+  return parsed.genomes
+    .map(parseGenomeValue)
+    .filter((r) => r.ok)
+    .map((r) => r.genome);
 }
 
 export function loadDex(): Genome[] {
@@ -76,4 +60,3 @@ export function saveDex(genomes: Genome[]) {
     // ignore
   }
 }
-

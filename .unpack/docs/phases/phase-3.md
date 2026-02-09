@@ -2,7 +2,7 @@
 id: phase-3
 title: "System Config + Import/Export + MVP Animations"
 kind: delivery
-status: planned
+status: done
 depends_on: ["phase-2"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -38,36 +38,39 @@ Add the in-device System Config screen, implement import/export of genomes, and 
 
 ## Decision refs
 
-- D-010, D-011, D-012
+- D-010, D-011, D-012, D-018, D-019, D-020, D-021, D-022, D-023, D-024
 
 ## Work items (ordered)
 
-- [ ] Implement System Config screen navigation and option toggling via device controls [S: 05-ux-and-flows#flow-configure-settings-explicit]
-- [ ] Define settings model and apply settings to future `generateGenome(...)` calls [S: 02-domain-model#system-settings-explicit]
-- [ ] Implement export (copy genome JSON) with in-screen confirmation feedback [S: 05-ux-and-flows#flow-export-genome-explicit]
-- [ ] Implement import on paste (Ctrl+V): parse, validate, collision detection, feedback [S: 05-ux-and-flows#flow-import-genome-via-paste-explicit]
-- [ ] Add MVP animations (blink + idle bob) driven by genome params [S: 01-requirements#constraints-fixed-decisions]
+- [x] Implement System Config screen navigation and option toggling via device controls [S: 05-ux-and-flows#flow-configure-settings-explicit]
+- [x] Define settings model and apply settings to future `generateGenome(...)` calls [S: 02-domain-model#system-settings-explicit]
+- [x] Implement export (copy genome JSON) with in-screen confirmation feedback [S: 05-ux-and-flows#flow-export-genome-explicit]
+- [x] Implement import on paste (Ctrl+V): parse, validate, collision detection, feedback [S: 05-ux-and-flows#flow-import-genome-via-paste-explicit]
+- [x] Add MVP animations (blink + idle bob) driven by genome params [S: 01-requirements#constraints-fixed-decisions]
 
 ## Completion criteria (must all be true)
 
-- [ ] User can navigate to System Config and change at least a small set of settings.
-- [ ] Export copies valid genome JSON to clipboard and shows "COPIED" feedback.
-- [ ] Import via paste accepts valid genomes, rejects invalid ones, and handles duplicates.
-- [ ] Blink + idle bob animations run on rendered mons (detail view at minimum).
+- [x] User can navigate to System Config and change at least a small set of settings.
+- [x] Export copies valid genome JSON to clipboard and shows "COPIED" feedback.
+- [x] Import via paste accepts valid genomes, rejects invalid ones, and handles duplicates.
+- [x] Blink + idle bob animations run on rendered mons (detail view at minimum).
 
 ## Test plan
 
 - Unit / type / lint:
-  - Add unit tests for import validation and settings application (tooling TBD).
+  - `npm run typecheck`
+  - `npm test`
+- Build:
+  - `npm run build`
 - Integration / e2e:
-  - Manual: export a mon, paste it back, verify behaviors for valid/invalid/duplicate.
+  - Manual: export a mon, paste it back, verify valid/invalid/duplicate behaviors and in-screen feedback.
 - Notes:
-  - Clipboard APIs can be permission/HTTPS-sensitive; confirm behavior in local dev vs prod.
+  - Clipboard APIs can be permission/HTTPS-sensitive; confirm behavior in local dev (`localhost`) and production (`https`).
 
 ## Open questions / blockers
 
-- Confirm which settings must be global-only vs stored per-genome.
+- (none)
 
 ## Notes / steering log
 
-- (none)
+- Settings are global-only (generator preset, background variant, animations toggle) and do not mutate existing genomes.

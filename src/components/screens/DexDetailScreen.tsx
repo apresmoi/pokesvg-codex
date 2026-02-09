@@ -5,12 +5,14 @@ type DexDetailScreenProps = {
   width: number;
   height: number;
   genome?: Genome;
+  animate: boolean;
 };
 
 export function DexDetailScreen({
   width,
   height,
   genome,
+  animate,
 }: DexDetailScreenProps) {
   return (
     <g>
@@ -39,7 +41,7 @@ export function DexDetailScreen({
       {genome ? (
         <>
           <g transform="translate(14, 52)">
-            <MonSvg genome={genome} width={120} height={120} />
+            <MonSvg genome={genome} width={120} height={120} animate={animate} />
           </g>
 
           <g transform="translate(148, 60)">
@@ -82,6 +84,16 @@ export function DexDetailScreen({
           </g>
         </>
       ) : null}
+
+      <text
+        x={12}
+        y={height - 12}
+        fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+        fontSize="11"
+        fill="#6b7280"
+      >
+        EXPORT: BUTTON  |  IMPORT: PASTE (CTRL+V)
+      </text>
     </g>
   );
 }

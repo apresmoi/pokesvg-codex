@@ -40,6 +40,11 @@ The app has a System Config screen with global settings that affect:
 
 **Invariant (inferred):** settings should not mutate previously discovered mons; old genomes should re-render exactly as discovered.
 
+Implemented (inferred):
+
+- Settings are stored separately from genomes under `pokesvg.settings.v1`.
+- Current settings fields: `generatorPreset`, `backgroundVariant`, `animations`.
+
 ## Body plans (explicit)
 
 Body plans constrain morphology so outputs remain creature-like. Initial candidates mentioned:
@@ -65,5 +70,5 @@ Persist the collection by storing genomes in `localStorage`.
 Suggested (inferred) storage keys:
 
 - `pokesvg.collection.v1` (implemented)
-- `pokesvg.settings.v1`
+- `pokesvg.settings.v1` (implemented)
 <!-- unpack:1.0.0 -->

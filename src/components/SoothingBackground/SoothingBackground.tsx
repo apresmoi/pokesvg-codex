@@ -1,4 +1,12 @@
-export function SoothingBackground() {
+import type { BackgroundVariant } from "@/lib/settings";
+
+type SoothingBackgroundProps = {
+  variant: BackgroundVariant;
+};
+
+export function SoothingBackground({ variant }: SoothingBackgroundProps) {
+  const isAurora = variant === "aurora";
+
   return (
     <svg
       aria-hidden="true"
@@ -13,30 +21,115 @@ export function SoothingBackground() {
       }}
     >
       <defs>
-        <linearGradient id="bg-grad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#0b1022" />
-          <stop offset="40%" stopColor="#0a1a2b" />
-          <stop offset="100%" stopColor="#06050b" />
-        </linearGradient>
+        {isAurora ? (
+          <linearGradient id="bg-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#0b1022" />
+            <stop offset="40%" stopColor="#0a1a2b" />
+            <stop offset="100%" stopColor="#06050b" />
+          </linearGradient>
+        ) : (
+          <linearGradient id="bg-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#070913" />
+            <stop offset="60%" stopColor="#05060a" />
+            <stop offset="100%" stopColor="#020205" />
+          </linearGradient>
+        )}
 
         <radialGradient id="glow-a" cx="35%" cy="30%" r="55%">
-          <stop offset="0%" stopColor="#3aa9ff" stopOpacity="0.25" />
-          <stop offset="60%" stopColor="#3aa9ff" stopOpacity="0.05" />
-          <stop offset="100%" stopColor="#3aa9ff" stopOpacity="0" />
+          <stop
+            offset="0%"
+            stopColor={isAurora ? "#3aa9ff" : "#22c55e"}
+            stopOpacity={isAurora ? "0.25" : "0.18"}
+          />
+          <stop
+            offset="60%"
+            stopColor={isAurora ? "#3aa9ff" : "#22c55e"}
+            stopOpacity={isAurora ? "0.05" : "0.05"}
+          />
+          <stop
+            offset="100%"
+            stopColor={isAurora ? "#3aa9ff" : "#22c55e"}
+            stopOpacity="0"
+          />
         </radialGradient>
 
         <radialGradient id="glow-b" cx="70%" cy="70%" r="60%">
-          <stop offset="0%" stopColor="#a855f7" stopOpacity="0.12" />
-          <stop offset="55%" stopColor="#a855f7" stopOpacity="0.03" />
-          <stop offset="100%" stopColor="#a855f7" stopOpacity="0" />
+          <stop
+            offset="0%"
+            stopColor={isAurora ? "#a855f7" : "#f59e0b"}
+            stopOpacity={isAurora ? "0.12" : "0.12"}
+          />
+          <stop
+            offset="55%"
+            stopColor={isAurora ? "#a855f7" : "#f59e0b"}
+            stopOpacity={isAurora ? "0.03" : "0.03"}
+          />
+          <stop
+            offset="100%"
+            stopColor={isAurora ? "#a855f7" : "#f59e0b"}
+            stopOpacity="0"
+          />
         </radialGradient>
 
         <filter id="blur-24" x="-30%" y="-30%" width="160%" height="160%">
           <feGaussianBlur stdDeviation="24" />
         </filter>
+
+        <pattern
+          id="grid"
+          width="36"
+          height="36"
+          patternUnits="userSpaceOnUse"
+        >
+          <path
+            d="M 36 0 L 0 0 0 36"
+            fill="none"
+            stroke="#94a3b8"
+            strokeOpacity="0.08"
+            strokeWidth="1"
+          />
+          <path
+            d="M 12 0 L 12 36"
+            fill="none"
+            stroke="#94a3b8"
+            strokeOpacity="0.04"
+            strokeWidth="1"
+          />
+          <path
+            d="M 24 0 L 24 36"
+            fill="none"
+            stroke="#94a3b8"
+            strokeOpacity="0.04"
+            strokeWidth="1"
+          />
+          <path
+            d="M 0 12 L 36 12"
+            fill="none"
+            stroke="#94a3b8"
+            strokeOpacity="0.04"
+            strokeWidth="1"
+          />
+          <path
+            d="M 0 24 L 36 24"
+            fill="none"
+            stroke="#94a3b8"
+            strokeOpacity="0.04"
+            strokeWidth="1"
+          />
+        </pattern>
       </defs>
 
       <rect x="0" y="0" width="1200" height="800" fill="url(#bg-grad)" />
+      {!isAurora ? (
+        <rect
+          x="0"
+          y="0"
+          width="1200"
+          height="800"
+          fill="url(#grid)"
+          opacity="0.85"
+        />
+      ) : null}
 
       <g filter="url(#blur-24)">
         <circle cx="360" cy="220" r="260" fill="url(#glow-a)" />
@@ -45,7 +138,7 @@ export function SoothingBackground() {
           d="M 140 620 C 320 520 420 520 600 620 C 780 720 900 720 1100 610"
           fill="none"
           stroke="#3aa9ff"
-          strokeOpacity="0.08"
+          strokeOpacity={isAurora ? "0.08" : "0.06"}
           strokeWidth="64"
           strokeLinecap="round"
         />
@@ -64,4 +157,3 @@ export function SoothingBackground() {
     </svg>
   );
 }
-

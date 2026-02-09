@@ -14,5 +14,11 @@ describe("generateGenome", () => {
     expect(g.id).toBe("seed_0000002a");
     expect(g.schemaVersion).toBe(1);
   });
-});
 
+  it("applies generator preset settings", () => {
+    const seed = 0x12345678;
+    const classic = generateGenome(seed, { preset: "classic" });
+    const cute = generateGenome(seed, { preset: "cute" });
+    expect(classic).not.toEqual(cute);
+  });
+});

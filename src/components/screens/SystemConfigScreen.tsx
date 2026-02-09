@@ -1,23 +1,26 @@
+import type { Settings } from "@/lib/settings";
+
 type SystemConfigScreenProps = {
   width: number;
   height: number;
+  settings: Settings;
   selectedIndex: number;
 };
-
-const OPTIONS = [
-  { key: "preset", label: "PRESET", value: "CLASSIC" },
-  { key: "outline", label: "OUTLINE", value: "THICK" },
-  { key: "bg", label: "BG", value: "AURORA" },
-  { key: "anim", label: "ANIM", value: "ON" },
-];
 
 export function SystemConfigScreen({
   width,
   height,
+  settings,
   selectedIndex,
 }: SystemConfigScreenProps) {
   const pad = 12;
   const rowH = 18;
+
+  const options = [
+    { key: "preset", label: "PRESET", value: settings.generatorPreset.toUpperCase() },
+    { key: "bg", label: "BG", value: settings.backgroundVariant.toUpperCase() },
+    { key: "anim", label: "ANIM", value: settings.animations ? "ON" : "OFF" },
+  ];
 
   return (
     <g>
@@ -34,9 +37,9 @@ export function SystemConfigScreen({
       </text>
 
       <g transform={`translate(${pad}, ${pad + 22})`}>
-        {OPTIONS.map((opt, idx) => {
+        {options.map((opt, idx) => {
           const y = idx * rowH;
-          const isSelected = idx === selectedIndex % OPTIONS.length;
+          const isSelected = idx === selectedIndex % options.length;
           return (
             <g key={opt.key} transform={`translate(0, ${y})`}>
               {isSelected ? (
@@ -77,4 +80,3 @@ export function SystemConfigScreen({
     </g>
   );
 }
-

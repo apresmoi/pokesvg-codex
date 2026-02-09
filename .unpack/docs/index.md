@@ -59,15 +59,14 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 | [0](./phases/phase-0.md) | Bootstrap: setup docs + phase plan | bootstrap | done | - | 2026-02-10 |
 | [1](./phases/phase-1.md) | Scaffold App + Pokedex SVG Shell | delivery | done | 0 | 2026-02-10 |
 | [2](./phases/phase-2.md) | Genome + Generator v1 + Dex List/Detail + Persistence | delivery | done | 1 | 2026-02-10 |
-| [3](./phases/phase-3.md) | System Config + Import/Export + MVP Animations | delivery | planned | 2 | 2026-02-10 |
+| [3](./phases/phase-3.md) | System Config + Import/Export + MVP Animations | delivery | done | 2 | 2026-02-10 |
 | [4](./phases/phase-4.md) | Art and UX Polish (Generator Quality + Background Variants) | delivery | planned | 3 | 2026-02-10 |
 | [5](./phases/phase-5.md) | Quality Baseline + CI + GitHub Pages Deploy + End-User Docs | delivery | planned | 4 | 2026-02-10 |
 
 ### Current focus
 
-- Next runnable phase: **phase-3**
+- Next runnable phase: **phase-4**
 - Blockers / open questions:
-  - Confirm which settings must be global-only vs stored per-genome.
   - Confirm deployment target (GitHub Pages vs other).
 
 ---

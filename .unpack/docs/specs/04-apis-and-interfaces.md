@@ -21,7 +21,7 @@ Persist:
 - discovered collection (genomes)
 - system settings
 
-Suggested (inferred) keys:
+Keys (implemented):
 
 - `pokesvg.collection.v1`
 - `pokesvg.settings.v1`
@@ -30,9 +30,9 @@ Suggested (inferred) keys:
 
 Export/import payload is a single JSON object representing a genome.
 
-Recommended validation rules (inferred):
+Validation rules (inferred; implemented in v1 import):
 
 - Must be a JSON object (not array/string).
-- Must include minimally: `seed`, `plan`, `body`, `head`, `face`, `limbs`, `palette` (exact schema TBD).
+- Must include `schemaVersion: 1` and minimally: `seed`, `plan`, `body`, `head`, `face`, `limbs`, `palette`, `meta`.
 - Enforce bounded ranges and maximum sizes (avoid huge payloads or extreme counts).
 <!-- unpack:1.0.0 -->

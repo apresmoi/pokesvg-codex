@@ -1,5 +1,6 @@
 import { hslToHex } from "@/lib/color";
 import { createPrng } from "@/lib/prng";
+import type { GeneratorPreset } from "@/lib/settings";
 
 import { pickAbilities } from "./abilities";
 import { generateName } from "./name";
@@ -7,6 +8,7 @@ import type {
   BlobShape,
   BodyGene,
   BodyPlan,
+  AnimGene,
   FaceGene,
   Genome,
   HeadGene,
@@ -25,33 +27,62 @@ const BODY_PLANS: readonly BodyPlan[] = [
   "insectoid",
 ];
 
+export type GeneratorSettings = {
+  preset: GeneratorPreset;
+};
+
 function makeId(seed: number) {
   return `seed_${seed.toString(16).padStart(8, "0")}`;
 }
 
-function generatePalette(seed: number): Palette {
+function generatePalette(seed: number, preset: GeneratorPreset): Palette {
   const prng = createPrng(seed ^ 0x9e3779b9);
   const hue = prng.nextInt(0, 359);
   const accentHue = (hue + prng.nextInt(20, 120)) % 360;
 
-  const base = hslToHex(hue, 0.62, 0.52);
-  const shade = hslToHex(hue, 0.62, 0.36);
-  const accent = hslToHex(accentHue, 0.78, 0.55);
+  const [baseL, shadeL, accL] =
+    preset === "cute"
+      ? ([0.62, 0.45, 0.64] as const)
+      : preset === "weird"
+        ? ([0.48, 0.32, 0.58] as const)
+        : ([0.52, 0.36, 0.55] as const);
+
+  const base = hslToHex(hue, preset === "cute" ? 0.52 : 0.62, baseL);
+  const shade = hslToHex(hue, preset === "cute" ? 0.52 : 0.62, shadeL);
+  const accent = hslToHex(accentHue, preset === "weird" ? 0.86 : 0.78, accL);
   const eye = "#e5e7eb";
   const outline = "#0b0b10";
 
   return { base, shade, accent, eye, outline };
 }
 
-function generateBlobShape(seed: number, wMin: number, wMax: number, hMin: number, hMax: number): BlobShape {
+function generateBlobShape(
+  seed: number,
+  wMin: number,
+  wMax: number,
+  hMin: number,
+  hMax: number,
+  preset: GeneratorPreset,
+): BlobShape {
   const prng = createPrng(seed);
   const width = prng.nextInt(wMin, wMax);
   const height = prng.nextInt(hMin, hMax);
-  const points = prng.nextInt(8, 12);
+  const points =
+    preset === "cute"
+      ? prng.nextInt(8, 10)
+      : preset === "weird"
+        ? prng.nextInt(10, 14)
+        : prng.nextInt(8, 12);
   const jitter: number[] = [];
   for (let i = 0; i < points; i++) {
-    // Keep tight enough to stay creature-like.
-    jitter.push(0.82 + prng.nextFloat() * 0.36);
+    // Keep tight enough to stay creature-like (preset widens/narrows the range).
+    const [jMin, jSpan] =
+      preset === "cute"
+        ? ([0.9, 0.2] as const)
+        : preset === "weird"
+          ? ([0.74, 0.68] as const)
+          : ([0.82, 0.36] as const);
+    jitter.push(jMin + prng.nextFloat() * jSpan);
   }
   return { kind: "blob", width, height, points, jitter };
 }
@@ -83,12 +114,12 @@ function generatePattern(seed: number): PatternGene {
   };
 }
 
-function generateBody(seed: number, plan: BodyPlan): BodyGene {
+function generateBody(seed: number, plan: BodyPlan, preset: GeneratorPreset): BodyGene {
   const baseSeed = seed ^ 0x1337b00b;
   const shape =
     plan === "serpentine"
-      ? generateBlobShape(baseSeed, 160, 190, 66, 86)
-      : generateBlobShape(baseSeed, 120, 156, 96, 136);
+      ? generateBlobShape(baseSeed, 160, 196, 66, 88, preset)
+      : generateBlobShape(baseSeed, 118, 160, 94, 140, preset);
 
   const prng = createPrng(seed ^ 0x7f4a7c15);
   const belly = plan !== "serpentine" && prng.bool(0.75);
@@ -97,16 +128,23 @@ function generateBody(seed: number, plan: BodyPlan): BodyGene {
   return { shape, belly, pattern };
 }
 
-function generateHead(seed: number, plan: BodyPlan): HeadGene {
+function generateHead(seed: number, plan: BodyPlan, preset: GeneratorPreset): HeadGene {
   const baseSeed = seed ^ 0x6c8e9cf5;
   const shape =
     plan === "serpentine"
-      ? generateBlobShape(baseSeed, 90, 120, 70, 96)
-      : generateBlobShape(baseSeed, 88, 130, 72, 110);
+      ? generateBlobShape(baseSeed, 92, 128, 70, 100, preset)
+      : generateBlobShape(baseSeed, 86, 136, 72, 114, preset);
 
   const prng = createPrng(seed ^ 0x8bd63af1);
-  const earType = prng.pick(["none", "pointy", "round"] as const);
-  const hornCount = (prng.nextFloat() < 0.55 ? prng.pick([0, 1, 2] as const) : 0) as 0 | 1 | 2;
+  const earType =
+    preset === "cute"
+      ? prng.pick(["round", "pointy", "round", "none"] as const)
+      : prng.pick(["none", "pointy", "round"] as const);
+
+  const hornChance = preset === "cute" ? 0.18 : preset === "weird" ? 0.75 : 0.55;
+  const hornCount = (prng.nextFloat() < hornChance
+    ? prng.pick([0, 1, 2] as const)
+    : 0) as 0 | 1 | 2;
 
   // Keep some plans more themed.
   if (plan === "avian") return { shape, earType: "none", hornCount: 0 };
@@ -114,26 +152,38 @@ function generateHead(seed: number, plan: BodyPlan): HeadGene {
   return { shape, earType, hornCount };
 }
 
-function generateFace(seed: number, plan: BodyPlan): FaceGene {
+function generateFace(seed: number, plan: BodyPlan, preset: GeneratorPreset): FaceGene {
   const prng = createPrng(seed ^ 0x3c6ef372);
 
-  const eyeType = prng.pick(["dot", "oval", "slit"] as const);
+  const eyeType =
+    preset === "cute"
+      ? prng.pick(["dot", "oval", "dot", "oval", "slit"] as const)
+      : preset === "weird"
+        ? prng.pick(["slit", "oval", "slit", "dot"] as const)
+        : prng.pick(["dot", "oval", "slit"] as const);
   const eyeCount = (
     plan === "insectoid"
       ? prng.pick([2, 3, 4] as const)
-      : prng.pick([1, 2] as const)
+      : preset === "weird"
+        ? prng.pick([1, 2, 3] as const)
+        : prng.pick([1, 2] as const)
   ) as 1 | 2 | 3 | 4;
 
   const eyeSpacing = 0.18 + prng.nextFloat() * 0.26;
   const eyeSize = 0.06 + prng.nextFloat() * 0.08;
 
   const mouthType = plan === "avian" ? "beak" : prng.pick(["smile", "frown"] as const);
-  const fangs = plan === "avian" ? 0 : (prng.pick([0, 0, 1, 2] as const) as 0 | 1 | 2);
+  const fangs =
+    plan === "avian"
+      ? 0
+      : preset === "cute"
+        ? (prng.pick([0, 0, 0, 1] as const) as 0 | 1 | 2)
+        : (prng.pick([0, 0, 1, 2] as const) as 0 | 1 | 2);
 
   return { eyeType, eyeCount, eyeSpacing, eyeSize, mouthType, fangs };
 }
 
-function generateLimbs(seed: number, plan: BodyPlan): LimbsGene {
+function generateLimbs(seed: number, plan: BodyPlan, preset: GeneratorPreset): LimbsGene {
   const prng = createPrng(seed ^ 0xdaa66d2b);
 
   if (plan === "serpentine") {
@@ -158,20 +208,61 @@ function generateLimbs(seed: number, plan: BodyPlan): LimbsGene {
   }
 
   // biped/blob
-  const arms = prng.pick([0, 1, 2] as const);
-  const legs = prng.pick([0, 2] as const);
+  const arms =
+    preset === "cute"
+      ? prng.pick([0, 1, 2, 2] as const)
+      : prng.pick([0, 1, 2] as const);
+  const legs =
+    plan === "blob" ? prng.pick([0, 2, 0] as const) : prng.pick([0, 2] as const);
   return { arms, legs, wingType: "none", tail: prng.bool(0.55) };
 }
 
-export function generateGenome(seed: number): Genome {
-  const prng = createPrng(seed);
-  const plan = prng.pick(BODY_PLANS);
+function pickPlan(prng: ReturnType<typeof createPrng>, preset: GeneratorPreset): BodyPlan {
+  if (preset === "cute") {
+    return prng.pick([
+      "blob",
+      "biped",
+      "quadruped",
+      "avian",
+      "blob",
+      "biped",
+    ] as const);
+  }
 
-  const palette = generatePalette(seed);
-  const body = generateBody(seed, plan);
-  const head = generateHead(seed, plan);
-  const face = generateFace(seed, plan);
-  const limbs = generateLimbs(seed, plan);
+  if (preset === "weird") {
+    return prng.pick([
+      "insectoid",
+      "serpentine",
+      "biped",
+      "blob",
+      "insectoid",
+      "avian",
+    ] as const);
+  }
+
+  return prng.pick(BODY_PLANS);
+}
+
+export function deriveAnim(seed: number): AnimGene {
+  const prng = createPrng(seed ^ 0x85ebca6b);
+  return {
+    blinkMs: prng.nextInt(3200, 5200),
+    bobMs: prng.nextInt(1600, 2400),
+    bobAmpPx: prng.nextInt(2, 5),
+  };
+}
+
+export function generateGenome(seed: number, settings?: GeneratorSettings): Genome {
+  const prng = createPrng(seed);
+  const preset: GeneratorPreset = settings?.preset ?? "classic";
+  const plan = pickPlan(prng, preset);
+
+  const palette = generatePalette(seed, preset);
+  const body = generateBody(seed, plan, preset);
+  const head = generateHead(seed, plan, preset);
+  const face = generateFace(seed, plan, preset);
+  const limbs = generateLimbs(seed, plan, preset);
+  const anim = deriveAnim(seed);
 
   const namePrng = createPrng(seed ^ 0x1b873593);
   const name = generateName(namePrng);
@@ -189,7 +280,7 @@ export function generateGenome(seed: number): Genome {
     head,
     face,
     limbs,
+    anim,
     meta: { name, abilities, lore },
   };
 }
-

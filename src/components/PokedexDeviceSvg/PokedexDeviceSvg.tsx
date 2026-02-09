@@ -12,6 +12,7 @@ type PokedexDeviceSvgProps = {
   onConfig: () => void;
   onList: () => void;
   onDiscover: () => void;
+  onExport: () => void;
 };
 
 const CLIP_ID = "pokesvg-screen-clip";
@@ -26,6 +27,7 @@ export function PokedexDeviceSvg({
   onConfig,
   onList,
   onDiscover,
+  onExport,
 }: PokedexDeviceSvgProps) {
   const w = 640;
   const h = 420;
@@ -318,8 +320,37 @@ export function PokedexDeviceSvg({
             DISCOVER
           </text>
         </g>
+
+        {/* Export */}
+        <g
+          transform="translate(-16, 94)"
+          onClick={onExport}
+          style={{ cursor: "pointer" }}
+          role="button"
+          aria-label="Export genome"
+        >
+          <rect
+            x="0"
+            y="0"
+            width="122"
+            height="28"
+            rx="14"
+            fill="#111827"
+            stroke={stroke}
+            strokeWidth="4"
+          />
+          <text
+            x="61"
+            y="19"
+            textAnchor="middle"
+            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+            fontSize="12"
+            fill="#93c5fd"
+          >
+            EXPORT
+          </text>
+        </g>
       </g>
     </svg>
   );
 }
-

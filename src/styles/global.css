@@ -27,3 +27,47 @@ body {
   height: 100%;
 }
 
+@keyframes mon-bob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(var(--bob-amp, 3px));
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mon-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  94%,
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+
+.mon-bob {
+  animation-name: mon-bob;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.mon-blink {
+  animation-name: mon-blink;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mon-bob,
+  .mon-blink {
+    animation: none !important;
+  }
+}
