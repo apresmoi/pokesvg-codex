@@ -26,6 +26,18 @@ describe("parseGenome", () => {
     expect(res.genome.anim).toBeDefined();
   });
 
+  it("defaults missing accessory to none (back-compat)", () => {
+    const g = generateGenome(77);
+    const legacy = { ...g } as any;
+    delete legacy.accessory;
+
+    const res = parseGenomeValue(legacy);
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+
+    expect(res.genome.accessory).toEqual({ kind: "none" });
+  });
+
   it("canonicalizes id from seed", () => {
     const g = generateGenome(0x0000002a);
     const mutated = { ...g, id: "WRONG" };
@@ -50,4 +62,3 @@ describe("parseGenome", () => {
     expect(res.ok).toBe(false);
   });
 });
-

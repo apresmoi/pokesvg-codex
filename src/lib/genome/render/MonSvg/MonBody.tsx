@@ -60,6 +60,7 @@ export function MonBody({
   const tailTipX = tailAnchorX + bodyW * 0.55;
   const tailTipY = tailAnchorY + bodyH * 0.25;
   const tailW = Math.max(10, Math.round(bodyW * 0.08));
+  const tailStyle = genome.limbs.tailStyle ?? "taper";
   const tailD = `M ${tailAnchorX} ${tailAnchorY} C ${
     tailAnchorX + bodyW * 0.25
   } ${tailAnchorY - bodyH * 0.12}, ${tailTipX - bodyW * 0.18} ${
@@ -111,6 +112,28 @@ export function MonBody({
             strokeWidth={tailW}
             strokeLinecap="round"
           />
+          {tailStyle === "club" ? (
+            <circle
+              cx={tailTipX}
+              cy={tailTipY}
+              r={Math.max(9, Math.round(tailW * 0.9))}
+              fill={accent}
+              stroke={outline}
+              strokeWidth={strokeW}
+            />
+          ) : null}
+          {tailStyle === "leaf" ? (
+            <ellipse
+              cx={tailTipX}
+              cy={tailTipY}
+              rx={Math.max(10, Math.round(tailW * 1.2))}
+              ry={Math.max(14, Math.round(tailW * 1.85))}
+              fill={accent}
+              stroke={outline}
+              strokeWidth={strokeW}
+              transform={`rotate(-18 ${tailTipX} ${tailTipY})`}
+            />
+          ) : null}
         </>
       ) : null}
 
@@ -216,7 +239,31 @@ export function MonBody({
           opacity="0.18"
         />
       ) : null}
+
+      {/* Collar accessory */}
+      {genome.accessory.kind === "collar" ? (
+        <g opacity="0.95">
+          <ellipse
+            cx={bodyCx}
+            cy={bodyCy - bodyH * 0.36}
+            rx={bodyW * 0.28}
+            ry={Math.max(8, Math.round(bodyH * 0.08))}
+            fill={accent}
+            stroke={outline}
+            strokeWidth={strokeW}
+          />
+          <ellipse
+            cx={bodyCx}
+            cy={bodyCy - bodyH * 0.36}
+            rx={bodyW * 0.2}
+            ry={Math.max(5, Math.round(bodyH * 0.055))}
+            fill="none"
+            stroke={eye}
+            strokeOpacity="0.18"
+            strokeWidth={2}
+          />
+        </g>
+      ) : null}
     </>
   );
 }
-

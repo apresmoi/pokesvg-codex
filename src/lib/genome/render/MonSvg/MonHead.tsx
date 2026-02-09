@@ -32,6 +32,7 @@ export function MonHead({
   headPath,
   animate,
 }: MonHeadProps) {
+  const accessory = genome.accessory;
   const outline = genome.palette.outline;
   const base = genome.palette.base;
   const shade = genome.palette.shade;
@@ -139,6 +140,59 @@ export function MonHead({
                 strokeWidth={strokeW}
                 strokeLinejoin="round"
               />
+            );
+          })}
+        </g>
+      ) : null}
+
+      {/* Accessories (head-mounted) */}
+      {accessory.kind === "gem" ? (
+        <path
+          d={`M ${headCx} ${headTop + headH * 0.16} L ${
+            headCx - Math.max(10, Math.round(headW * 0.08))
+          } ${headTop + headH * 0.24} L ${headCx} ${
+            headTop + headH * 0.32
+          } L ${headCx + Math.max(10, Math.round(headW * 0.08))} ${
+            headTop + headH * 0.24
+          } Z`}
+          fill={accent}
+          stroke={outline}
+          strokeWidth={strokeW}
+          strokeLinejoin="round"
+          opacity="0.95"
+        />
+      ) : null}
+
+      {accessory.kind === "antenna" ? (
+        <g opacity="0.95">
+          {Array.from({ length: accessory.count }).map((_, i) => {
+            const dx =
+              accessory.count === 1
+                ? 0
+                : i === 0
+                  ? -headW * 0.14
+                  : headW * 0.14;
+            const x = headCx + dx;
+            const y0 = headTop + headH * 0.08;
+            const y1 = headTop - headH * 0.18;
+            return (
+              <g key={i}>
+                <path
+                  d={`M ${x} ${y0} C ${x + dx * 0.12} ${(y0 + y1) / 2} ${x} ${y1} ${x} ${y1}`}
+                  fill="none"
+                  stroke={accent}
+                  strokeWidth={Math.max(4, Math.round(strokeW * 0.9))}
+                  strokeLinecap="round"
+                />
+                <circle
+                  cx={x}
+                  cy={y1}
+                  r={Math.max(6, Math.round(headW * 0.045))}
+                  fill={eye}
+                  stroke={outline}
+                  strokeWidth={strokeW}
+                />
+              </g>
             );
           })}
         </g>
@@ -267,4 +321,3 @@ export function MonHead({
     </>
   );
 }
-

@@ -171,4 +171,32 @@ Append-only log of decisions, constraints, and rationale.
 - Decision: Canonicalize genome `id` from `seed` on import/load and fill missing `anim` from seed for backward compatibility.
 - Rationale: Prevent collisions and allow older stored/exported genomes to keep working as the schema evolves.
 - Evidence: (implemented during Phase 3)
+
+### D-025 - Phase-4 generator tuning prioritizes the classic preset (Inferred)
+
+- Date: 2026-02-10
+- Decision: Prioritize "classic" as the default art direction/preset when tuning generator constraints and part families; keep `cute` and `weird` as selectable variants.
+- Rationale: Aligns with the Gen 1 Pokedex vibe reference while preserving experimentation via presets.
+- Evidence: (no explicit user selection among presets; default is `classic` and implemented during Phase 4)
+
+### D-026 - Add a third background variant: mist (Inferred)
+
+- Date: 2026-02-10
+- Decision: Add `mist` as an additional `backgroundVariant` option alongside `aurora` and `grid`.
+- Rationale: Provide more mood variety without changing the device UI.
+- Evidence: (implemented during Phase 4)
+
+### D-027 - Extend genomes with accessory and tailStyle genes (Inferred)
+
+- Date: 2026-02-10
+- Decision: Extend the genome with an `accessory` gene (`none|gem|antenna|collar`) and a `limbs.tailStyle` gene (`taper|leaf|club`), with backward-compatible defaults (`accessory: none`, `tailStyle` optional).
+- Rationale: Increase creature variety while preserving stability for existing stored genomes.
+- Evidence: (implemented during Phase 4)
+
+### D-028 - Virtualize list rendering to keep dex browsing responsive (Inferred)
+
+- Date: 2026-02-10
+- Decision: Render only the visible slice of the dex list rows instead of rendering thumbnails for the entire collection.
+- Rationale: Avoid performance cliffs as the collection grows.
+- Evidence: (implemented during Phase 4)
 <!-- unpack:1.0.0 -->

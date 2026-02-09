@@ -1,7 +1,7 @@
 export type SettingsSchemaVersion = 1;
 
 export type GeneratorPreset = "classic" | "cute" | "weird";
-export type BackgroundVariant = "aurora" | "grid";
+export type BackgroundVariant = "aurora" | "grid" | "mist";
 
 export type SettingsV1 = {
   schemaVersion: SettingsSchemaVersion;
@@ -18,4 +18,3 @@ export const DEFAULT_SETTINGS: Settings = {
   backgroundVariant: "aurora",
   animations: true,
 };
-

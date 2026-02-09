@@ -54,7 +54,7 @@
 Current settings (inferred; implemented in v1):
 
 - Generator preset: `classic` | `cute` | `weird`
-- Background variant: `aurora` | `grid`
+- Background variant: `aurora` | `grid` | `mist`
 - Animations: `on` | `off`
 
 ## Edge cases (inferred)

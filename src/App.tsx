@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { SoothingBackground } from "@/components/SoothingBackground";
 import {
@@ -36,6 +36,7 @@ export function App() {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [configIndex, setConfigIndex] = useState<number>(0);
   const [toast, setToast] = useState<string | null>(null);
+  const toastTimeoutRef = useRef<number | null>(null);
 
   const [genomes, setGenomes] = useState<Genome[]>(() => loadDex());
   const [settings, setSettings] = useState<Settings>(() => loadSettings());
@@ -62,7 +63,13 @@ export function App() {
 
   const showToast = useCallback((message: string) => {
     setToast(message);
-    window.setTimeout(() => setToast(null), 900);
+    if (toastTimeoutRef.current !== null) {
+      window.clearTimeout(toastTimeoutRef.current);
+    }
+    toastTimeoutRef.current = window.setTimeout(() => {
+      toastTimeoutRef.current = null;
+      setToast(null);
+    }, 1100);
   }, []);
 
   useEffect(() => {
@@ -134,7 +141,10 @@ export function App() {
       }
 
       if (opt === "background") {
-        const next = nextInCycle(["aurora", "grid"] as const, settings.backgroundVariant);
+        const next = nextInCycle(
+          ["aurora", "grid", "mist"] as const,
+          settings.backgroundVariant,
+        );
         setSettings({ ...settings, backgroundVariant: next });
         showToast(`BG:${next.toUpperCase()}`);
         return;

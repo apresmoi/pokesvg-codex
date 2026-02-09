@@ -25,6 +25,8 @@ export function DexListScreen({
     maxStart,
     Math.max(0, selectedIndex - Math.floor(visibleRows / 2)),
   );
+  const endRow = Math.min(genomes.length, startRow + visibleRows);
+  const visibleGenomes = genomes.slice(startRow, endRow);
 
   return (
     <g>
@@ -54,47 +56,49 @@ export function DexListScreen({
 
       <g transform={`translate(${pad}, ${pad + headerH})`}>
         <g transform={`translate(0, ${-startRow * rowH})`}>
-          {genomes.map((g, idx) => {
+          {visibleGenomes.map((g, i) => {
+            const idx = startRow + i;
             const y = idx * rowH;
-          const isSelected = idx === selectedIndex;
-          return (
-            <g key={g.id} transform={`translate(0, ${y})`}>
-              {isSelected ? (
-                <rect
-                  x={-6}
-                  y={-16}
-                  width={width - pad * 2 + 12}
-                  height={rowH - 6}
-                  rx={6}
-                  fill="#113b2e"
-                  stroke="#34d399"
-                  strokeOpacity="0.8"
-                />
-              ) : null}
-              <g transform="translate(2, -12)">
-                <MonSvg genome={g} width={38} height={38} />
+            const isSelected = idx === selectedIndex;
+
+            return (
+              <g key={g.id} transform={`translate(0, ${y})`}>
+                {isSelected ? (
+                  <rect
+                    x={-6}
+                    y={-16}
+                    width={width - pad * 2 + 12}
+                    height={rowH - 6}
+                    rx={6}
+                    fill="#113b2e"
+                    stroke="#34d399"
+                    strokeOpacity="0.8"
+                  />
+                ) : null}
+                <g transform="translate(2, -12)">
+                  <MonSvg genome={g} width={38} height={38} />
+                </g>
+                <text
+                  x={48}
+                  y={6}
+                  fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                  fontSize="12"
+                  fill={isSelected ? "#d1fae5" : "#9ca3af"}
+                >
+                  {String(idx + 1).padStart(3, "0")} {g.meta.name}
+                </text>
+                <text
+                  x={48}
+                  y={22}
+                  fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                  fontSize="11"
+                  fill={isSelected ? "#a7f3d0" : "#6b7280"}
+                  opacity={0.95}
+                >
+                  {g.plan.toUpperCase()} {g.id}
+                </text>
               </g>
-              <text
-                x={48}
-                y={6}
-                fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-                fontSize="12"
-                fill={isSelected ? "#d1fae5" : "#9ca3af"}
-              >
-                {String(idx + 1).padStart(3, "0")} {g.meta.name}
-              </text>
-              <text
-                x={48}
-                y={22}
-                fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-                fontSize="11"
-                fill={isSelected ? "#a7f3d0" : "#6b7280"}
-                opacity={0.95}
-              >
-                {g.plan.toUpperCase()}  {g.id}
-              </text>
-            </g>
-          );
+            );
           })}
         </g>
       </g>

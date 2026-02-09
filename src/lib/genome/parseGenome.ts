@@ -1,11 +1,13 @@
 import { deriveAnim, generateGenome } from "./generateGenome";
 import type {
+  AccessoryGene,
   AnimGene,
   BodyPlan,
   EarType,
   EyeType,
   Genome,
   MouthType,
+  TailStyle,
   WingType,
 } from "./types";
 
@@ -70,6 +72,26 @@ function parseWingType(value: unknown): WingType | null {
   if (value === "small") return "small";
   if (value === "big") return "big";
   return null;
+}
+
+function parseTailStyle(value: unknown): TailStyle | null {
+  if (value === "taper") return "taper";
+  if (value === "leaf") return "leaf";
+  if (value === "club") return "club";
+  return null;
+}
+
+function parseAccessory(value: unknown): AccessoryGene {
+  if (!isRecord(value)) return { kind: "none" };
+  if (value.kind === "none") return { kind: "none" };
+  if (value.kind === "gem") return { kind: "gem" };
+  if (value.kind === "collar") return { kind: "collar" };
+  if (value.kind === "antenna") {
+    const count = value.count === 1 || value.count === 2 ? value.count : null;
+    if (!count) return { kind: "none" };
+    return { kind: "antenna", count };
+  }
+  return { kind: "none" };
 }
 
 function parseAnim(seed: number, value: unknown): AnimGene {
@@ -247,6 +269,7 @@ export function parseGenomeValue(value: unknown): ParseGenomeResult {
   const wingType = parseWingType(limbs.wingType);
   const tail = typeof limbs.tail === "boolean" ? limbs.tail : null;
   if (arms === null || legs === null || !wingType || tail === null) return { ok: false, error: "Invalid limbs" };
+  const tailStyle: TailStyle | undefined = tail ? parseTailStyle(limbs.tailStyle) ?? undefined : undefined;
 
   // Meta
   if (!isRecord(value.meta)) return { ok: false, error: "Invalid meta" };
@@ -263,6 +286,7 @@ export function parseGenomeValue(value: unknown): ParseGenomeResult {
   }
 
   const anim = parseAnim(seed, value.anim);
+  const accessory = parseAccessory(value.accessory);
 
   const genome: Genome = {
     schemaVersion: 1,
@@ -311,7 +335,9 @@ export function parseGenomeValue(value: unknown): ParseGenomeResult {
       legs,
       wingType,
       tail,
+      tailStyle,
     },
+    accessory,
     anim,
     meta: {
       name,
@@ -352,4 +378,3 @@ export function parseGenomeJsonOrRegenerate(text: string): ParseGenomeResult {
 
   return parsed;
 }
-

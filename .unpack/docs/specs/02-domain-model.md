@@ -16,6 +16,12 @@ The genome should encode both:
 - **structure**: body plan, parts, proportions, anchors-relative params
 - **style**: palette, outline/shading params, patterns
 - **behavior**: animation params (blink, idle bob)
+- **details** (inferred): small optional modifiers like tail style and accessories
+
+Implemented additions (inferred):
+
+- `limbs.tailStyle`: `taper` | `leaf` | `club` (optional; defaults to `taper` when absent)
+- `accessory`: `none` | `gem` | `antenna` | `collar` (defaults to `none` when absent)
 
 > Note: `schemaVersion` was suggested in the conversation but not explicitly accepted. Implementation currently includes `schemaVersion: 1` in genomes (inferred) to future-proof changes.
 
@@ -44,6 +50,7 @@ Implemented (inferred):
 
 - Settings are stored separately from genomes under `pokesvg.settings.v1`.
 - Current settings fields: `generatorPreset`, `backgroundVariant`, `animations`.
+  - Background variants: `aurora` | `grid` | `mist`.
 
 ## Body plans (explicit)
 

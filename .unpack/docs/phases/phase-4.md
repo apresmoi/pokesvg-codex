@@ -2,7 +2,7 @@
 id: phase-4
 title: "Art and UX Polish (Generator Quality + Background Variants)"
 kind: delivery
-status: planned
+status: done
 depends_on: ["phase-3"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -38,26 +38,29 @@ Improve perceived creature quality and the overall presentation so the app feels
 
 ## Decision refs
 
-- D-001, D-003, D-009
+- D-001, D-003, D-009, D-025, D-026, D-027, D-028
 
 ## Work items (ordered)
 
-- [ ] Add/iterate on body plans, anchors, and compatibility constraints to reduce "nonsense" outputs [S: 01-requirements#non-functional-requirements]
-- [ ] Add more curated part generators (ears/horns/tails/patterns/accessories) and tune ranges [S: 02-domain-model#body-plans-explicit]
-- [ ] Improve background SVG variants and expose via System Config [S: 01-requirements#functional-requirements]
-- [ ] Polish screen UI (feedback states like COPIED/INVALID) for readability within the device screen [S: 05-ux-and-flows]
-- [ ] Address performance issues (SVG filters/gradients, thumbnail count) as needed [S: 01-requirements#non-functional-requirements]
+- [x] Add/iterate on body plans, anchors, and compatibility constraints to reduce "nonsense" outputs [S: 01-requirements#non-functional-requirements]
+- [x] Add more curated part generators (ears/horns/tails/patterns/accessories) and tune ranges [S: 02-domain-model#body-plans-explicit]
+- [x] Improve background SVG variants and expose via System Config [S: 01-requirements#functional-requirements]
+- [x] Polish screen UI (feedback states like COPIED/INVALID) for readability within the device screen [S: 05-ux-and-flows]
+- [x] Address performance issues (SVG filters/gradients, thumbnail count) as needed [S: 01-requirements#non-functional-requirements]
 
 ## Completion criteria (must all be true)
 
-- [ ] Newly generated mons are consistently recognizable as "creatures" under default settings.
-- [ ] Background variants exist and can be switched via System Config.
-- [ ] List scrolling and selection remain responsive for a reasonable number of mons (target TBD).
+- [x] Newly generated mons are consistently recognizable as "creatures" under default settings.
+- [x] Background variants exist and can be switched via System Config.
+- [x] List scrolling and selection remain responsive for a reasonable number of mons (target TBD).
 
 ## Test plan
 
 - Unit / type / lint:
-  - (same as prior phases)
+  - `npm run typecheck`
+  - `npm test`
+- Build:
+  - `npm run build`
 - Integration / e2e:
   - Manual: generate 50+ mons, browse list/detail, confirm performance is acceptable.
 - Notes:
@@ -65,8 +68,10 @@ Improve perceived creature quality and the overall presentation so the app feels
 
 ## Open questions / blockers
 
-- What is the target art direction preset to prioritize first (cute/classic/weird)?
+- (none)
 
 ## Notes / steering log
 
-- If generator complexity balloons, consider a steering phase to formalize a generator "grammar" spec.
+- Tuning focus: prioritize the `classic` preset, keep `cute` and `weird` as variants (see D-025).
+- Generator improvements added bounded head/body proportions, additional tail styles, and optional accessories.
+- Background variant `mist` added and exposed via System Config (see D-026).

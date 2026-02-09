@@ -16,7 +16,11 @@ function isSettingsV1(value: unknown): value is SettingsV1 {
   ) {
     return false;
   }
-  if (value.backgroundVariant !== "aurora" && value.backgroundVariant !== "grid") {
+  if (
+    value.backgroundVariant !== "aurora" &&
+    value.backgroundVariant !== "grid" &&
+    value.backgroundVariant !== "mist"
+  ) {
     return false;
   }
   if (typeof value.animations !== "boolean") return false;
@@ -44,4 +48,3 @@ export function saveSettings(settings: Settings) {
     // ignore
   }
 }
-

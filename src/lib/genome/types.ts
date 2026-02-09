@@ -64,11 +64,14 @@ export type FaceGene = {
 
 export type WingType = "none" | "small" | "big";
 
+export type TailStyle = "taper" | "leaf" | "club";
+
 export type LimbsGene = {
   arms: 0 | 1 | 2;
   legs: 0 | 2 | 4 | 6;
   wingType: WingType;
   tail: boolean;
+  tailStyle?: TailStyle;
 };
 
 export type AnimGene = {
@@ -76,6 +79,12 @@ export type AnimGene = {
   bobMs: number;
   bobAmpPx: number;
 };
+
+export type AccessoryGene =
+  | { kind: "none" }
+  | { kind: "gem" }
+  | { kind: "antenna"; count: 1 | 2 }
+  | { kind: "collar" };
 
 export type MetaGene = {
   name: string;
@@ -93,6 +102,7 @@ export type GenomeV1 = {
   head: HeadGene;
   face: FaceGene;
   limbs: LimbsGene;
+  accessory: AccessoryGene;
   anim: AnimGene;
   meta: MetaGene;
 };

@@ -5,6 +5,7 @@ import type { GeneratorPreset } from "@/lib/settings";
 import { pickAbilities } from "./abilities";
 import { generateName } from "./name";
 import type {
+  AccessoryGene,
   BlobShape,
   BodyGene,
   BodyPlan,
@@ -16,6 +17,7 @@ import type {
   Palette,
   PatternGene,
   Spot,
+  TailStyle,
 } from "./types";
 
 const BODY_PLANS: readonly BodyPlan[] = [
@@ -54,6 +56,13 @@ function generatePalette(seed: number, preset: GeneratorPreset): Palette {
   const outline = "#0b0b10";
 
   return { base, shade, accent, eye, outline };
+}
+
+function clampInt(value: number, min: number, max: number) {
+  const lo = Math.floor(Math.min(min, max));
+  const hi = Math.floor(Math.max(min, max));
+  const v = Math.floor(value);
+  return Math.min(hi, Math.max(lo, v));
 }
 
 function generateBlobShape(
@@ -128,12 +137,40 @@ function generateBody(seed: number, plan: BodyPlan, preset: GeneratorPreset): Bo
   return { shape, belly, pattern };
 }
 
-function generateHead(seed: number, plan: BodyPlan, preset: GeneratorPreset): HeadGene {
+function generateHead(
+  seed: number,
+  plan: BodyPlan,
+  preset: GeneratorPreset,
+  body: BodyGene,
+): HeadGene {
   const baseSeed = seed ^ 0x6c8e9cf5;
-  const shape =
+  const rawShape =
     plan === "serpentine"
       ? generateBlobShape(baseSeed, 92, 128, 70, 100, preset)
       : generateBlobShape(baseSeed, 86, 136, 72, 114, preset);
+
+  const bodyW = body.shape.width;
+  const bodyH = body.shape.height;
+  const [wMinRatio, wMaxRatio] =
+    plan === "serpentine"
+      ? ([0.42, 0.74] as const)
+      : plan === "insectoid"
+        ? ([0.42, 0.86] as const)
+        : plan === "avian"
+          ? ([0.5, 0.92] as const)
+          : ([0.48, 0.95] as const);
+  const [hMinRatio, hMaxRatio] =
+    plan === "serpentine"
+      ? ([0.85, 1.35] as const)
+      : plan === "insectoid"
+        ? ([0.55, 0.95] as const)
+        : ([0.55, 0.9] as const);
+
+  const shape: BlobShape = {
+    ...rawShape,
+    width: clampInt(rawShape.width, bodyW * wMinRatio, bodyW * wMaxRatio),
+    height: clampInt(rawShape.height, bodyH * hMinRatio, bodyH * hMaxRatio),
+  };
 
   const prng = createPrng(seed ^ 0x8bd63af1);
   const earType =
@@ -183,6 +220,15 @@ function generateFace(seed: number, plan: BodyPlan, preset: GeneratorPreset): Fa
   return { eyeType, eyeCount, eyeSpacing, eyeSize, mouthType, fangs };
 }
 
+function pickTailStyle(
+  prng: ReturnType<typeof createPrng>,
+  preset: GeneratorPreset,
+): TailStyle {
+  if (preset === "cute") return prng.pick(["leaf", "taper", "leaf"] as const);
+  if (preset === "weird") return prng.pick(["club", "taper", "leaf"] as const);
+  return prng.pick(["taper", "leaf", "club"] as const);
+}
+
 function generateLimbs(seed: number, plan: BodyPlan, preset: GeneratorPreset): LimbsGene {
   const prng = createPrng(seed ^ 0xdaa66d2b);
 
@@ -191,20 +237,29 @@ function generateLimbs(seed: number, plan: BodyPlan, preset: GeneratorPreset): L
   }
 
   if (plan === "quadruped") {
-    return { arms: 0, legs: 4, wingType: "none", tail: true };
+    return { arms: 0, legs: 4, wingType: "none", tail: true, tailStyle: pickTailStyle(prng, preset) };
   }
 
   if (plan === "avian") {
+    const tail = prng.bool(0.7);
     return {
       arms: 0,
       legs: 2,
       wingType: prng.pick(["small", "big"] as const),
-      tail: prng.bool(0.7),
+      tail,
+      tailStyle: tail ? pickTailStyle(prng, preset) : undefined,
     };
   }
 
   if (plan === "insectoid") {
-    return { arms: 0, legs: 6, wingType: prng.bool(0.45) ? "small" : "none", tail: prng.bool(0.55) };
+    const tail = prng.bool(0.55);
+    return {
+      arms: 0,
+      legs: 6,
+      wingType: prng.bool(0.45) ? "small" : "none",
+      tail,
+      tailStyle: tail ? pickTailStyle(prng, preset) : undefined,
+    };
   }
 
   // biped/blob
@@ -214,7 +269,26 @@ function generateLimbs(seed: number, plan: BodyPlan, preset: GeneratorPreset): L
       : prng.pick([0, 1, 2] as const);
   const legs =
     plan === "blob" ? prng.pick([0, 2, 0] as const) : prng.pick([0, 2] as const);
-  return { arms, legs, wingType: "none", tail: prng.bool(0.55) };
+  const tail = prng.bool(0.55);
+  return { arms, legs, wingType: "none", tail, tailStyle: tail ? pickTailStyle(prng, preset) : undefined };
+}
+
+function generateAccessory(seed: number, plan: BodyPlan, preset: GeneratorPreset): AccessoryGene {
+  const prng = createPrng(seed ^ 0x243f6a88);
+
+  // Keep accessories sparse so the baseline remains readable.
+  const roll = prng.nextFloat();
+  const noneChance = preset === "cute" ? 0.65 : preset === "weird" ? 0.55 : 0.6;
+  if (roll < noneChance) {
+    return { kind: "none" };
+  }
+
+  if (plan === "insectoid" && prng.nextFloat() < 0.7) {
+    return { kind: "antenna", count: prng.pick([1, 2] as const) };
+  }
+
+  if (prng.nextFloat() < 0.55) return { kind: "gem" };
+  return { kind: "collar" };
 }
 
 function pickPlan(prng: ReturnType<typeof createPrng>, preset: GeneratorPreset): BodyPlan {
@@ -259,9 +333,10 @@ export function generateGenome(seed: number, settings?: GeneratorSettings): Geno
 
   const palette = generatePalette(seed, preset);
   const body = generateBody(seed, plan, preset);
-  const head = generateHead(seed, plan, preset);
+  const head = generateHead(seed, plan, preset, body);
   const face = generateFace(seed, plan, preset);
   const limbs = generateLimbs(seed, plan, preset);
+  const accessory = generateAccessory(seed, plan, preset);
   const anim = deriveAnim(seed);
 
   const namePrng = createPrng(seed ^ 0x1b873593);
@@ -280,6 +355,7 @@ export function generateGenome(seed: number, settings?: GeneratorSettings): Geno
     head,
     face,
     limbs,
+    accessory,
     anim,
     meta: { name, abilities, lore },
   };
