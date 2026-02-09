@@ -2,7 +2,7 @@
 id: phase-9
 title: "Device UI v2: Vertical Pokedex + Control Feedback"
 kind: delivery
-status: planned
+status: done
 depends_on: ["phase-7"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -44,18 +44,18 @@ Make the app feel like a real Pokedex: redesign the device to a more iconic layo
 
 ## Work items (ordered)
 
-- [ ] Choose/confirm the target device layout and encode it in `geometry.ts` [S: 05-ux-and-flows]
-- [ ] Update `PokedexDeviceSvg` casing, clipPath, and control placement [S: 03-architecture]
-- [ ] Add press feedback/animations for all interactive controls [S: 01-requirements#functional-requirements]
-- [ ] Polish screen visuals and layouts for list/detail/config [S: 05-ux-and-flows]
-- [ ] Manual UI pass for “feels like a Pokedex” (spacing, depth, gradients, label readability)
+- [x] Choose/confirm the target device layout and encode it in `geometry.ts` [S: 05-ux-and-flows]
+- [x] Update `PokedexDeviceSvg` casing, clipPath, and control placement [S: 03-architecture]
+- [x] Add press feedback/animations for all interactive controls [S: 01-requirements#functional-requirements]
+- [x] Polish screen visuals and layouts for list/detail/config [S: 05-ux-and-flows]
+- [x] Manual UI pass for “feels like a Pokedex” (spacing, depth, gradients, label readability)
 
 ## Completion criteria (must all be true)
 
-- [ ] No UI controls appear outside the device casing.
-- [ ] Clicking a button produces a press animation/feedback.
-- [ ] Screen layouts look intentional and readable in the new form factor.
-- [ ] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
+- [x] No UI controls appear outside the device casing.
+- [x] Clicking a button produces a press animation/feedback.
+- [x] Screen layouts look intentional and readable in the new form factor.
+- [x] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
 
 ## Test plan
 

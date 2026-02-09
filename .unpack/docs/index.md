@@ -70,11 +70,11 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 | [6](./phases/phase-6.md) | Steering: React Component Practices Alignment | steering | done | 5 | 2026-02-10 |
 | [7](./phases/phase-7.md) | Steering: GenomeV2 + Device UI Redesign | steering | done | 6 | 2026-02-10 |
 | [8](./phases/phase-8.md) | GenomeV2: Topology Generator + Renderer | delivery | done | 7 | 2026-02-10 |
-| [9](./phases/phase-9.md) | Device UI v2: Vertical Pokedex + Control Feedback | delivery | planned | 7 | 2026-02-10 |
+| [9](./phases/phase-9.md) | Device UI v2: Vertical Pokedex + Control Feedback | delivery | done | 7 | 2026-02-10 |
 
 ### Current focus
 
-- Next runnable phase: **phase-9**
+- Next runnable phase: (none)
 - Blockers / open questions:
   - (none)
 

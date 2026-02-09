@@ -56,6 +56,42 @@ body {
   cursor: pointer;
 }
 
+.pokesvg-pressable {
+  transition:
+    transform 80ms ease,
+    filter 80ms ease;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.pokesvg-pressable:active {
+  transform: translateY(2px);
+  filter: brightness(0.92) saturate(1.05);
+}
+
+@media (hover: hover) {
+  .pokesvg-pressable:hover {
+    filter: brightness(1.05) saturate(1.05);
+  }
+}
+
+@keyframes pokesvg-screen-in {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.pokesvg-screen {
+  animation: pokesvg-screen-in 160ms ease-out;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
 @keyframes mon-bob {
   0% {
     transform: translateY(0);
@@ -98,5 +134,13 @@ body {
   .mon-bob,
   .mon-blink {
     animation: none;
+  }
+
+  .pokesvg-screen {
+    animation: none;
+  }
+
+  .pokesvg-pressable {
+    transition: none;
   }
 }

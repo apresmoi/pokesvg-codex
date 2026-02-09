@@ -15,10 +15,11 @@ export function DexListScreen({
   selectedIndex,
 }: DexListScreenProps) {
   const pad = 12;
-  const headerH = 28;
+  const headerH = 30;
+  const contentTop = pad + headerH + 10;
   const footerH = 18;
   const rowH = 54;
-  const listH = height - pad * 2 - headerH - footerH;
+  const listH = height - contentTop - footerH - pad;
   const visibleRows = Math.max(1, Math.floor(listH / rowH));
   const maxStart = Math.max(0, genomes.length - visibleRows);
   const startRow = Math.min(
@@ -30,16 +31,42 @@ export function DexListScreen({
 
   return (
     <g>
-      <rect x={0} y={0} width={width} height={height} fill="#0b1110" />
+      {/* Header bar */}
+      <rect
+        x={0}
+        y={0}
+        width={width}
+        height={pad + headerH}
+        fill="#000"
+        opacity="0.25"
+      />
+      <path
+        d={`M 0 ${pad + headerH} H ${width}`}
+        stroke="#111827"
+        strokeWidth="2"
+        opacity="0.9"
+      />
 
       <text
         x={pad}
-        y={pad + 10}
+        y={pad + 12}
         fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
         fontSize="12"
         fill="#a7f3d0"
       >
         DEX LIST
+      </text>
+
+      <text
+        x={width - pad}
+        y={pad + 12}
+        textAnchor="end"
+        fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+        fontSize="12"
+        fill="#6ee7b7"
+        opacity="0.9"
+      >
+        {genomes.length.toString().padStart(3, "0")} MONS
       </text>
 
       {genomes.length === 0 ? (
@@ -54,7 +81,7 @@ export function DexListScreen({
         </text>
       ) : null}
 
-      <g transform={`translate(${pad}, ${pad + headerH})`}>
+      <g transform={`translate(${pad}, ${contentTop})`}>
         <g transform={`translate(0, ${-startRow * rowH})`}>
           {visibleGenomes.map((g, i) => {
             const idx = startRow + i;
@@ -66,11 +93,11 @@ export function DexListScreen({
                 {isSelected ? (
                   <rect
                     x={-6}
-                    y={-16}
+                    y={-10}
                     width={width - pad * 2 + 12}
                     height={rowH - 6}
                     rx={6}
-                    fill="#113b2e"
+                    fill="#0f2f25"
                     stroke="#34d399"
                     strokeOpacity="0.8"
                   />
@@ -95,7 +122,9 @@ export function DexListScreen({
                   fill={isSelected ? "#a7f3d0" : "#6b7280"}
                   opacity={0.95}
                 >
-                  {g.plan.toUpperCase()} {g.id}
+                  {g.plan.toUpperCase()} {g.spine.curve.toUpperCase()} S
+                  {g.spine.points.length} {g.head.family.toUpperCase()} #
+                  {(g.seed >>> 0).toString(16).padStart(8, "0")}
                 </text>
               </g>
             );
@@ -117,7 +146,7 @@ export function DexListScreen({
         <g>
           <rect
             x={width - 8}
-            y={pad + headerH}
+            y={contentTop}
             width={4}
             height={listH}
             rx={2}
@@ -126,8 +155,7 @@ export function DexListScreen({
           <rect
             x={width - 8}
             y={
-              pad +
-              headerH +
+              contentTop +
               (listH * startRow) / Math.max(1, genomes.length - visibleRows)
             }
             width={4}
@@ -138,6 +166,16 @@ export function DexListScreen({
           />
         </g>
       ) : null}
+
+      <text
+        x={pad}
+        y={height - 10}
+        fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+        fontSize="11"
+        fill="#6b7280"
+      >
+        DPAD: MOVE A: OPEN B: BACK
+      </text>
     </g>
   );
 }

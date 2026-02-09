@@ -14,11 +14,11 @@ export function DeviceControlsRight({
   onExport,
 }: DeviceControlsRightProps) {
   return (
-    <g transform="translate(424, 312)">
+    <g transform="translate(226, 438)">
       {/* A button */}
       <g
         onClick={onA}
-        className="pokesvg-clickable"
+        className="pokesvg-clickable pokesvg-pressable"
         role="button"
         aria-label="A"
       >
@@ -45,7 +45,7 @@ export function DeviceControlsRight({
       {/* B button */}
       <g
         onClick={onB}
-        className="pokesvg-clickable"
+        className="pokesvg-clickable pokesvg-pressable"
         role="button"
         aria-label="B"
       >
@@ -77,26 +77,28 @@ export function DeviceControlsRight({
         role="button"
         aria-label="Discover"
       >
-        <rect
-          x="0"
-          y="0"
-          width="122"
-          height="28"
-          rx="14"
-          fill="#111827"
-          stroke={stroke}
-          strokeWidth="4"
-        />
-        <text
-          x="61"
-          y="19"
-          textAnchor="middle"
-          fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-          fontSize="12"
-          fill="#fde68a"
-        >
-          DISCOVER
-        </text>
+        <g className="pokesvg-pressable">
+          <rect
+            x="0"
+            y="0"
+            width="122"
+            height="28"
+            rx="14"
+            fill="#111827"
+            stroke={stroke}
+            strokeWidth="4"
+          />
+          <text
+            x="61"
+            y="19"
+            textAnchor="middle"
+            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+            fontSize="12"
+            fill="#fde68a"
+          >
+            DISCOVER
+          </text>
+        </g>
       </g>
 
       {/* Export */}
@@ -107,26 +109,28 @@ export function DeviceControlsRight({
         role="button"
         aria-label="Export genome"
       >
-        <rect
-          x="0"
-          y="0"
-          width="122"
-          height="28"
-          rx="14"
-          fill="#111827"
-          stroke={stroke}
-          strokeWidth="4"
-        />
-        <text
-          x="61"
-          y="19"
-          textAnchor="middle"
-          fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-          fontSize="12"
-          fill="#93c5fd"
-        >
-          EXPORT
-        </text>
+        <g className="pokesvg-pressable">
+          <rect
+            x="0"
+            y="0"
+            width="122"
+            height="28"
+            rx="14"
+            fill="#111827"
+            stroke={stroke}
+            strokeWidth="4"
+          />
+          <text
+            x="61"
+            y="19"
+            textAnchor="middle"
+            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+            fontSize="12"
+            fill="#93c5fd"
+          >
+            EXPORT
+          </text>
+        </g>
       </g>
     </g>
   );

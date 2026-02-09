@@ -14,7 +14,7 @@ export function DeviceControlsLeft({
   onConfig,
 }: DeviceControlsLeftProps) {
   return (
-    <g transform="translate(78, 232)">
+    <g transform="translate(46, 434)">
       {/* D-pad base */}
       <rect
         x="8"
@@ -33,16 +33,14 @@ export function DeviceControlsLeft({
         <rect x="-18" y="-54" width="36" height="108" rx="10" fill="#111827" />
 
         {/* Up */}
-        <rect
-          x="-18"
-          y="-54"
-          width="36"
-          height="34"
-          rx="10"
-          fill="#1f2937"
+        <g
           onClick={onDpadUp}
-          className="pokesvg-clickable"
-        />
+          className="pokesvg-clickable pokesvg-pressable"
+          role="button"
+          aria-label="Up"
+        >
+          <rect x="-18" y="-54" width="36" height="34" rx="10" fill="#1f2937" />
+        </g>
         <path
           d="M 0 -44 L -8 -32 H 8 Z"
           fill="#e5e7eb"
@@ -51,16 +49,14 @@ export function DeviceControlsLeft({
         />
 
         {/* Down */}
-        <rect
-          x="-18"
-          y="20"
-          width="36"
-          height="34"
-          rx="10"
-          fill="#1f2937"
+        <g
           onClick={onDpadDown}
-          className="pokesvg-clickable"
-        />
+          className="pokesvg-clickable pokesvg-pressable"
+          role="button"
+          aria-label="Down"
+        >
+          <rect x="-18" y="20" width="36" height="34" rx="10" fill="#1f2937" />
+        </g>
         <path
           d="M 0 44 L -8 32 H 8 Z"
           fill="#e5e7eb"
@@ -77,26 +73,28 @@ export function DeviceControlsLeft({
           role="button"
           aria-label="List screen"
         >
-          <rect
-            x="0"
-            y="0"
-            width="82"
-            height="26"
-            rx="13"
-            fill="#111827"
-            stroke={stroke}
-            strokeWidth="4"
-          />
-          <text
-            x="41"
-            y="18"
-            textAnchor="middle"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-            fontSize="12"
-            fill="#e5e7eb"
-          >
-            LIST
-          </text>
+          <g className="pokesvg-pressable">
+            <rect
+              x="0"
+              y="0"
+              width="82"
+              height="26"
+              rx="13"
+              fill="#111827"
+              stroke={stroke}
+              strokeWidth="4"
+            />
+            <text
+              x="41"
+              y="18"
+              textAnchor="middle"
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+              fontSize="12"
+              fill="#e5e7eb"
+            >
+              LIST
+            </text>
+          </g>
         </g>
 
         <g
@@ -106,26 +104,28 @@ export function DeviceControlsLeft({
           role="button"
           aria-label="System config screen"
         >
-          <rect
-            x="0"
-            y="0"
-            width="82"
-            height="26"
-            rx="13"
-            fill="#111827"
-            stroke={stroke}
-            strokeWidth="4"
-          />
-          <text
-            x="41"
-            y="18"
-            textAnchor="middle"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-            fontSize="12"
-            fill="#e5e7eb"
-          >
-            CFG
-          </text>
+          <g className="pokesvg-pressable">
+            <rect
+              x="0"
+              y="0"
+              width="82"
+              height="26"
+              rx="13"
+              fill="#111827"
+              stroke={stroke}
+              strokeWidth="4"
+            />
+            <text
+              x="41"
+              y="18"
+              textAnchor="middle"
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+              fontSize="12"
+              fill="#e5e7eb"
+            >
+              CFG
+            </text>
+          </g>
         </g>
       </g>
     </g>

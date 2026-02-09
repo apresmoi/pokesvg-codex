@@ -14,6 +14,8 @@ export function SystemConfigScreen({
   selectedIndex,
 }: SystemConfigScreenProps) {
   const pad = 12;
+  const headerH = 30;
+  const contentTop = pad + headerH + 18;
   const rowH = 18;
 
   const options = [
@@ -28,11 +30,24 @@ export function SystemConfigScreen({
 
   return (
     <g>
-      <rect x={0} y={0} width={width} height={height} fill="#0b1110" />
+      <rect
+        x={0}
+        y={0}
+        width={width}
+        height={pad + headerH}
+        fill="#000"
+        opacity="0.25"
+      />
+      <path
+        d={`M 0 ${pad + headerH} H ${width}`}
+        stroke="#111827"
+        strokeWidth="2"
+        opacity="0.9"
+      />
 
       <text
         x={pad}
-        y={pad + 10}
+        y={pad + 12}
         fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
         fontSize="12"
         fill="#fca5a5"
@@ -40,7 +55,7 @@ export function SystemConfigScreen({
         SYSTEM CONFIG
       </text>
 
-      <g transform={`translate(${pad}, ${pad + 22})`}>
+      <g transform={`translate(${pad}, ${contentTop})`}>
         {options.map((opt, idx) => {
           const y = idx * rowH;
           const isSelected = idx === selectedIndex % options.length;

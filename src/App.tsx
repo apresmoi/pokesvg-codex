@@ -37,29 +37,35 @@ export function App() {
 
     if (screen === "dex_list")
       return (
-        <DexListScreen
-          width={width}
-          height={height}
-          genomes={genomes}
-          selectedIndex={selectedIndex}
-        />
+        <g key={screen} className="pokesvg-screen">
+          <DexListScreen
+            width={width}
+            height={height}
+            genomes={genomes}
+            selectedIndex={selectedIndex}
+          />
+        </g>
       );
     if (screen === "dex_detail")
       return (
-        <DexDetailScreen
-          width={width}
-          height={height}
-          genome={selected}
-          animate={settings.animations}
-        />
+        <g key={screen} className="pokesvg-screen">
+          <DexDetailScreen
+            width={width}
+            height={height}
+            genome={selected}
+            animate={settings.animations}
+          />
+        </g>
       );
     return (
-      <SystemConfigScreen
-        width={width}
-        height={height}
-        settings={settings}
-        selectedIndex={configIndex}
-      />
+      <g key={screen} className="pokesvg-screen">
+        <SystemConfigScreen
+          width={width}
+          height={height}
+          settings={settings}
+          selectedIndex={configIndex}
+        />
+      </g>
     );
   }, [configIndex, genomes, screen, selected, selectedIndex, settings]);
 

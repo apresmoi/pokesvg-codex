@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { DeviceControlsLeft } from "./DeviceControlsLeft";
 import { DeviceControlsRight } from "./DeviceControlsRight";
-import { POKEDEX_SCREEN } from "./geometry";
+import { POKEDEX_DEVICE, POKEDEX_SCREEN } from "./geometry";
 import { ScreenToast } from "./ScreenToast";
 
 type PokedexDeviceSvgProps = {
@@ -32,8 +32,8 @@ export function PokedexDeviceSvg({
   onDiscover,
   onExport,
 }: PokedexDeviceSvgProps) {
-  const w = 640;
-  const h = 420;
+  const w = POKEDEX_DEVICE.width;
+  const h = POKEDEX_DEVICE.height;
 
   const bodyFill = "#d11f2e";
   const bodyShadow = "#a31724";
@@ -59,6 +59,20 @@ export function PokedexDeviceSvg({
           <stop offset="100%" stopColor="#0a4cff" stopOpacity="0.95" />
         </radialGradient>
 
+        <linearGradient id="screen-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0b1110" />
+          <stop offset="100%" stopColor="#070b0a" />
+        </linearGradient>
+
+        <pattern
+          id="scanlines"
+          width="4"
+          height="4"
+          patternUnits="userSpaceOnUse"
+        >
+          <rect x="0" y="0" width="4" height="1" fill="#000" opacity="0.35" />
+        </pattern>
+
         <clipPath id={CLIP_ID}>
           <rect
             x={POKEDEX_SCREEN.x}
@@ -76,7 +90,7 @@ export function PokedexDeviceSvg({
         y="16"
         width={w - 32}
         height={h - 32}
-        rx="44"
+        rx="56"
         fill="url(#body-grad)"
         stroke={stroke}
         strokeWidth="6"
@@ -84,13 +98,13 @@ export function PokedexDeviceSvg({
 
       {/* Bevel highlight */}
       <path
-        d="M 54 58 C 110 30 170 26 240 26 L 586 26 C 604 26 614 36 614 54 L 614 90 C 558 60 496 54 418 58 C 290 66 196 90 54 144 Z"
+        d="M 44 70 C 120 36 210 28 332 28 L 378 28 C 392 28 402 38 402 52 L 402 100 C 356 72 306 64 246 66 C 164 70 104 84 44 118 Z"
         fill="#ff4a57"
         opacity="0.25"
       />
 
       {/* Lens cluster */}
-      <g transform="translate(68, 70)">
+      <g transform="translate(92, 86)">
         <circle r="34" fill="#e5e7eb" stroke={stroke} strokeWidth="5" />
         <circle r="26" fill="url(#lens-grad)" stroke={stroke} strokeWidth="3" />
         <circle
@@ -119,14 +133,34 @@ export function PokedexDeviceSvg({
         />
       </g>
 
+      {/* Hinged seam */}
+      <g opacity="0.85">
+        <path
+          d="M 30 418 H 390"
+          stroke={stroke}
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
+        <path
+          d="M 30 414 H 390"
+          stroke="#ff4a57"
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.25"
+        />
+      </g>
+
       {/* Screen bezel */}
       <g>
-        <path
-          d="M 226 64 H 606 Q 620 64 620 78 V 306 Q 620 320 606 320 H 254 Q 238 320 232 306 L 222 280 Q 218 270 218 258 V 78 Q 218 64 226 64 Z"
+        <rect
+          x={POKEDEX_SCREEN.x - 10}
+          y={POKEDEX_SCREEN.y - 12}
+          width={POKEDEX_SCREEN.width + 20}
+          height={POKEDEX_SCREEN.height + 24}
+          rx="22"
           fill="#d1d5db"
           stroke={stroke}
           strokeWidth="6"
-          strokeLinejoin="round"
         />
         <rect
           x={POKEDEX_SCREEN.x}
@@ -134,7 +168,7 @@ export function PokedexDeviceSvg({
           width={POKEDEX_SCREEN.width}
           height={POKEDEX_SCREEN.height}
           rx={POKEDEX_SCREEN.rx}
-          fill="#0b1110"
+          fill="url(#screen-grad)"
           stroke="#111827"
           strokeWidth="3"
         />
@@ -145,20 +179,67 @@ export function PokedexDeviceSvg({
         <g transform={`translate(${POKEDEX_SCREEN.x}, ${POKEDEX_SCREEN.y})`}>
           {screen}
         </g>
+
+        {/* Screen effects */}
+        <rect
+          x={POKEDEX_SCREEN.x}
+          y={POKEDEX_SCREEN.y}
+          width={POKEDEX_SCREEN.width}
+          height={POKEDEX_SCREEN.height}
+          fill="url(#scanlines)"
+          opacity="0.08"
+        />
+        <rect
+          x={POKEDEX_SCREEN.x}
+          y={POKEDEX_SCREEN.y}
+          width={POKEDEX_SCREEN.width}
+          height={POKEDEX_SCREEN.height}
+          fill="#000"
+          opacity="0.08"
+        />
+
         {toast ? <ScreenToast toast={toast} /> : null}
       </g>
 
       {/* Top label */}
       <text
-        x="250"
-        y="54"
+        x="168"
+        y="72"
         fontFamily="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
-        fontSize="18"
+        fontSize="20"
         fill="#111827"
         opacity="0.85"
       >
         POKESVG
       </text>
+
+      {/* Speaker grille */}
+      <g transform="translate(254, 608)" opacity="0.6">
+        <path
+          d="M 0 0 H 132"
+          stroke={stroke}
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
+        <path
+          d="M 0 14 H 132"
+          stroke={stroke}
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
+        <path
+          d="M 0 28 H 132"
+          stroke={stroke}
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
+        <path
+          d="M 0 42 H 132"
+          stroke={stroke}
+          strokeWidth="6"
+          strokeLinecap="round"
+        />
+      </g>
 
       <DeviceControlsLeft
         stroke={stroke}
