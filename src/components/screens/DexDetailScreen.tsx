@@ -6,6 +6,7 @@ type DexDetailScreenProps = {
   height: number;
   genome?: Genome;
   animate: boolean;
+  isEncounter: boolean;
 };
 
 export function DexDetailScreen({
@@ -13,6 +14,7 @@ export function DexDetailScreen({
   height,
   genome,
   animate,
+  isEncounter,
 }: DexDetailScreenProps) {
   return (
     <g>
@@ -31,7 +33,7 @@ export function DexDetailScreen({
         fontSize="12"
         fill="#fde68a"
       >
-        DEX ENTRY
+        {isEncounter ? "ENCOUNTER" : "DEX ENTRY"}
       </text>
 
       {genome ? (
@@ -142,7 +144,9 @@ export function DexDetailScreen({
         fontSize="11"
         fill="#6b7280"
       >
-        EXPORT: BUTTON | IMPORT: PASTE (CTRL+V)
+        {isEncounter
+          ? "A: CATCH  B: LET GO"
+          : "EXPORT: BUTTON | IMPORT: PASTE (CTRL+V)"}
       </text>
     </g>
   );

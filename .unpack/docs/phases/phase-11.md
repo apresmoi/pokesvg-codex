@@ -2,7 +2,7 @@
 id: phase-11
 title: "Catch/Let Go: Encounter Flow + Persistence"
 kind: delivery
-status: planned
+status: done
 depends_on: ["phase-10"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -47,20 +47,20 @@ Make Discover create an ephemeral encounter and require an explicit Catch/Let Go
 
 ## Work items (ordered)
 
-- [ ] Update app state model to support an ephemeral encounter [S: 03-architecture]
-- [ ] Change Discover to create an encounter without persisting [S: 05-ux-and-flows]
-- [ ] Add Catch/Let Go UI + handlers and route behavior [S: 05-ux-and-flows]
-- [ ] Update dex persistence to write only on Catch (and other explicit adds like Import) [S: 04-apis-and-interfaces]
-- [ ] Adjust list layout to fit 3 items in the viewport (without making it unreadable) [S: 05-ux-and-flows]
-- [ ] Update tests and run the phase test plan
+- [x] Update app state model to support an ephemeral encounter [S: 03-architecture]
+- [x] Change Discover to create an encounter without persisting [S: 05-ux-and-flows]
+- [x] Add Catch/Let Go UI + handlers and route behavior [S: 05-ux-and-flows]
+- [x] Update dex persistence to write only on Catch (and other explicit adds like Import) [S: 04-apis-and-interfaces]
+- [x] Adjust list layout to fit 3 items in the viewport (without making it unreadable) [S: 05-ux-and-flows]
+- [x] Update tests and run the phase test plan
 
 ## Completion criteria (must all be true)
 
-- [ ] After Discover, the new mon is not persisted until Catch is pressed.
-- [ ] Let Go discards the encounter and does not mutate the collection.
-- [ ] Reloading during an encounter does not add the mon to the dex.
-- [ ] Dex list shows 3 items in the default viewport (unless the viewport height is extremely small).
-- [ ] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
+- [x] After Discover, the new mon is not persisted until Catch is pressed.
+- [x] Let Go discards the encounter and does not mutate the collection.
+- [x] Reloading during an encounter does not add the mon to the dex.
+- [x] Dex list shows 3 items in the default viewport (unless the viewport height is extremely small).
+- [x] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
 
 ## Test plan
 
@@ -80,5 +80,7 @@ Make Discover create an ephemeral encounter and require an explicit Catch/Let Go
 
 ## Notes / steering log
 
-- If implementing this requires a change to the routing/screen model, capture it in a new steering phase before proceeding.
-
+- Catch/Let Go is mapped to device controls:
+  - A: Catch
+  - B: Let Go
+- While an encounter is pending, other navigation/actions are blocked with an in-screen toast to encourage an explicit decision.

@@ -17,6 +17,7 @@ type AppState = {
   selectedIndex: number;
   configIndex: number;
   genomes: Genome[];
+  encounter: Genome | null;
   settings: Settings;
   toast: string | null;
 };
@@ -35,6 +36,7 @@ type AppAction =
 
 export type UsePokesvgAppResult = AppState & {
   selected?: Genome;
+  detailGenome?: Genome;
   onDpadUp: () => void;
   onDpadDown: () => void;
   onA: () => void;
@@ -51,6 +53,7 @@ function initState(): AppState {
     selectedIndex: 0,
     configIndex: 0,
     genomes: loadDex(),
+    encounter: null,
     settings: loadSettings(),
     toast: null,
   };
@@ -80,8 +83,10 @@ function isEditableTarget(target: EventTarget | null) {
 function reducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
     case "nav/list":
+      if (state.encounter) return { ...state, toast: "DECIDE" };
       return { ...state, screen: "dex_list" };
     case "nav/config":
+      if (state.encounter) return { ...state, toast: "DECIDE" };
       return { ...state, screen: "config" };
 
     case "input/up": {
@@ -125,6 +130,18 @@ function reducer(state: AppState, action: AppAction): AppState {
     }
 
     case "input/a": {
+      if (state.encounter) {
+        const newIndex = state.genomes.length;
+        return {
+          ...state,
+          genomes: [...state.genomes, state.encounter],
+          encounter: null,
+          selectedIndex: newIndex,
+          screen: "dex_detail",
+          toast: "CAUGHT",
+        };
+      }
+
       if (state.screen === "dex_list") {
         if (state.genomes.length === 0) return { ...state, toast: "EMPTY" };
         return { ...state, screen: "dex_detail" };
@@ -171,29 +188,37 @@ function reducer(state: AppState, action: AppAction): AppState {
     }
 
     case "input/b":
+      if (state.encounter) {
+        return {
+          ...state,
+          encounter: null,
+          screen: "dex_list",
+          toast: "LET GO",
+        };
+      }
       if (state.screen === "dex_detail" || state.screen === "config") {
         return { ...state, screen: "dex_list" };
       }
       return { ...state, toast: "B" };
 
     case "discover": {
+      if (state.encounter) return { ...state, toast: "DECIDE" };
       const usedSeeds = new Set(state.genomes.map((g) => g.seed >>> 0));
       const seed = generateUniqueSeed(usedSeeds);
       const genome = generateGenome(seed, {
         preset: state.settings.generatorPreset,
       });
-      const newIndex = state.genomes.length;
 
       return {
         ...state,
-        genomes: [...state.genomes, genome],
-        selectedIndex: newIndex,
+        encounter: genome,
         screen: "dex_detail",
-        toast: "DISCOVERED",
+        toast: "ENCOUNTER",
       };
     }
 
     case "import": {
+      if (state.encounter) return { ...state, toast: "DECIDE" };
       const incoming = action.genome;
       const isDupe = state.genomes.some((g) => g.seed === incoming.seed);
       if (isDupe) return { ...state, toast: "ALREADY" };
@@ -215,6 +240,10 @@ function reducer(state: AppState, action: AppAction): AppState {
   }
 }
 
+export function reduceAppState(state: AppState, action: AppAction): AppState {
+  return reducer(state, action);
+}
+
 export function usePokesvgApp(): UsePokesvgAppResult {
   const [state, dispatch] = useReducer(reducer, undefined, initState);
 
@@ -223,6 +252,10 @@ export function usePokesvgApp(): UsePokesvgAppResult {
     const idx = clampIndex(state.genomes.length, state.selectedIndex);
     return state.genomes[idx];
   }, [state.genomes, state.selectedIndex]);
+
+  const detailGenome = useMemo(() => {
+    return state.encounter ?? selected;
+  }, [state.encounter, selected]);
 
   useEffect(() => {
     saveDex(state.genomes);
@@ -288,22 +321,23 @@ export function usePokesvgApp(): UsePokesvgAppResult {
   }, []);
 
   const onExport = useCallback(async () => {
-    if (!selected) {
+    if (!detailGenome) {
       dispatch({ type: "toast/show", message: "NO MON" });
       return;
     }
 
     try {
-      await navigator.clipboard.writeText(JSON.stringify(selected));
+      await navigator.clipboard.writeText(JSON.stringify(detailGenome));
       dispatch({ type: "toast/show", message: "COPIED" });
     } catch {
       dispatch({ type: "toast/show", message: "COPY FAIL" });
     }
-  }, [selected]);
+  }, [detailGenome]);
 
   return {
     ...state,
     selected,
+    detailGenome,
     onDpadUp,
     onDpadDown,
     onA,

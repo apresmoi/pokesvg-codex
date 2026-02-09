@@ -18,7 +18,8 @@ export function DexListScreen({
   const headerH = 30;
   const contentTop = pad + headerH + 10;
   const footerH = 18;
-  const rowH = 54;
+  // Fit ~3 rows in the default screen viewport (240px tall).
+  const rowH = 52;
   const listH = height - contentTop - footerH - pad;
   const visibleRows = Math.max(1, Math.floor(listH / rowH));
   const maxStart = Math.max(0, genomes.length - visibleRows);

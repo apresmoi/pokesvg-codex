@@ -19,8 +19,9 @@ export function App() {
     genomes,
     selectedIndex,
     configIndex,
+    encounter,
     settings,
-    selected,
+    detailGenome,
     onDpadUp,
     onDpadDown,
     onA,
@@ -52,8 +53,9 @@ export function App() {
           <DexDetailScreen
             width={width}
             height={height}
-            genome={selected}
+            genome={detailGenome}
             animate={settings.animations}
+            isEncounter={encounter !== null}
           />
         </g>
       );
@@ -67,7 +69,15 @@ export function App() {
         />
       </g>
     );
-  }, [configIndex, genomes, screen, selected, selectedIndex, settings]);
+  }, [
+    configIndex,
+    detailGenome,
+    encounter,
+    genomes,
+    screen,
+    selectedIndex,
+    settings,
+  ]);
 
   return (
     <div className="pokesvg-root">
