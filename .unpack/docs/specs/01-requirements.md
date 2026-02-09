@@ -12,11 +12,13 @@
 - **FR-008**: Provide a System Config screen inside the Pokedex UI for generator/UI settings.
 - **FR-009**: Export a mon genome by copying JSON to clipboard.
 - **FR-010**: Import a mon genome by pasting JSON (Ctrl+V), validating it, and adding/selecting it.
+- **FR-011 (Polish)**: Device controls must feel device-native: no “floating” controls outside the device casing, and interactive controls show press feedback (visual depress/transition).
 
 ## Non-functional requirements
 
 - **NFR-001 (Determinism)**: `genome -> SVG` must be deterministic (same genome renders identically).
 - **NFR-002 (Creature quality)**: The generator must use controlled randomness so outputs are consistently "creature-like".
+- **NFR-002b (Variety / silhouettes)**: Outputs should have obvious structural variety (silhouettes/topologies), not just small cosmetic variation on the same template.
 - **NFR-003 (Performance)**: Scrolling list + rendering should remain responsive for typical collection sizes (TBD).
 - **NFR-004 (Dependency constraint)**: Runtime should avoid additional libraries beyond React. (Needs clarification for dev tooling.)
 - **NFR-005 (SVG-first UI)**: Prefer SVG-native UI for the device and screens (avoid `<foreignObject>` inputs initially).
@@ -31,8 +33,17 @@
 ## Needs confirmation
 
 - Exact control mapping for device buttons (D-pad/A/B + any extra buttons).
+- Target device form factor for the next UI iteration (current horizontal vs a more iconic layout).
 - What "no more libraries" means in practice:
   - runtime dependencies only, or also dev dependencies (Vite/TypeScript/test tooling).
 - Default generator presets (cute/classic/weird) and outline/shading defaults.
 - Whether to enforce a cap on stored mons or keep "unlimited" collection size.
+
+---
+## Change log
+
+### Phase 7 — GenomeV2 + Device UI Redesign (D-034, D-036)
+
+**ADDED: variety + UI polish requirements**
+- Added explicit requirements around silhouette/topology variety and device-native control polish (press feedback, no floating controls).
 <!-- unpack:1.0.0 -->

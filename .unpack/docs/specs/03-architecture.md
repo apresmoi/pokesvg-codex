@@ -19,6 +19,7 @@
   - screen viewport (clipPath)
   - routes the current "screen" content (list/detail/config/import UI)
   - Implemented scaffold: `src/components/PokedexDeviceSvg/PokedexDeviceSvg.tsx`
+  - Planned (v2): redesign to a more iconic device form factor with tactile control feedback (see D-036)
 - `Screen` variants:
   - `DexListScreen` (thumbnails, scroll/selection)
   - `DexDetailScreen` (large mon + properties + export)
@@ -31,6 +32,8 @@
     - PRNG: `src/lib/prng.ts`
     - Genome: `src/lib/genome/generateGenome.ts`, `src/lib/genome/types.ts`
     - Renderer: `src/lib/genome/render/MonSvg/MonSvg.tsx`
+  - Planned v2:
+    - Topology-first generator (`GenomeV2`, `schemaVersion: 2`) driven by spine/segments/slots and part families (see D-034, D-035)
 - `Storage`:
   - load/save `collection` and `settings` from `localStorage`
   - Implemented (collection): `src/lib/storage/dexStorage.ts`
@@ -69,4 +72,12 @@ The conversation requests "React, no more libraries" for the web app. Implicatio
 **MODIFIED: App orchestration location**
 - Was: `src/App.tsx` held most orchestration logic directly.
 - Now: `src/App.tsx` is composition; orchestration lives under `src/hooks/` (see `src/hooks/usePokesvgApp.ts`).
+
+### Phase 7 — GenomeV2 + Device UI Redesign (D-034, D-035, D-036)
+
+**ADDED: planned v2 generator direction**
+- Recorded the intended move to a topology-first `GenomeV2` (spine/segments/slots/part families) with a clean schema break.
+
+**ADDED: planned device UI redesign direction**
+- Recorded the intent to redesign `PokedexDeviceSvg` to a more iconic layout with device-native controls and press feedback.
 <!-- unpack:1.0.0 -->

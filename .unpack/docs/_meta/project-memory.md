@@ -235,4 +235,27 @@ Append-only log of decisions, constraints, and rationale.
 - Rationale: Improve maintainability and keep future changes consistent with documented standards.
 - Evidence: User request to align with `react.md`.
 - → Promoted to ADR-0001
+
+### D-034 - Monster generation v2: spine/segments/slots/part families (Explicit)
+
+- Date: 2026-02-10
+- Decision: Replace the current v1 "blob head on blob body" generator with a topology-first v2: seeded spine/curve, multiple body segments, attachment slots, and part families per slot.
+- Rationale: Increase structural variety and silhouettes; make mons feel less samey and more "wild".
+- Evidence: User chose to "go big" and explicitly asked for topology families and a wilder composition system.
+- → Promoted to ADR-0002
+
+### D-035 - Schema break: deprecate v1 genomes/collections; no migration (Explicit)
+
+- Date: 2026-02-10
+- Decision: Introduce `schemaVersion: 2` and treat v1 genomes/collections as deprecated; no v1 -> v2 migration required (old collections can be discarded).
+- Rationale: Enables a major generator overhaul without maintaining back-compat complexity.
+- Evidence: User: "i dont care about migration... deprecate the previous one and just use the new one".
+- → Promoted to ADR-0002
+
+### D-036 - UI redesign: move toward a more iconic Pokedex layout + control polish (Explicit)
+
+- Date: 2026-02-10
+- Decision: Redesign the device UI toward a more common/recognizable Pokedex form factor, keep all controls inside the SVG casing, add press feedback/animations, and improve screen layout hierarchy.
+- Rationale: Current UI feels messy (controls outside casing, no press feedback) and needs polish.
+- Evidence: User request; specific form factor (e.g., vertical clamshell) still needs confirmation.
 <!-- unpack:1.0.0 -->

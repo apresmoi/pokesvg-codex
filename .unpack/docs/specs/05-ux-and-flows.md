@@ -7,6 +7,12 @@
 - **System Config**: configurable settings inside the Pokedex UI.
 - **Import**: initiated by paste (Ctrl+V); shows feedback (valid/invalid/already discovered).
 
+Planned UI direction (explicit; see D-036):
+
+- Move toward a more iconic/recognizable Pokedex device layout (current horizontal device may be replaced).
+- Ensure controls are device-native (inside casing) and have press feedback/animations.
+- Improve screen hierarchy (layout/typography) and consider optional screen effects (e.g., scanlines) if they support the vibe.
+
 ## Input model (explicit)
 
 - Device buttons are clickable SVG elements.
@@ -62,4 +68,12 @@ Current settings (inferred; implemented in v1):
 - Empty collection: list view should handle "no mons yet" state and prompt to Discover.
 - LocalStorage failure/quota: show error and keep in-memory state.
 - Import payload too large: reject with error feedback.
+
+---
+## Change log
+
+### Phase 7 — GenomeV2 + Device UI Redesign (D-036)
+
+**ADDED: planned UI redesign direction**
+- Captured the intent to redesign the device layout to be more iconic and to add control press feedback and screen polish.
 <!-- unpack:1.0.0 -->

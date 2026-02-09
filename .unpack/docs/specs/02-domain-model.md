@@ -23,7 +23,21 @@ Implemented additions (inferred):
 - `limbs.tailStyle`: `taper` | `leaf` | `club` (optional; defaults to `taper` when absent)
 - `accessory`: `none` | `gem` | `antenna` | `collar` (defaults to `none` when absent)
 
-> Note: `schemaVersion` was suggested in the conversation but not explicitly accepted. Implementation currently includes `schemaVersion: 1` in genomes (inferred) to future-proof changes.
+> Note: Implementation currently uses `schemaVersion: 1` (v1). A clean-break `schemaVersion: 2` is planned (see D-035).
+
+#### Genome V2 (planned; topology-first) (explicit)
+
+The next intended iteration is a clean-break `GenomeV2` (`schemaVersion: 2`) focused on **structural diversity**:
+
+- **Spine / topology**: a seeded curve with 2–N body segments (posture + thickness profile).
+- **Segments**: per-segment radii/width profile (taper, bulges, etc.).
+- **Slots**: attachment points along the spine/segments (head, limb pairs, tail, dorsal/ventral surface features).
+- **Part families**: each slot is filled from a small library of parametric part generators (not just scaled stubs).
+- **Surface features**: overlays like spikes/bumps/ridges/crystals applied along the body outline.
+
+Deprecation (explicit):
+
+- v1 genomes/collections do not need migration; old collections can be discarded when moving to v2.
 
 ### Mon (inferred)
 
@@ -78,4 +92,12 @@ Suggested (inferred) storage keys:
 
 - `pokesvg.collection.v1` (implemented)
 - `pokesvg.settings.v1` (implemented)
+
+---
+## Change log
+
+### Phase 7 — GenomeV2 + Device UI Redesign (D-034, D-035)
+
+**ADDED: planned GenomeV2**
+- Added a topology-first `GenomeV2` direction (spine/segments/slots/part families) and recorded the explicit “no migration” stance for v1.
 <!-- unpack:1.0.0 -->
