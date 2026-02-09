@@ -107,30 +107,31 @@ export function PokedexDeviceSvg({
       <g transform="translate(92, 86)">
         <circle r="34" fill="#e5e7eb" stroke={stroke} strokeWidth="5" />
         <circle r="26" fill="url(#lens-grad)" stroke={stroke} strokeWidth="3" />
-        <circle
-          cx="-62"
-          cy="-18"
-          r="10"
-          fill="#22c55e"
-          stroke={stroke}
-          strokeWidth="3"
+      </g>
+
+      {/* Indicator lights (top-right cluster) */}
+      <g transform="translate(282, 72)">
+        <rect
+          x="-16"
+          y="-18"
+          width="136"
+          height="36"
+          rx="18"
+          fill="#111827"
+          opacity="0.18"
         />
-        <circle
-          cx="-36"
-          cy="-32"
-          r="10"
-          fill="#f59e0b"
-          stroke={stroke}
-          strokeWidth="3"
-        />
-        <circle
-          cx="-10"
-          cy="-18"
-          r="10"
-          fill="#ef4444"
-          stroke={stroke}
-          strokeWidth="3"
-        />
+        <g transform="translate(0, 0)">
+          <circle r="10" fill="#22c55e" stroke={stroke} strokeWidth="3" />
+          <circle r="4" fill="#ffffff" opacity="0.45" cx="-2" cy="-2" />
+        </g>
+        <g transform="translate(28, 0)">
+          <circle r="10" fill="#f59e0b" stroke={stroke} strokeWidth="3" />
+          <circle r="4" fill="#ffffff" opacity="0.45" cx="-2" cy="-2" />
+        </g>
+        <g transform="translate(56, 0)">
+          <circle r="10" fill="#ef4444" stroke={stroke} strokeWidth="3" />
+          <circle r="4" fill="#ffffff" opacity="0.45" cx="-2" cy="-2" />
+        </g>
       </g>
 
       {/* Hinged seam */}

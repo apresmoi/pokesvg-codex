@@ -77,6 +77,7 @@ export function DeviceControlsRight({
         role="button"
         aria-label="Discover"
       >
+        <title>Discover</title>
         <g className="pokesvg-pressable">
           <rect
             x="0"
@@ -88,16 +89,57 @@ export function DeviceControlsRight({
             stroke={stroke}
             strokeWidth="4"
           />
-          <text
-            x="61"
-            y="19"
-            textAnchor="middle"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-            fontSize="12"
+          {/* Crosshair icon */}
+          <circle
+            cx="61"
+            cy="14"
+            r="8"
+            fill="none"
+            stroke="#fde68a"
+            strokeWidth="2.4"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <circle
+            cx="61"
+            cy="14"
+            r="2.2"
             fill="#fde68a"
-          >
-            DISCOVER
-          </text>
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <path
+            d="M 61 5 V 8"
+            stroke="#fde68a"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <path
+            d="M 61 20 V 23"
+            stroke="#fde68a"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <path
+            d="M 52 14 H 55"
+            stroke="#fde68a"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <path
+            d="M 67 14 H 70"
+            stroke="#fde68a"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            opacity="0.95"
+            pointerEvents="none"
+          />
         </g>
       </g>
 
@@ -109,6 +151,7 @@ export function DeviceControlsRight({
         role="button"
         aria-label="Export genome"
       >
+        <title>Export</title>
         <g className="pokesvg-pressable">
           <rect
             x="0"
@@ -120,16 +163,39 @@ export function DeviceControlsRight({
             stroke={stroke}
             strokeWidth="4"
           />
-          <text
-            x="61"
-            y="19"
-            textAnchor="middle"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-            fontSize="12"
-            fill="#93c5fd"
-          >
-            EXPORT
-          </text>
+          {/* Export icon (arrow out of box) */}
+          <rect
+            x="42"
+            y="9"
+            width="30"
+            height="16"
+            rx="4"
+            fill="none"
+            stroke="#93c5fd"
+            strokeWidth="2.4"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <path
+            d="M 56 17 H 84"
+            fill="none"
+            stroke="#93c5fd"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <path
+            d="M 78 11 L 84 17 L 78 23"
+            fill="none"
+            stroke="#93c5fd"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.95"
+            pointerEvents="none"
+          />
         </g>
       </g>
     </g>

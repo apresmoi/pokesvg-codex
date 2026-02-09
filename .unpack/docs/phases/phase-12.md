@@ -2,7 +2,7 @@
 id: phase-12
 title: "Device Polish: Indicator Lights + Iconic Controls"
 kind: delivery
-status: planned
+status: done
 depends_on: ["phase-10"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -45,18 +45,18 @@ Make the device read more like an iconic Pokedex: fix the top indicator light pl
 
 ## Work items (ordered)
 
-- [ ] Fix LED/indicator light cluster geometry and placement (top-right; no overlap) [S: 01-requirements]
-- [ ] Redesign device controls to be less text-labeled and more iconic (unlabeled shapes/icons) [S: 05-ux-and-flows]
-- [ ] Preserve accessibility via `aria-label`/`title` even when visuals are unlabeled [S: 08-security-and-privacy]
-- [ ] Manual UI pass for alignment/spacing (especially top-left lens vs top-right indicators)
-- [ ] Run the phase test plan
+- [x] Fix LED/indicator light cluster geometry and placement (top-right; no overlap) [S: 01-requirements]
+- [x] Redesign device controls to be less text-labeled and more iconic (unlabeled shapes/icons) [S: 05-ux-and-flows]
+- [x] Preserve accessibility via `aria-label`/`title` even when visuals are unlabeled [S: 08-security-and-privacy]
+- [x] Manual UI pass for alignment/spacing (especially top-left lens vs top-right indicators)
+- [x] Run the phase test plan
 
 ## Completion criteria (must all be true)
 
-- [ ] Indicator lights are aligned, do not overlap the lens, and live in the top-right cluster.
-- [ ] No device controls rely on large text labels like `CFG`/`LIST`/`DISCOVER`/`EXPORT` for affordance.
-- [ ] Press feedback still works and does not cause SVG transform jumping.
-- [ ] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
+- [x] Indicator lights are aligned, do not overlap the lens, and live in the top-right cluster.
+- [x] No device controls rely on large text labels like `CFG`/`LIST`/`DISCOVER`/`EXPORT` for affordance.
+- [x] Press feedback still works and does not cause SVG transform jumping.
+- [x] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
 
 ## Test plan
 
@@ -76,4 +76,4 @@ Make the device read more like an iconic Pokedex: fix the top indicator light pl
 ## Notes / steering log
 
 - The goal is "reads like a Pokedex" without copy-pasting the original layout 1:1.
-
+- Implemented unlabeled control visuals with accessible `aria-label` plus SVG `<title>` tooltips.
