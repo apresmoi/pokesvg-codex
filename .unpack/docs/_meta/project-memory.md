@@ -227,4 +227,12 @@ Append-only log of decisions, constraints, and rationale.
 - Decision: Maintain end-user documentation as Mintlify pages under `guide/` and index them via `mint.json`.
 - Rationale: Keep core flows documented for users (discover, settings, export/import, privacy).
 - Evidence: (implemented during Phase 5)
+
+### D-033 - Align React component practices with project standards (Explicit)
+
+- Date: 2026-02-10
+- Decision: Adopt the React conventions in `.unpack/standards/typescript/react.md` as an active project practice (tailored for this SVG-first app): keep `src/App.tsx` as composition, move orchestration into `src/hooks/`, and avoid static React inline styles (allow dynamic CSS variables for deterministic animation timing).
+- Rationale: Improve maintainability and keep future changes consistent with documented standards.
+- Evidence: User request to align with `react.md`.
+- → Promoted to ADR-0001
 <!-- unpack:1.0.0 -->

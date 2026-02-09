@@ -14,13 +14,7 @@ export function SoothingBackground({ variant }: SoothingBackgroundProps) {
       aria-hidden="true"
       viewBox="0 0 1200 800"
       preserveAspectRatio="xMidYMid slice"
-      style={{
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        zIndex: -1,
-      }}
+      className="pokesvg-bg"
     >
       <defs>
         {isAurora ? (

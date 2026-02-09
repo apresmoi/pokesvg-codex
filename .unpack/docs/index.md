@@ -41,12 +41,14 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 - [Universal: file length](./practices/universal/file-length.md)
 - [Organization: folder structure](./practices/organization/folder-structure.md)
 - [Organization: agent-friendly](./practices/organization/agent-friendly.md)
+- [TypeScript: React](./practices/typescript/react.md)
 
 ---
 
 ## Decisions (ADRs)
 
 - [ADR Template](./decisions/adr-0000-template.md)
+- [ADR-0001: React Component Practices Alignment](./decisions/adr-0001-react-component-practices.md)
 
 ---
 
@@ -62,6 +64,7 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 | [3](./phases/phase-3.md) | System Config + Import/Export + MVP Animations | delivery | done | 2 | 2026-02-10 |
 | [4](./phases/phase-4.md) | Art and UX Polish (Generator Quality + Background Variants) | delivery | done | 3 | 2026-02-10 |
 | [5](./phases/phase-5.md) | Quality Baseline + CI + GitHub Pages Deploy + End-User Docs | delivery | done | 4 | 2026-02-10 |
+| [6](./phases/phase-6.md) | Steering: React Component Practices Alignment | steering | done | 5 | 2026-02-10 |
 
 ### Current focus
 

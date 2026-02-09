@@ -41,7 +41,7 @@ export function DeviceControlsLeft({
           rx="10"
           fill="#1f2937"
           onClick={onDpadUp}
-          style={{ cursor: "pointer" }}
+          className="pokesvg-clickable"
         />
         <path
           d="M 0 -44 L -8 -32 H 8 Z"
@@ -59,7 +59,7 @@ export function DeviceControlsLeft({
           rx="10"
           fill="#1f2937"
           onClick={onDpadDown}
-          style={{ cursor: "pointer" }}
+          className="pokesvg-clickable"
         />
         <path
           d="M 0 44 L -8 32 H 8 Z"
@@ -73,7 +73,7 @@ export function DeviceControlsLeft({
       <g transform="translate(0, 154)">
         <g
           onClick={onList}
-          style={{ cursor: "pointer" }}
+          className="pokesvg-clickable"
           role="button"
           aria-label="List screen"
         >
@@ -102,7 +102,7 @@ export function DeviceControlsLeft({
         <g
           transform="translate(88, 0)"
           onClick={onConfig}
-          style={{ cursor: "pointer" }}
+          className="pokesvg-clickable"
           role="button"
           aria-label="System config screen"
         >

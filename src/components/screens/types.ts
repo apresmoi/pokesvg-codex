@@ -1,1 +1,1 @@
-export type ScreenId = "dex_list" | "dex_detail" | "config";
+export type { ScreenId } from "@/lib/app/screen";

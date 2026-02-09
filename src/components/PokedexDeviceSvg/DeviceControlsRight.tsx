@@ -18,7 +18,7 @@ export function DeviceControlsRight({
       {/* A button */}
       <g
         onClick={onA}
-        style={{ cursor: "pointer" }}
+        className="pokesvg-clickable"
         role="button"
         aria-label="A"
       >
@@ -45,7 +45,7 @@ export function DeviceControlsRight({
       {/* B button */}
       <g
         onClick={onB}
-        style={{ cursor: "pointer" }}
+        className="pokesvg-clickable"
         role="button"
         aria-label="B"
       >
@@ -73,7 +73,7 @@ export function DeviceControlsRight({
       <g
         transform="translate(-16, 60)"
         onClick={onDiscover}
-        style={{ cursor: "pointer" }}
+        className="pokesvg-clickable"
         role="button"
         aria-label="Discover"
       >
@@ -103,7 +103,7 @@ export function DeviceControlsRight({
       <g
         transform="translate(-16, 94)"
         onClick={onExport}
-        style={{ cursor: "pointer" }}
+        className="pokesvg-clickable"
         role="button"
         aria-label="Export genome"
       >

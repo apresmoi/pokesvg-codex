@@ -44,11 +44,7 @@ export function PokedexDeviceSvg({
       viewBox={`0 0 ${w} ${h}`}
       role="img"
       aria-label="PokeSVG Pokedex device"
-      style={{
-        height: "80vh",
-        width: "auto",
-        filter: "drop-shadow(0 22px 40px rgba(0, 0, 0, 0.55))",
-      }}
+      className="pokesvg-device"
     >
       <defs>
         <linearGradient id="body-grad" x1="0" y1="0" x2="0" y2="1">

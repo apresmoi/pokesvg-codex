@@ -67,7 +67,7 @@ export function MonSvg({
       viewBox={`0 0 ${vb} ${vb}`}
       width={width}
       height={height}
-      style={{ overflow: "visible" }}
+      overflow="visible"
     >
       <defs>
         <clipPath id={bodyClipId}>
