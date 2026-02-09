@@ -21,12 +21,16 @@
 - Interaction check: list/detail/config screens navigable via buttons.
 - Performance check: scrolling a list of N mons remains responsive (N TBD).
 
-## Tooling (needs confirmation)
+## Tooling
 
-The conversation requests no additional runtime libraries beyond React. Testing/linting tools are not discussed.
+The conversation requests no additional runtime libraries beyond React. Testing/linting tools were not discussed explicitly.
 
-Proposed defaults (inferred, to confirm in Phase 1):
+Current setup (inferred from implementation):
 
-- Lint/format: ESLint + Prettier
-- Unit tests: Vitest
+- Typecheck: `tsc --noEmit` via `npm run typecheck`
+- Unit tests: Vitest via `npm test`
+
+Not yet set up:
+
+- Lint/format (ESLint/Prettier planned)
 <!-- unpack:1.0.0 -->

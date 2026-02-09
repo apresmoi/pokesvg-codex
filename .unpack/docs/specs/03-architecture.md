@@ -27,8 +27,13 @@
 - `Generator` (pure functions):
   - `generateGenome(seed, settings)` -> `Genome`
   - `renderGenomeSvg(genome)` -> React SVG elements
+  - Implemented v1:
+    - PRNG: `src/lib/prng.ts`
+    - Genome: `src/lib/genome/generateGenome.ts`, `src/lib/genome/types.ts`
+    - Renderer: `src/lib/genome/render/MonSvg.tsx`
 - `Storage`:
   - load/save `collection` and `settings` from `localStorage`
+  - Implemented (collection): `src/lib/storage/dexStorage.ts`
 - `ImportExport`:
   - export: `navigator.clipboard.writeText(JSON.stringify(genome))`
   - import: paste listener -> parse/validate -> add/select

@@ -28,11 +28,14 @@ This repository contains a Vite + React + TypeScript single-page app scaffold pl
 - React entry: `src/main.tsx`
 - App root: `src/App.tsx`
 
-## Key components (Phase 1)
+## Key components
 
 - Background: `src/components/SoothingBackground/SoothingBackground.tsx`
 - Pokedex device SVG shell: `src/components/PokedexDeviceSvg/PokedexDeviceSvg.tsx`
-- Placeholder screens: `src/components/screens/*`
+- Screens: `src/components/screens/*`
+- Generator + genome: `src/lib/genome/*`
+- PRNG: `src/lib/prng.ts`
+- Dex storage: `src/lib/storage/dexStorage.ts`
 
 ## CI/deploy status
 

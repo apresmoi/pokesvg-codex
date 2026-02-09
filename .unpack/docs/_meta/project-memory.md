@@ -108,4 +108,18 @@ Append-only log of decisions, constraints, and rationale.
 - Decision: Treat the "no more libraries" constraint as "no additional runtime libraries beyond React"; allow dev tooling dependencies (Vite/TypeScript/etc).
 - Rationale: A modern React project still needs a bundler and build pipeline; this keeps runtime minimal while staying practical.
 - Evidence: (interpretation during Phase 1; can be revised if desired)
+
+### D-016 - Dex collection storage key and payload format (Inferred)
+
+- Date: 2026-02-10
+- Decision: Store the local dex collection under `pokesvg.collection.v1` as a JSON payload `{ schemaVersion: 1, genomes: GenomeV1[] }`.
+- Rationale: Versioned persistence and straightforward migration path.
+- Evidence: (implemented during Phase 2)
+
+### D-017 - Unit tests use Vitest (Inferred)
+
+- Date: 2026-02-10
+- Decision: Use Vitest for minimal unit tests (PRNG determinism, genome determinism, storage round-trip).
+- Rationale: Fast, TS-friendly tests without adding runtime dependencies.
+- Evidence: (implemented during Phase 2)
 <!-- unpack:1.0.0 -->

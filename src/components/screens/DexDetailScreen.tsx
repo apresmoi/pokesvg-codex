@@ -1,12 +1,17 @@
-import type { DexListItem } from "./types";
+import type { Genome } from "@/lib/genome";
+import { MonSvg } from "@/lib/genome/render";
 
 type DexDetailScreenProps = {
   width: number;
   height: number;
-  item?: DexListItem;
+  genome?: Genome;
 };
 
-export function DexDetailScreen({ width, height, item }: DexDetailScreenProps) {
+export function DexDetailScreen({
+  width,
+  height,
+  genome,
+}: DexDetailScreenProps) {
   return (
     <g>
       <rect x={0} y={0} width={width} height={height} fill="#0b1110" />
@@ -28,30 +33,55 @@ export function DexDetailScreen({ width, height, item }: DexDetailScreenProps) {
         fontSize="12"
         fill="#e5e7eb"
       >
-        {item ? `${item.name} (${item.id})` : "-"}
+        {genome ? `${genome.meta.name} (${genome.id})` : "-"}
       </text>
 
-      <g transform={`translate(${width * 0.62}, ${height * 0.55})`}>
-        <circle r={46} fill="#111827" stroke="#60a5fa" strokeWidth="3" />
-        <path
-          d="M -18 10 C -16 -6, -6 -18, 10 -16 C 24 -14, 24 16, 10 20 C -4 24, -18 22, -18 10 Z"
-          fill="#60a5fa"
-          fillOpacity="0.35"
-          stroke="#93c5fd"
-          strokeWidth="2"
-          strokeLinejoin="round"
-        />
-        <circle cx="-8" cy="-6" r="4" fill="#e5e7eb" />
-        <circle cx="10" cy="-4" r="4" fill="#e5e7eb" />
-        <path
-          d="M -2 10 C 4 14 10 14 16 10"
-          fill="none"
-          stroke="#e5e7eb"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </g>
+      {genome ? (
+        <>
+          <g transform="translate(14, 52)">
+            <MonSvg genome={genome} width={120} height={120} />
+          </g>
+
+          <g transform="translate(148, 60)">
+            <text
+              x={0}
+              y={0}
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+              fontSize="12"
+              fill="#9ca3af"
+            >
+              PLAN: {genome.plan.toUpperCase()}
+            </text>
+            <text
+              x={0}
+              y={20}
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+              fontSize="12"
+              fill="#9ca3af"
+            >
+              ABIL: {genome.meta.abilities[0]}
+            </text>
+            <text
+              x={0}
+              y={36}
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+              fontSize="12"
+              fill="#9ca3af"
+            >
+              ABIL: {genome.meta.abilities[1]}
+            </text>
+            <text
+              x={0}
+              y={60}
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+              fontSize="11"
+              fill="#6b7280"
+            >
+              {genome.meta.lore}
+            </text>
+          </g>
+        </>
+      ) : null}
     </g>
   );
 }
-

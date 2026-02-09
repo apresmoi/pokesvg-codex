@@ -2,7 +2,7 @@
 id: phase-2
 title: "Genome + Generator v1 + Dex List/Detail + Persistence"
 kind: delivery
-status: planned
+status: done
 depends_on: ["phase-1"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -44,28 +44,31 @@ Implement the first deterministic genome and generator/rendering pipeline, plus 
 
 ## Work items (ordered)
 
-- [ ] Define `Genome` shape, including fields needed for deterministic rendering [S: 02-domain-model#genome-explicit]
-- [ ] Implement seeded PRNG and uniqueness guard for seeds/ids within the local collection [S: 01-requirements#functional-requirements]
-- [ ] Implement generator v1:
+- [x] Define `Genome` shape, including fields needed for deterministic rendering [S: 02-domain-model#genome-explicit]
+- [x] Implement seeded PRNG and uniqueness guard for seeds/ids within the local collection [S: 01-requirements#functional-requirements]
+- [x] Implement generator v1:
   - body plans
   - anchors/relative positioning
   - a small curated set of parametric primitives (blob/capsule/horn/tail/pattern) [S: 01-requirements#non-functional-requirements]
-- [ ] Implement `genome -> SVG` renderer with consistent outline/shading style [S: 03-architecture]
-- [ ] Implement localStorage persistence for collection (load on startup, save on changes) [S: 04-apis-and-interfaces#localstorage-interface-explicit]
-- [ ] Implement discover action + list/detail screens displaying real generated mons [S: 05-ux-and-flows]
+- [x] Implement `genome -> SVG` renderer with consistent outline/shading style [S: 03-architecture]
+- [x] Implement localStorage persistence for collection (load on startup, save on changes) [S: 04-apis-and-interfaces#localstorage-interface-explicit]
+- [x] Implement discover action + list/detail screens displaying real generated mons [S: 05-ux-and-flows]
 
 ## Completion criteria (must all be true)
 
-- [ ] Discover generates a new mon and adds it to the list.
-- [ ] List view shows thumbnails and supports selection/scrolling.
-- [ ] Detail view shows the selected mon large and shows basic properties.
-- [ ] Reloading the page restores the collection from localStorage.
-- [ ] `genome -> SVG` rendering is deterministic for the same genome.
+- [x] Discover generates a new mon and adds it to the list.
+- [x] List view shows thumbnails and supports selection/scrolling.
+- [x] Detail view shows the selected mon large and shows basic properties.
+- [x] Reloading the page restores the collection from localStorage.
+- [x] `genome -> SVG` rendering is deterministic for the same genome.
 
 ## Test plan
 
 - Unit / type / lint:
-  - Add minimal unit tests for PRNG determinism and genome round-trip (tooling TBD).
+  - `npm run typecheck`
+  - `npm test`
+- Build:
+  - `npm run build`
 - Integration / e2e:
   - Manual: discover multiple mons, navigate list/detail, reload page, verify persistence.
 - Notes:
@@ -73,8 +76,8 @@ Implement the first deterministic genome and generator/rendering pipeline, plus 
 
 ## Open questions / blockers
 
-- Confirm whether genomes must include a `schemaVersion` (recommended).
+- (none)
 
 ## Notes / steering log
 
-- (none)
+- Implementation includes `schemaVersion: 1` in genomes (inferred; can be revised).

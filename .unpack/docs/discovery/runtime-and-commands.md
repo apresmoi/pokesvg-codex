@@ -9,11 +9,12 @@ Runnnable Vite + React app scaffold exists.
 - Dev server: `npm run dev`
 - Build: `npm run build`
 - Preview production build: `npm run preview`
+- Unit tests: `npm test`
 - Typecheck: `npm run typecheck`
 
 ## Notes
 
-- There is no test runner or linter configured yet (planned in a later phase).
+- Linter/formatter not configured yet (planned in a later phase).
 
 ## Toolchain
 

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { SoothingBackground } from "@/components/SoothingBackground";
 import {
@@ -8,27 +8,33 @@ import {
   type ScreenId,
 } from "@/components/screens";
 import { PokedexDeviceSvg, POKEDEX_SCREEN } from "@/components/PokedexDeviceSvg";
-
-type DexItem = {
-  id: string;
-  name: string;
-};
-
-const PLACEHOLDER_ITEMS: DexItem[] = [
-  { id: "seed_0001", name: "Mon 0001" },
-  { id: "seed_0002", name: "Mon 0002" },
-  { id: "seed_0003", name: "Mon 0003" },
-  { id: "seed_0004", name: "Mon 0004" },
-  { id: "seed_0005", name: "Mon 0005" },
-];
+import type { Genome } from "@/lib/genome";
+import { generateGenome, generateUniqueSeed } from "@/lib/genome";
+import { loadDex, saveDex } from "@/lib/storage/dexStorage";
 
 export function App() {
   const [screen, setScreen] = useState<ScreenId>("dex_list");
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [configIndex, setConfigIndex] = useState<number>(0);
   const [toast, setToast] = useState<string | null>(null);
 
-  const items = PLACEHOLDER_ITEMS;
-  const selected = items[Math.min(Math.max(selectedIndex, 0), items.length - 1)];
+  const [genomes, setGenomes] = useState<Genome[]>(() => loadDex());
+
+  useEffect(() => {
+    saveDex(genomes);
+  }, [genomes]);
+
+  useEffect(() => {
+    setSelectedIndex((idx) => {
+      if (genomes.length === 0) return 0;
+      return Math.min(Math.max(idx, 0), genomes.length - 1);
+    });
+  }, [genomes.length]);
+
+  const selected =
+    genomes.length === 0
+      ? undefined
+      : genomes[Math.min(Math.max(selectedIndex, 0), genomes.length - 1)];
 
   const showToast = useCallback((message: string) => {
     setToast(message);
@@ -36,15 +42,29 @@ export function App() {
   }, []);
 
   const handleUp = useCallback(() => {
-    setSelectedIndex((idx) => Math.max(0, idx - 1));
-  }, []);
+    if (screen === "config") {
+      setConfigIndex((idx) => Math.max(0, idx - 1));
+      return;
+    }
+    if (screen === "dex_list") setSelectedIndex((idx) => Math.max(0, idx - 1));
+  }, [screen]);
 
   const handleDown = useCallback(() => {
-    setSelectedIndex((idx) => Math.min(items.length - 1, idx + 1));
-  }, [items.length]);
+    if (screen === "config") {
+      setConfigIndex((idx) => idx + 1);
+      return;
+    }
+    if (screen === "dex_list") {
+      setSelectedIndex((idx) => Math.min(genomes.length - 1, idx + 1));
+    }
+  }, [genomes.length, screen]);
 
   const handleA = useCallback(() => {
     if (screen === "dex_list") {
+      if (genomes.length === 0) {
+        showToast("EMPTY");
+        return;
+      }
       setScreen("dex_detail");
       return;
     }
@@ -55,7 +75,7 @@ export function App() {
     }
 
     showToast("A");
-  }, [screen, showToast]);
+  }, [genomes.length, screen, showToast]);
 
   const handleB = useCallback(() => {
     if (screen === "dex_detail" || screen === "config") {
@@ -75,8 +95,15 @@ export function App() {
   }, []);
 
   const handleDiscover = useCallback(() => {
-    showToast("DISCOVER (stub)");
-  }, [showToast]);
+    const seed = generateUniqueSeed(new Set(genomes.map((g) => g.seed >>> 0)));
+    const genome = generateGenome(seed);
+    const newIndex = genomes.length;
+
+    setGenomes([...genomes, genome]);
+    setSelectedIndex(newIndex);
+    setScreen("dex_detail");
+    showToast("DISCOVERED");
+  }, [genomes, showToast]);
 
   const screenNode = useMemo(() => {
     const width = POKEDEX_SCREEN.width;
@@ -87,24 +114,24 @@ export function App() {
         <DexListScreen
           width={width}
           height={height}
-          items={items}
+          genomes={genomes}
           selectedIndex={selectedIndex}
         />
       );
     }
 
     if (screen === "dex_detail") {
-      return <DexDetailScreen width={width} height={height} item={selected} />;
+      return <DexDetailScreen width={width} height={height} genome={selected} />;
     }
 
     return (
       <SystemConfigScreen
         width={width}
         height={height}
-        selectedIndex={selectedIndex}
+        selectedIndex={configIndex}
       />
     );
-  }, [items, screen, selected, selectedIndex]);
+  }, [configIndex, genomes, screen, selected, selectedIndex]);
 
   return (
     <div

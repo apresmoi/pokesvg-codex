@@ -17,7 +17,7 @@ The genome should encode both:
 - **style**: palette, outline/shading params, patterns
 - **behavior**: animation params (blink, idle bob)
 
-> Note: `schemaVersion` was suggested in the conversation but not explicitly accepted. Treat it as **recommended** until confirmed.
+> Note: `schemaVersion` was suggested in the conversation but not explicitly accepted. Implementation currently includes `schemaVersion: 1` in genomes (inferred) to future-proof changes.
 
 ### Mon (inferred)
 
@@ -64,6 +64,6 @@ Persist the collection by storing genomes in `localStorage`.
 
 Suggested (inferred) storage keys:
 
-- `pokesvg.collection.v1`
+- `pokesvg.collection.v1` (implemented)
 - `pokesvg.settings.v1`
 <!-- unpack:1.0.0 -->
