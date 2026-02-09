@@ -11,3 +11,17 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Node / frontend
+node_modules
+dist
+build
+coverage
+.vite
+.eslintcache
+.env
+.env.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

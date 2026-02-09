@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * Minifies an export script into a bookmarklet URL.
+ * Minifies .unpack/tools/chatgpt-export.js into a bookmarklet URL.
  *
  * Usage:
- *   node .unpack/tools/minify-bookmarklet.js chatgpt
- *   node .unpack/tools/minify-bookmarklet.js claude
+ *   node .unpack/tools/minify-bookmarklet.js
  *
  * Output:
  *   Prints a javascript: URL you can paste as a bookmark URL.
@@ -15,22 +14,8 @@
 const fs = require("fs");
 const path = require("path");
 
-const scripts = {
-  chatgpt: "chatgpt-export.js",
-  claude: "claude-export.js",
-};
-
-const arg = process.argv[2];
-
-if (!arg || !scripts[arg]) {
-  console.log("Usage: node .unpack/tools/minify-bookmarklet.js <chatgpt|claude>");
-  console.log("\nAvailable scripts:");
-  Object.keys(scripts).forEach((name) => console.log(`  ${name}`));
-  process.exit(1);
-}
-
 const source = fs.readFileSync(
-  path.join(__dirname, scripts[arg]),
+  path.join(__dirname, "chatgpt-export.js"),
   "utf-8"
 );
 
@@ -53,7 +38,7 @@ code = code.replace(/\s+/g, " ").trim();
 
 const bookmarklet = "javascript:" + encodeURIComponent(code);
 
-console.log("%s bookmarklet URL (%d bytes):\n", arg, bookmarklet.length);
+console.log("Bookmarklet URL (%d bytes):\n", bookmarklet.length);
 console.log(bookmarklet);
 console.log(
   "\nCopy the URL above and paste it as the URL of a new browser bookmark."

@@ -9,7 +9,7 @@ updated: "YYYY-MM-DD"
 unpack_version: "1.0.0"
 ---
 
-# Phase N — <title>
+# Phase N - <title>
 
 ## Intent
 

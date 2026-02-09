@@ -1,6 +1,6 @@
 ---
 name: up-analyze
-description: Check consistency between specs, phases, and decisions
+description: Check consistency between specs, phases, decisions, and traceability markers
 ---
 
-This project hasn't been initialized yet. Run `/up-init` first to set up your preferences and deploy skills.
+Read and follow the instructions in `.unpack/skills/up-analyze/SKILL.md`.

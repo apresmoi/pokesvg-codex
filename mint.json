@@ -1,0 +1,9 @@
+{
+  "name": "PokeSVG",
+  "navigation": [
+    {
+      "group": "Guide",
+      "pages": ["guide/index"]
+    }
+  ]
+}

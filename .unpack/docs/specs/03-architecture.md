@@ -1,0 +1,45 @@
+# Architecture
+
+## High-level shape (explicit)
+
+- Single-page React app.
+- Page chrome (layout/background) can be HTML/CSS.
+- The Pokedex device is rendered as a single SVG.
+- The device screen renders mons as SVG within a clipped viewport (`clipPath`).
+
+## Major components (inferred, based on conversation)
+
+- `App`: owns top-level state (collection, selection, current screen, settings).
+- `Background`: renders a soothing SVG background behind the floating device.
+- `PokedexDeviceSvg`:
+  - outer casing + buttons (SVG groups with handlers)
+  - screen viewport (clipPath)
+  - routes the current "screen" content (list/detail/config/import UI)
+- `Screen` variants:
+  - `DexListScreen` (thumbnails, scroll/selection)
+  - `DexDetailScreen` (large mon + properties + export)
+  - `SystemConfigScreen` (settings list, toggles)
+  - `ImportOverlay` (on paste: validate + feedback)
+- `Generator` (pure functions):
+  - `generateGenome(seed, settings)` -> `Genome`
+  - `renderGenomeSvg(genome)` -> React SVG elements
+- `Storage`:
+  - load/save `collection` and `settings` from `localStorage`
+- `ImportExport`:
+  - export: `navigator.clipboard.writeText(JSON.stringify(genome))`
+  - import: paste listener -> parse/validate -> add/select
+
+## Data flow (inferred)
+
+1. On startup: load `collection/settings` from `localStorage` -> hydrate React state.
+2. Render: `state -> PokedexDeviceSvg -> Screen -> (genome -> SVG)`.
+3. On actions (buttons/paste): update state -> persist to `localStorage`.
+
+## Library constraints (explicit)
+
+The conversation requests "React, no more libraries" for the web app. Implications (inferred):
+
+- Implement a small seeded PRNG in-repo (for determinism).
+- Implement lightweight runtime validation in-repo for imported genomes.
+- Keep UI primitives in SVG rather than adding UI frameworks.
+<!-- unpack:1.0.0 -->

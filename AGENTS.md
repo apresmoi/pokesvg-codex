@@ -6,7 +6,7 @@ AGENTS_STATE values:
 - BOOTSTRAP: conversation.md exists; decompress into .unpack/docs/
 - BUILD: docs + phases exist; execute phases
 -->
-<!-- AGENTS_STATE: BOOTSTRAP -->
+<!-- AGENTS_STATE: BUILD -->
 <!-- UNPACK_VERSION: 1.0.0 -->
 
 ## Purpose
