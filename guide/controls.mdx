@@ -4,29 +4,47 @@ PokeSVG is meant to feel like a device. All controls are inside the SVG Pokedex.
 
 ## Buttons
 
-- `LIST`: go to the dex list screen
-- `CFG`: go to System Config
-- `DISCOVER`: generate a new mon and select it
-- `A`: confirm / open / toggle (depends on the screen)
-- `B`: back
-- D-pad `UP` / `DOWN`: move selection (list) or move the highlighted option (System Config)
+- `Discover`: generate a new encounter (not saved until you Catch it)
+- `System Config`: open the System Config screen
+- `Export`: copy the current mon as a share code to your clipboard (detail view)
+- `A`: confirm / open / cycle / Catch (depends on the screen)
+- `B`: back / Let Go (during an encounter)
+- D-pad `UP` / `DOWN`: move selection (dex list) or move the selected field (System Config)
+- D-pad `LEFT` / `RIGHT`: navigate (list/detail) or cycle options (System Config)
 
 ## Screens
 
 ### Dex List
 
-- D-pad moves selection.
-- `A` opens the selected mon (detail view).
+- `Up/Down`: move selection
+- `Left`: no-op
+- `Right`: open selected mon (detail view)
+- `A`: open selected mon (detail view)
+- `B`: no-op
 
 ### Dex Detail
 
-- `EXPORT` copies the selected genome JSON.
-- Paste (`Ctrl+V`) imports a genome JSON.
+- `Left` or `B`: back to list
+- `Export`: copy the current mon share code to clipboard
+- Paste (`Ctrl+V` / `Cmd+V`): import a share code (or JSON)
+
+If you're viewing an **encounter**:
+
+- `A`: Catch
+- `B`: Let Go
 
 ### System Config
 
-- D-pad moves the highlighted option.
-- `A` toggles / cycles the selected option.
-- `B` returns to the list.
-<!-- unpack:1.0.0 -->
+- `Up/Down`: move the selected field
+- `Left/Right`: cycle options for the selected field
+- `A`: also cycles options for the selected field
+- `B`: back to list
 
+## Keyboard
+
+You can also use a keyboard:
+
+- Arrow keys: D-pad
+- `Enter` / `Space`: `A`
+- `Escape` / `Backspace`: `B`
+<!-- unpack:1.0.0 -->

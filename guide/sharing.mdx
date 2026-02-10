@@ -1,18 +1,18 @@
 # Sharing (Export and Import)
 
-PokeSVG is local-first, so sharing is done by copying and pasting a genome JSON.
+PokeSVG is local-first, so sharing is done by copying and pasting a compact share code.
 
 ## Export
 
 1. Open a mon in **detail view**.
-2. Press `EXPORT`.
+2. Press `Export`.
 3. You should see a `COPIED` toast on the screen.
 
-This copies the selected mon's genome JSON to your clipboard.
+This copies the selected mon as a share code string (base64-like) to your clipboard.
 
 ## Import
 
-1. Copy a genome JSON to your clipboard.
+1. Copy a share code (or a genome JSON) to your clipboard.
 2. Focus the PokeSVG tab.
 3. Paste with `Ctrl+V` (or `Cmd+V` on macOS).
 
@@ -27,4 +27,3 @@ Import feedback:
 - Clipboard permissions can behave differently on `localhost` vs `https`.
 - If paste isn't working, make sure your cursor is not in an input/textarea (PokeSVG ignores paste into editable fields).
 <!-- unpack:1.0.0 -->
-
