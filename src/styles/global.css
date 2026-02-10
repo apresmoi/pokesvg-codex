@@ -38,6 +38,30 @@ body {
   position: relative;
 }
 
+.pokesvg-footer {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  color: rgba(229, 231, 235, 0.6);
+}
+
+.pokesvg-footer a {
+  color: rgba(229, 231, 235, 0.75);
+  text-decoration: none;
+}
+
+.pokesvg-footer a:hover {
+  text-decoration: underline;
+}
+
+.pokesvg-footerSep {
+  opacity: 0.35;
+}
+
 .pokesvg-bg {
   position: absolute;
   inset: 0;

@@ -78,11 +78,11 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 | [14](./phases/phase-14.md) | Steering: Explicit Control Mapping + Nav Button Remap | steering | done | 12 | 2026-02-10 |
 | [15](./phases/phase-15.md) | Device Controls v2.1: Navigation + Discover/Export Layout | delivery | done | 14 | 2026-02-10 |
 | [16](./phases/phase-16.md) | Steering: Share Code Export (Base64) + Footer Credit | steering | done | 12 | 2026-02-10 |
-| [17](./phases/phase-17.md) | Share Codes + Footer: Base64 Export/Import + Unpack Credit | delivery | planned | 16 | 2026-02-10 |
+| [17](./phases/phase-17.md) | Share Codes + Footer: Base64 Export/Import + Unpack Credit | delivery | done | 16 | 2026-02-10 |
 
 ### Current focus
 
-- Next runnable phase: 17
+- Next runnable phase: (none)
 - Blockers / open questions:
   - (none)
 

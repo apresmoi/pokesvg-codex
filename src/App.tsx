@@ -99,6 +99,24 @@ export function App() {
           onExport={onExport}
         />
       </div>
+
+      <footer className="pokesvg-footer">
+        <a
+          href="https://github.com/apresmoi/pokesvg-codex/tree/main/.unpack"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Built with Unpack
+        </a>
+        <span className="pokesvg-footerSep">|</span>
+        <a
+          href="https://github.com/apresmoi/pokesvg-codex"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub
+        </a>
+      </footer>
     </div>
   );
 }

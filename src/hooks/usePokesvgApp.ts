@@ -4,6 +4,11 @@ import type { Genome } from "@/lib/genome";
 import { generateGenome, generateUniqueSeed } from "@/lib/genome";
 import { parseGenomeJsonOrRegenerate } from "@/lib/genome/parseGenome";
 import type { Settings } from "@/lib/settings";
+import {
+  decodeShareCodeToJson,
+  encodeShareCode,
+  looksLikeShareCode,
+} from "@/lib/share/shareCode";
 import { loadDex, saveDex } from "@/lib/storage/dexStorage";
 import { loadSettings, saveSettings } from "@/lib/storage/settingsStorage";
 
@@ -381,7 +386,15 @@ export function usePokesvgApp(): UsePokesvgAppResult {
       const text = e.clipboardData?.getData("text") ?? "";
       if (!text) return;
 
-      const parsed = parseGenomeJsonOrRegenerate(text);
+      const candidate = text.trim();
+      const parsed = looksLikeShareCode(candidate)
+        ? (() => {
+            const decoded = decodeShareCodeToJson(candidate);
+            if (!decoded.ok)
+              return { ok: false, error: decoded.error } as const;
+            return parseGenomeJsonOrRegenerate(decoded.json);
+          })()
+        : parseGenomeJsonOrRegenerate(candidate);
       if (!parsed.ok) {
         dispatch({ type: "toast/show", message: "INVALID" });
         return;
@@ -437,7 +450,7 @@ export function usePokesvgApp(): UsePokesvgAppResult {
     }
 
     try {
-      await navigator.clipboard.writeText(JSON.stringify(detailGenome));
+      await navigator.clipboard.writeText(encodeShareCode(detailGenome));
       dispatch({ type: "toast/show", message: "COPIED" });
     } catch {
       dispatch({ type: "toast/show", message: "COPY FAIL" });

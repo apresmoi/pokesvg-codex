@@ -2,7 +2,7 @@
 id: phase-17
 title: "Share Codes + Footer: Base64 Export/Import + Unpack Credit"
 kind: delivery
-status: planned
+status: done
 depends_on: ["phase-16"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -48,18 +48,18 @@ Implement share-code export/import and add footer credit:
 
 ## Work items (ordered)
 
-- [ ] Implement share code format per spec (`pokesvg:` prefix + base64url payload)
-- [ ] Update Export/Copy to copy share code (not raw JSON)
-- [ ] Update Import-on-paste to detect and decode share code
-- [ ] (Optional) Keep accepting raw JSON pastes for backward compatibility
-- [ ] Add footer with "Built with Unpack" and GitHub link (subtle, non-distracting)
-- [ ] Run the phase test plan
+- [x] Implement share code format per spec (`pokesvg:` prefix + base64url payload)
+- [x] Update Export/Copy to copy share code (not raw JSON)
+- [x] Update Import-on-paste to detect and decode share code
+- [x] (Optional) Keep accepting raw JSON pastes for backward compatibility
+- [x] Add footer with "Built with Unpack" and GitHub link (subtle, non-distracting)
+- [x] Run the phase test plan
 
 ## Completion criteria (must all be true)
 
-- [ ] Export copies a share code string; pasted share codes import correctly.
-- [ ] Footer renders on desktop and mobile and links work.
-- [ ] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
+- [x] Export copies a share code string; pasted share codes import correctly.
+- [x] Footer renders on desktop and mobile and links work.
+- [x] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
 
 ## Test plan
 
@@ -76,4 +76,3 @@ Implement share-code export/import and add footer credit:
 ## Open questions / blockers
 
 - (none)
-
