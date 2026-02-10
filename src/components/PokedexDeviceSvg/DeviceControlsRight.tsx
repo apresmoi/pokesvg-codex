@@ -12,7 +12,7 @@ export function DeviceControlsRight({
   onDiscover,
 }: DeviceControlsRightProps) {
   return (
-    <g transform="translate(226, 438)">
+    <g transform="translate(216, 438)">
       {/* A button */}
       <g
         onClick={onA}
