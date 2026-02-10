@@ -146,7 +146,7 @@ export function DexDetailScreen({
       >
         {isEncounter
           ? "A: CATCH  B: LET GO"
-          : "EXPORT: BUTTON | IMPORT: PASTE (CTRL+V)"}
+          : "LEFT/B: BACK | EXPORT: BUTTON | IMPORT: PASTE (CTRL+V)"}
       </text>
     </g>
   );

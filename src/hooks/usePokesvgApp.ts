@@ -27,6 +27,8 @@ type AppAction =
   | { type: "nav/config" }
   | { type: "input/up" }
   | { type: "input/down" }
+  | { type: "input/left" }
+  | { type: "input/right" }
   | { type: "input/a" }
   | { type: "input/b" }
   | { type: "discover" }
@@ -39,10 +41,11 @@ export type UsePokesvgAppResult = AppState & {
   detailGenome?: Genome;
   onDpadUp: () => void;
   onDpadDown: () => void;
+  onDpadLeft: () => void;
+  onDpadRight: () => void;
   onA: () => void;
   onB: () => void;
   onConfig: () => void;
-  onList: () => void;
   onDiscover: () => void;
   onExport: () => Promise<void>;
 };
@@ -70,6 +73,14 @@ function nextInCycle<T>(items: readonly T[], current: T): T {
   const idx = items.indexOf(current);
   const next = items[(idx + 1) % items.length];
   return next ?? items[0];
+}
+
+function prevInCycle<T>(items: readonly T[], current: T): T {
+  if (items.length === 0)
+    throw new Error("prevInCycle requires items.length>0");
+  const idx = items.indexOf(current);
+  const prev = items[(idx + items.length - 1) % items.length];
+  return prev ?? items[0];
 }
 
 function isEditableTarget(target: EventTarget | null) {
@@ -129,6 +140,96 @@ function reducer(state: AppState, action: AppAction): AppState {
       return state;
     }
 
+    case "input/left": {
+      if (state.screen === "dex_list") return state;
+
+      if (state.screen === "dex_detail") {
+        if (state.encounter) return { ...state, toast: "DECIDE" };
+        return { ...state, screen: "dex_list" };
+      }
+
+      // config: cycle selected field backward
+      const opt: ConfigOption =
+        CONFIG_OPTIONS[state.configIndex % CONFIG_OPTIONS.length] ??
+        CONFIG_OPTIONS[0];
+
+      if (opt === "preset") {
+        const next = prevInCycle(
+          ["classic", "cute", "weird"] as const,
+          state.settings.generatorPreset,
+        );
+        return {
+          ...state,
+          settings: { ...state.settings, generatorPreset: next },
+          toast: `PRESET:${next.toUpperCase()}`,
+        };
+      }
+
+      if (opt === "background") {
+        const next = prevInCycle(
+          ["aurora", "grid", "mist"] as const,
+          state.settings.backgroundVariant,
+        );
+        return {
+          ...state,
+          settings: { ...state.settings, backgroundVariant: next },
+          toast: `BG:${next.toUpperCase()}`,
+        };
+      }
+
+      const nextAnimations = !state.settings.animations;
+      return {
+        ...state,
+        settings: { ...state.settings, animations: nextAnimations },
+        toast: nextAnimations ? "ANIM:ON" : "ANIM:OFF",
+      };
+    }
+
+    case "input/right": {
+      if (state.screen === "dex_list") {
+        if (state.genomes.length === 0) return { ...state, toast: "EMPTY" };
+        return { ...state, screen: "dex_detail" };
+      }
+
+      if (state.screen === "dex_detail") return state;
+
+      // config: cycle selected field forward
+      const opt: ConfigOption =
+        CONFIG_OPTIONS[state.configIndex % CONFIG_OPTIONS.length] ??
+        CONFIG_OPTIONS[0];
+
+      if (opt === "preset") {
+        const next = nextInCycle(
+          ["classic", "cute", "weird"] as const,
+          state.settings.generatorPreset,
+        );
+        return {
+          ...state,
+          settings: { ...state.settings, generatorPreset: next },
+          toast: `PRESET:${next.toUpperCase()}`,
+        };
+      }
+
+      if (opt === "background") {
+        const next = nextInCycle(
+          ["aurora", "grid", "mist"] as const,
+          state.settings.backgroundVariant,
+        );
+        return {
+          ...state,
+          settings: { ...state.settings, backgroundVariant: next },
+          toast: `BG:${next.toUpperCase()}`,
+        };
+      }
+
+      const nextAnimations = !state.settings.animations;
+      return {
+        ...state,
+        settings: { ...state.settings, animations: nextAnimations },
+        toast: nextAnimations ? "ANIM:ON" : "ANIM:OFF",
+      };
+    }
+
     case "input/a": {
       if (state.encounter) {
         const newIndex = state.genomes.length;
@@ -148,43 +249,10 @@ function reducer(state: AppState, action: AppAction): AppState {
       }
 
       if (state.screen === "config") {
-        const opt: ConfigOption =
-          CONFIG_OPTIONS[state.configIndex % CONFIG_OPTIONS.length] ??
-          CONFIG_OPTIONS[0];
-
-        if (opt === "preset") {
-          const next = nextInCycle(
-            ["classic", "cute", "weird"] as const,
-            state.settings.generatorPreset,
-          );
-          return {
-            ...state,
-            settings: { ...state.settings, generatorPreset: next },
-            toast: `PRESET:${next.toUpperCase()}`,
-          };
-        }
-
-        if (opt === "background") {
-          const next = nextInCycle(
-            ["aurora", "grid", "mist"] as const,
-            state.settings.backgroundVariant,
-          );
-          return {
-            ...state,
-            settings: { ...state.settings, backgroundVariant: next },
-            toast: `BG:${next.toUpperCase()}`,
-          };
-        }
-
-        const nextAnimations = !state.settings.animations;
-        return {
-          ...state,
-          settings: { ...state.settings, animations: nextAnimations },
-          toast: nextAnimations ? "ANIM:ON" : "ANIM:OFF",
-        };
+        return reducer(state, { type: "input/right" });
       }
 
-      return { ...state, toast: "A" };
+      return state;
     }
 
     case "input/b":
@@ -199,7 +267,7 @@ function reducer(state: AppState, action: AppAction): AppState {
       if (state.screen === "dex_detail" || state.screen === "config") {
         return { ...state, screen: "dex_list" };
       }
-      return { ...state, toast: "B" };
+      return state;
 
     case "discover": {
       if (state.encounter) return { ...state, toast: "DECIDE" };
@@ -274,6 +342,40 @@ export function usePokesvgApp(): UsePokesvgAppResult {
   }, [state.toast]);
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isEditableTarget(e.target)) return;
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        dispatch({ type: "input/up" });
+        return;
+      }
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        dispatch({ type: "input/down" });
+        return;
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        dispatch({ type: "input/left" });
+        return;
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        dispatch({ type: "input/right" });
+        return;
+      }
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        dispatch({ type: "input/a" });
+        return;
+      }
+      if (e.key === "Escape" || e.key === "Backspace") {
+        e.preventDefault();
+        dispatch({ type: "input/b" });
+      }
+    };
+
     const handlePaste = (e: ClipboardEvent) => {
       if (isEditableTarget(e.target)) return;
       const text = e.clipboardData?.getData("text") ?? "";
@@ -288,8 +390,12 @@ export function usePokesvgApp(): UsePokesvgAppResult {
       dispatch({ type: "import", genome: parsed.genome });
     };
 
+    window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("paste", handlePaste);
-    return () => window.removeEventListener("paste", handlePaste);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("paste", handlePaste);
+    };
   }, []);
 
   const onDpadUp = useCallback(() => {
@@ -298,6 +404,14 @@ export function usePokesvgApp(): UsePokesvgAppResult {
 
   const onDpadDown = useCallback(() => {
     dispatch({ type: "input/down" });
+  }, []);
+
+  const onDpadLeft = useCallback(() => {
+    dispatch({ type: "input/left" });
+  }, []);
+
+  const onDpadRight = useCallback(() => {
+    dispatch({ type: "input/right" });
   }, []);
 
   const onA = useCallback(() => {
@@ -310,10 +424,6 @@ export function usePokesvgApp(): UsePokesvgAppResult {
 
   const onConfig = useCallback(() => {
     dispatch({ type: "nav/config" });
-  }, []);
-
-  const onList = useCallback(() => {
-    dispatch({ type: "nav/list" });
   }, []);
 
   const onDiscover = useCallback(() => {
@@ -340,10 +450,11 @@ export function usePokesvgApp(): UsePokesvgAppResult {
     detailGenome,
     onDpadUp,
     onDpadDown,
+    onDpadLeft,
+    onDpadRight,
     onA,
     onB,
     onConfig,
-    onList,
     onDiscover,
     onExport,
   };

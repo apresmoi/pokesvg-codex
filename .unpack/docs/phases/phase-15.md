@@ -2,7 +2,7 @@
 id: phase-15
 title: "Device Controls v2.1: Navigation + Discover/Export Layout"
 kind: delivery
-status: planned
+status: done
 depends_on: ["phase-14"]
 created: "2026-02-10"
 updated: "2026-02-10"
@@ -50,32 +50,32 @@ Implement the Phase 14 control mapping and device button remaps in the app UI:
 
 ## Work items (ordered)
 
-- [ ] Implement explicit List screen mapping:
+- [x] Implement explicit List screen mapping:
   - Up/Down: navigate list
   - Left: no-op
   - Right: go to selected mon detail
   - A: go to selected mon detail
   - B: no-op
-- [ ] Implement Detail screen mapping:
+- [x] Implement Detail screen mapping:
   - Left: back to list
   - B: back to list
-- [ ] Implement Config screen mapping:
+- [x] Implement Config screen mapping:
   - Left/Right: cycle options for selected field
   - A: also cycle options for selected field
   - B: back to list
-- [ ] Reposition/re-skin Discover control to feel device-native (no weird "app button" placement)
-- [ ] Remove the current Copy button from the UI
-- [ ] Swap nav button wiring:
+- [x] Reposition/re-skin Discover control to feel device-native (no weird "app button" placement)
+- [x] Remove the current Copy button from the UI
+- [x] Swap nav button wiring:
   - old List button -> Config
   - old Config button -> Copy/Export
-- [ ] Run the phase test plan
+- [x] Run the phase test plan
 
 ## Completion criteria (must all be true)
 
-- [ ] Control mapping matches `specs/05-ux-and-flows.md` exactly.
-- [ ] There is no separate "Copy" button in the UI.
-- [ ] Discover remains available and feels device-native in placement.
-- [ ] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
+- [x] Control mapping matches `specs/05-ux-and-flows.md` exactly.
+- [x] There is no separate "Copy" button in the UI.
+- [x] Discover remains available and feels device-native in placement.
+- [x] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` all pass.
 
 ## Test plan
 
@@ -92,4 +92,3 @@ Implement the Phase 14 control mapping and device button remaps in the app UI:
 ## Open questions / blockers
 
 - (none)
-

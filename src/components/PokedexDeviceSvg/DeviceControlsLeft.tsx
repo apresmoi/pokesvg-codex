@@ -2,16 +2,20 @@ type DeviceControlsLeftProps = {
   stroke: string;
   onDpadUp: () => void;
   onDpadDown: () => void;
-  onList: () => void;
+  onDpadLeft: () => void;
+  onDpadRight: () => void;
   onConfig: () => void;
+  onExport: () => void;
 };
 
 export function DeviceControlsLeft({
   stroke,
   onDpadUp,
   onDpadDown,
-  onList,
+  onDpadLeft,
+  onDpadRight,
   onConfig,
+  onExport,
 }: DeviceControlsLeftProps) {
   return (
     <g transform="translate(46, 434)">
@@ -50,6 +54,38 @@ export function DeviceControlsLeft({
           pointerEvents="none"
         />
 
+        {/* Left */}
+        <g
+          onClick={onDpadLeft}
+          className="pokesvg-clickable pokesvg-pressable"
+          role="button"
+          aria-label="Left"
+        >
+          <rect x="-50" y="-18" width="32" height="36" rx="12" fill="#1f2937" />
+        </g>
+        <path
+          d="M -38 0 L -26 -8 V 8 Z"
+          fill="#e5e7eb"
+          opacity="0.85"
+          pointerEvents="none"
+        />
+
+        {/* Right */}
+        <g
+          onClick={onDpadRight}
+          className="pokesvg-clickable pokesvg-pressable"
+          role="button"
+          aria-label="Right"
+        >
+          <rect x="18" y="-18" width="32" height="36" rx="12" fill="#1f2937" />
+        </g>
+        <path
+          d="M 38 0 L 26 -8 V 8 Z"
+          fill="#e5e7eb"
+          opacity="0.85"
+          pointerEvents="none"
+        />
+
         {/* Down */}
         <g
           onClick={onDpadDown}
@@ -70,12 +106,12 @@ export function DeviceControlsLeft({
       {/* Function buttons */}
       <g transform="translate(0, 154)">
         <g
-          onClick={onList}
+          onClick={onConfig}
           className="pokesvg-clickable"
           role="button"
-          aria-label="List screen"
+          aria-label="System config screen"
         >
-          <title>List</title>
+          <title>Config</title>
           <g className="pokesvg-pressable">
             <rect
               x="0"
@@ -95,11 +131,27 @@ export function DeviceControlsLeft({
               opacity="0.9"
               pointerEvents="none"
             />
+            <circle
+              cx="34"
+              cy="8"
+              r="3"
+              fill="#e5e7eb"
+              opacity="0.9"
+              pointerEvents="none"
+            />
             <path
               d="M 24 13 H 58"
               stroke="#e5e7eb"
               strokeWidth="2.2"
               strokeLinecap="round"
+              opacity="0.9"
+              pointerEvents="none"
+            />
+            <circle
+              cx="48"
+              cy="13"
+              r="3"
+              fill="#e5e7eb"
               opacity="0.9"
               pointerEvents="none"
             />
@@ -111,17 +163,25 @@ export function DeviceControlsLeft({
               opacity="0.9"
               pointerEvents="none"
             />
+            <circle
+              cx="40"
+              cy="18"
+              r="3"
+              fill="#e5e7eb"
+              opacity="0.9"
+              pointerEvents="none"
+            />
           </g>
         </g>
 
         <g
           transform="translate(88, 0)"
-          onClick={onConfig}
+          onClick={onExport}
           className="pokesvg-clickable"
           role="button"
-          aria-label="System config screen"
+          aria-label="Export genome"
         >
-          <title>Config</title>
+          <title>Export</title>
           <g className="pokesvg-pressable">
             <rect
               x="0"
@@ -133,52 +193,37 @@ export function DeviceControlsLeft({
               stroke={stroke}
               strokeWidth="4"
             />
-            <path
-              d="M 24 9 H 58"
-              stroke="#e5e7eb"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              opacity="0.9"
-              pointerEvents="none"
-            />
-            <circle
-              cx="34"
-              cy="9"
-              r="3"
-              fill="#e5e7eb"
-              opacity="0.9"
+            {/* Export icon (arrow out of box) */}
+            <rect
+              x="20"
+              y="7"
+              width="28"
+              height="14"
+              rx="4"
+              fill="none"
+              stroke="#93c5fd"
+              strokeWidth="2.4"
+              opacity="0.95"
               pointerEvents="none"
             />
             <path
-              d="M 24 14 H 58"
-              stroke="#e5e7eb"
-              strokeWidth="2.2"
+              d="M 32 14 H 60"
+              fill="none"
+              stroke="#93c5fd"
+              strokeWidth="2.6"
               strokeLinecap="round"
-              opacity="0.9"
-              pointerEvents="none"
-            />
-            <circle
-              cx="48"
-              cy="14"
-              r="3"
-              fill="#e5e7eb"
-              opacity="0.9"
+              strokeLinejoin="round"
+              opacity="0.95"
               pointerEvents="none"
             />
             <path
-              d="M 24 19 H 58"
-              stroke="#e5e7eb"
-              strokeWidth="2.2"
+              d="M 54 9 L 60 14 L 54 19"
+              fill="none"
+              stroke="#93c5fd"
+              strokeWidth="2.6"
               strokeLinecap="round"
-              opacity="0.9"
-              pointerEvents="none"
-            />
-            <circle
-              cx="40"
-              cy="19"
-              r="3"
-              fill="#e5e7eb"
-              opacity="0.9"
+              strokeLinejoin="round"
+              opacity="0.95"
               pointerEvents="none"
             />
           </g>

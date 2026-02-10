@@ -175,7 +175,7 @@ export function DexListScreen({
         fontSize="11"
         fill="#6b7280"
       >
-        DPAD: MOVE A: OPEN B: BACK
+        UP/DN: MOVE RIGHT/A: OPEN
       </text>
     </g>
   );

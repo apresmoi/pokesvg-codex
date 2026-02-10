@@ -10,10 +10,11 @@ type PokedexDeviceSvgProps = {
   toast: string | null;
   onDpadUp: () => void;
   onDpadDown: () => void;
+  onDpadLeft: () => void;
+  onDpadRight: () => void;
   onA: () => void;
   onB: () => void;
   onConfig: () => void;
-  onList: () => void;
   onDiscover: () => void;
   onExport: () => void;
 };
@@ -25,10 +26,11 @@ export function PokedexDeviceSvg({
   toast,
   onDpadUp,
   onDpadDown,
+  onDpadLeft,
+  onDpadRight,
   onA,
   onB,
   onConfig,
-  onList,
   onDiscover,
   onExport,
 }: PokedexDeviceSvgProps) {
@@ -246,8 +248,10 @@ export function PokedexDeviceSvg({
         stroke={stroke}
         onDpadUp={onDpadUp}
         onDpadDown={onDpadDown}
-        onList={onList}
+        onDpadLeft={onDpadLeft}
+        onDpadRight={onDpadRight}
         onConfig={onConfig}
+        onExport={onExport}
       />
 
       <DeviceControlsRight
@@ -255,7 +259,6 @@ export function PokedexDeviceSvg({
         onA={onA}
         onB={onB}
         onDiscover={onDiscover}
-        onExport={onExport}
       />
     </svg>
   );

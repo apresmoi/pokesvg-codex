@@ -94,7 +94,7 @@ export function SystemConfigScreen({
         fontSize="11"
         fill="#6b7280"
       >
-        DPAD: MOVE A: TOGGLE B: BACK
+        UP/DN: MOVE L/R/A: CHANGE B: BACK
       </text>
     </g>
   );

@@ -24,10 +24,11 @@ export function App() {
     detailGenome,
     onDpadUp,
     onDpadDown,
+    onDpadLeft,
+    onDpadRight,
     onA,
     onB,
     onConfig,
-    onList,
     onDiscover,
     onExport,
   } = usePokesvgApp();
@@ -89,10 +90,11 @@ export function App() {
           toast={toast}
           onDpadUp={onDpadUp}
           onDpadDown={onDpadDown}
+          onDpadLeft={onDpadLeft}
+          onDpadRight={onDpadRight}
           onA={onA}
           onB={onB}
           onConfig={onConfig}
-          onList={onList}
           onDiscover={onDiscover}
           onExport={onExport}
         />
