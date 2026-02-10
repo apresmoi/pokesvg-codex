@@ -71,70 +71,74 @@ export function DeviceControlsRight({
       <g
         transform="translate(2, 110)"
         onClick={onDiscover}
-        className="pokesvg-clickable pokesvg-pressable"
+        className="pokesvg-clickable"
         role="button"
         aria-label="Discover"
       >
         <title>Discover</title>
-        <circle
-          cx="132"
-          cy="30"
-          r="18"
-          fill="#f59e0b"
-          stroke={stroke}
-          strokeWidth="6"
-        />
-        {/* Crosshair icon */}
-        <circle
-          cx="132"
-          cy="30"
-          r="7"
-          fill="none"
-          stroke="#111827"
-          strokeWidth="2.6"
-          opacity="0.95"
-          pointerEvents="none"
-        />
-        <circle
-          cx="132"
-          cy="30"
-          r="2"
-          fill="#111827"
-          opacity="0.95"
-          pointerEvents="none"
-        />
-        <path
-          d="M 132 22 V 24"
-          stroke="#111827"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          opacity="0.95"
-          pointerEvents="none"
-        />
-        <path
-          d="M 132 36 V 38"
-          stroke="#111827"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          opacity="0.95"
-          pointerEvents="none"
-        />
-        <path
-          d="M 124 30 H 126"
-          stroke="#111827"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          opacity="0.95"
-          pointerEvents="none"
-        />
-        <path
-          d="M 138 30 H 140"
-          stroke="#111827"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          opacity="0.95"
-          pointerEvents="none"
-        />
+        {/* Note: keep press animation on a nested element so CSS transform doesn't
+           override the SVG `transform` attribute in some browsers. */}
+        <g className="pokesvg-pressable">
+          <circle
+            cx="132"
+            cy="30"
+            r="18"
+            fill="#f59e0b"
+            stroke={stroke}
+            strokeWidth="6"
+          />
+          {/* Crosshair icon */}
+          <circle
+            cx="132"
+            cy="30"
+            r="7"
+            fill="none"
+            stroke="#111827"
+            strokeWidth="2.6"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <circle
+            cx="132"
+            cy="30"
+            r="2"
+            fill="#111827"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <path
+            d="M 132 22 V 24"
+            stroke="#111827"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <path
+            d="M 132 36 V 38"
+            stroke="#111827"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <path
+            d="M 124 30 H 126"
+            stroke="#111827"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+          <path
+            d="M 138 30 H 140"
+            stroke="#111827"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            opacity="0.95"
+            pointerEvents="none"
+          />
+        </g>
       </g>
     </g>
   );
