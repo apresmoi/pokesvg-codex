@@ -6,8 +6,8 @@ None in the initial scope. PokeSVG is local-first and runs entirely in the brows
 
 ## Clipboard interface (explicit)
 
-- **Export**: copy a genome JSON string to the clipboard.
-- **Import**: accept a genome JSON string via paste (Ctrl+V).
+- **Export**: copy a compact share code string to the clipboard (not raw JSON).
+- **Import**: accept a share code string via paste (Ctrl+V). (Raw JSON may be accepted for backward compatibility.)
 
 Implementation notes (inferred):
 
@@ -52,6 +52,22 @@ Import compatibility (explicit):
   - a JSON number is treated as a seed
   - a JSON object with a numeric `seed` regenerates a v2 genome (v1 fields are ignored)
 
+## Share code interface (explicit; D-047)
+
+Export/import uses a compact share code string suitable for messaging.
+
+Proposed format (inferred, needs confirmation):
+
+- Prefix: `pokesvg:`
+- Payload: base64url-encoded UTF-8 JSON of the genome payload (no padding `=`).
+- Example shape: `pokesvg:<base64url>`
+
+Notes:
+
+- "base64url" means `+` -> `-`, `/` -> `_`, and no trailing `=`.
+- Decoding should validate the genome exactly as if it were imported from JSON.
+- Import may optionally accept raw JSON for backward compatibility, but export should emit share codes only.
+
 ---
 ## Change log
 
@@ -65,4 +81,13 @@ Import compatibility (explicit):
 **MODIFIED: when collection persistence happens**
 - Was: collection persistence was implied on Discover.
 - Now: persistence occurs only on explicit Catch/Import actions (no autosave).
+
+### Phase 16 — Share Code Export (Base64) + Footer Credit (D-047)
+
+**MODIFIED: clipboard interface**
+- Was: Export/import used raw genome JSON.
+- Now: Export/import uses a compact share code string (base64-coded).
+
+**ADDED: share code interface**
+- Documented an explicit share-code contract (prefix + base64url payload).
 <!-- unpack:1.0.0 -->

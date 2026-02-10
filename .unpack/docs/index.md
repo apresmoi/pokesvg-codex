@@ -75,6 +75,10 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 | [11](./phases/phase-11.md) | Catch/Let Go: Encounter Flow + Persistence | delivery | done | 10 | 2026-02-10 |
 | [12](./phases/phase-12.md) | Device Polish: Indicator Lights + Iconic Controls | delivery | done | 10 | 2026-02-10 |
 | [13](./phases/phase-13.md) | Hotfix: GitHub Pages Deploy 404 | delivery | in_progress | 12 | 2026-02-10 |
+| [14](./phases/phase-14.md) | Steering: Explicit Control Mapping + Nav Button Remap | steering | done | 12 | 2026-02-10 |
+| [15](./phases/phase-15.md) | Device Controls v2.1: Navigation + Discover/Export Layout | delivery | planned | 14 | 2026-02-10 |
+| [16](./phases/phase-16.md) | Steering: Share Code Export (Base64) + Footer Credit | steering | done | 12 | 2026-02-10 |
+| [17](./phases/phase-17.md) | Share Codes + Footer: Base64 Export/Import + Unpack Credit | delivery | planned | 16 | 2026-02-10 |
 
 ### Current focus
 

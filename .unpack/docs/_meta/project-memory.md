@@ -331,4 +331,34 @@ Append-only log of decisions, constraints, and rationale.
 - Decision: Move away from visible text labels like `CFG` / `DISCOVERY` / `EXPORT` / `LIST` and toward iconic, mostly unlabeled Pokedex-like controls (D-pad plus + center, round button, horizontal bar buttons, etc). Keep accessible labels via `aria-label` / `title`.
 - Rationale: Better matches the concept of a real device and reduces UI "app button" vibes.
 - Evidence: User feedback: “it would be nice if the buttons are not like CFG DISCOVERY EXPORT LIST... unlabeled buttons... + control with the button in the middle...”.
+
+### D-046 - Explicit per-screen control mapping + nav button remap (Explicit)
+
+- Date: 2026-02-10
+- Decision: Lock down the device control mapping per screen and remap device buttons:
+  - Dex List:
+    - Up/Down: navigate list
+    - Left: no-op
+    - Right: go to detail of selected mon
+    - A: also goes to selected mon detail
+    - B: no-op
+  - Dex Detail:
+    - Left: back to list
+    - B: back to list
+  - System Config:
+    - Left/Right: cycle options for selected field
+    - A: also cycles options for selected field
+    - B: back to list
+  - Keep the Discover control, but reposition/re-skin to feel device-native (avoid awkward "app button" placement).
+  - Remove the current on-screen Copy button.
+  - Swap the two nav buttons: the former List button becomes Config; the former Config button becomes Copy/Export.
+- Rationale: Make navigation predictable, reduce ambiguity, and make the device read more like a real controller-driven Pokedex.
+- Evidence: User spec provided in IDE request (UI steering notes).
+
+### D-047 - Share codes for export/import + footer credit (Explicit)
+
+- Date: 2026-02-10
+- Decision: Export/copy should produce a compact base64-coded share string rather than raw JSON. Paste/import should accept and decode the share code (raw JSON may be accepted for backward compatibility).
+- Rationale: Raw JSON is awkward to share; a share code is friendlier for messaging.
+- Evidence: User request: “copy of the genome should be coded into a b64 hash...”; plus request to add "Built with Unpack" in the footer linking to the GitHub page.
 <!-- unpack:1.0.0 -->
