@@ -368,4 +368,11 @@ Append-only log of decisions, constraints, and rationale.
 - Decision: Extend idle motion beyond blink + bob by adding subtle part-level animations that rotate head/tail/limbs around attachment/pivot points. Motion should be deterministic per genome (seed-derived), should not require changing the exported genome schema, and must respect reduced-motion settings.
 - Rationale: Current idle feels too static; pivot motion reads more "alive" than a global bob.
 - Evidence: User request: “move their parts on their pivots/attachment points somehow”.
+
+### D-049 - Use explicit SVG pivot centers (SMIL) for part rotations (Inferred)
+
+- Date: 2026-02-10
+- Decision: Implement head/tail/limb pivot idle motion using SVG `animateTransform` rotations around explicit `(cx, cy)` attachment points (tail base, limb anchor, head center/neck), instead of CSS `transform-origin` on SVG groups.
+- Rationale: CSS `transform-origin` for SVG groups tends to rotate around bounding boxes and is inconsistent for attachment-point pivots; explicit rotate centers produce the intended motion.
+- Evidence: Derived from observed behavior: parts “pivot over themselves” instead of at the correct attachment point.
 <!-- unpack:1.0.0 -->

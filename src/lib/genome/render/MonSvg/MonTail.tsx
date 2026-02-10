@@ -1,5 +1,3 @@
-import type { CSSProperties } from "react";
-
 import type { Genome } from "../../types";
 import type { SpineFrame } from "../tubePath";
 
@@ -39,72 +37,77 @@ export function MonTail({ genome, strokeW, baseFrame, animate }: MonTailProps) {
 
   const w = clamp(baseFrame.r * 0.42, 8, 24);
 
-  const swingStyle = animate
-    ? ({
-        ["--swing-amp" as never]: `${clamp(baseFrame.r * 0.08, 2, 6)}deg`,
-        animationDuration: `${clamp(genome.anim.bobMs * 1.15, 900, 2200)}ms`,
-        animationDelay: `${((genome.seed >>> 0) % 700) * -1}ms`,
-      } as CSSProperties)
-    : undefined;
+  const ampDeg = clamp(baseFrame.r * 0.08, 2, 6);
+  const durMs = clamp(genome.anim.bobMs * 1.15, 900, 2200);
+  const initialDeg =
+    ((((genome.seed >>> 0) ^ 0x5f3759df) % 2000) / 2000) * (ampDeg * 2) -
+    ampDeg;
 
   return (
-    <g transform={`translate(${start.x} ${start.y})`}>
-      <g className={animate ? "mon-swing" : undefined} style={swingStyle}>
-        <g transform={`translate(${-start.x} ${-start.y})`}>
-          <path
-            d={d}
-            fill="none"
-            stroke={outline}
-            strokeWidth={w + 6}
-            strokeLinecap="round"
-          />
-          <path
-            d={d}
-            fill="none"
-            stroke={base}
-            strokeWidth={w}
-            strokeLinecap="round"
-          />
+    <g transform={`rotate(${initialDeg} ${start.x} ${start.y})`}>
+      {animate ? (
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          additive="sum"
+          values={`${-ampDeg} ${start.x} ${start.y}; ${ampDeg} ${start.x} ${start.y}; ${-ampDeg} ${start.x} ${start.y}`}
+          dur={`${durMs}ms`}
+          repeatCount="indefinite"
+        />
+      ) : null}
 
-          {genome.tail.family === "club" ? (
-            <circle
-              cx={end.x}
-              cy={end.y}
-              r={clamp(w * 0.85, 8, 18)}
-              fill={accent}
-              stroke={outline}
-              strokeWidth={strokeW}
-            />
-          ) : null}
+      <path
+        d={d}
+        fill="none"
+        stroke={outline}
+        strokeWidth={w + 6}
+        strokeLinecap="round"
+      />
+      <path
+        d={d}
+        fill="none"
+        stroke={base}
+        strokeWidth={w}
+        strokeLinecap="round"
+      />
 
-          {genome.tail.family === "leaf" ? (
-            <ellipse
-              cx={end.x}
-              cy={end.y}
-              rx={clamp(w * 1.15, 10, 22)}
-              ry={clamp(w * 1.8, 14, 34)}
-              fill={accent}
-              stroke={outline}
-              strokeWidth={strokeW}
-              transform={`rotate(-18 ${end.x} ${end.y})`}
-            />
-          ) : null}
+      {genome.tail.family === "club" ? (
+        <circle
+          cx={end.x}
+          cy={end.y}
+          r={clamp(w * 0.85, 8, 18)}
+          fill={accent}
+          stroke={outline}
+          strokeWidth={strokeW}
+        />
+      ) : null}
 
-          {genome.tail.family === "stinger" ? (
-            <path
-              d={`M ${end.x} ${end.y} L ${end.x + dir.x * w * 1.3} ${
-                end.y + dir.y * w * 1.3
-              } L ${end.x + baseFrame.n.x * w * 0.7} ${
-                end.y + baseFrame.n.y * w * 0.7
-              } Z`}
-              fill={accent}
-              stroke={outline}
-              strokeWidth={strokeW}
-              strokeLinejoin="round"
-            />
-          ) : null}
-        </g>
-      </g>
+      {genome.tail.family === "leaf" ? (
+        <ellipse
+          cx={end.x}
+          cy={end.y}
+          rx={clamp(w * 1.15, 10, 22)}
+          ry={clamp(w * 1.8, 14, 34)}
+          fill={accent}
+          stroke={outline}
+          strokeWidth={strokeW}
+          transform={`rotate(-18 ${end.x} ${end.y})`}
+        />
+      ) : null}
+
+      {genome.tail.family === "stinger" ? (
+        <path
+          d={`M ${end.x} ${end.y} L ${end.x + dir.x * w * 1.3} ${
+            end.y + dir.y * w * 1.3
+          } L ${end.x + baseFrame.n.x * w * 0.7} ${
+            end.y + baseFrame.n.y * w * 0.7
+          } Z`}
+          fill={accent}
+          stroke={outline}
+          strokeWidth={strokeW}
+          strokeLinejoin="round"
+        />
+      ) : null}
     </g>
   );
 }

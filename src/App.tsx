@@ -10,9 +10,10 @@ import {
   DexListScreen,
   SystemConfigScreen,
 } from "@/components/screens";
-import { usePokesvgApp } from "@/hooks";
+import { usePokesvgApp, usePrefersReducedMotion } from "@/hooks";
 
 export function App() {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const {
     screen,
     toast,
@@ -55,7 +56,7 @@ export function App() {
             width={width}
             height={height}
             genome={detailGenome}
-            animate={settings.animations}
+            animate={settings.animations && !prefersReducedMotion}
             isEncounter={encounter !== null}
           />
         </g>
@@ -75,6 +76,7 @@ export function App() {
     detailGenome,
     encounter,
     genomes,
+    prefersReducedMotion,
     screen,
     selectedIndex,
     settings,

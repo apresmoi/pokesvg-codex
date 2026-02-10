@@ -82,6 +82,7 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 | [18](./phases/phase-18.md) | UI Polish: A/B Button Margin | delivery | done | 17 | 2026-02-10 |
 | [19](./phases/phase-19.md) | Steering: Part Pivot Animations (Idle Micro-Motion) | steering | done | 18 | 2026-02-10 |
 | [20](./phases/phase-20.md) | Part Animations: Head/Tail/Limbs Pivot Micro-Motion | delivery | done | 19 | 2026-02-10 |
+| [21](./phases/phase-21.md) | Part Animations: Pivot Around True Attachment Points | delivery | done | 20 | 2026-02-10 |
 
 ### Current focus
 

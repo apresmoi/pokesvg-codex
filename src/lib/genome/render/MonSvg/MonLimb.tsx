@@ -1,5 +1,3 @@
-import type { CSSProperties } from "react";
-
 import type { Genome } from "../../types";
 import type { SpineFrame } from "../tubePath";
 
@@ -70,21 +68,26 @@ export function MonLimb({
     3,
     12,
   );
-  const swingStyle = animate
-    ? ({
-        ["--swing-amp" as never]: `${ampDeg}deg`,
-        animationDuration: `${clamp(genome.anim.bobMs * 0.95, 800, 2200)}ms`,
-        animationDelay: `${(((genome.seed >>> 0) ^ (limb.segment * 9917)) % 900) * -1}ms`,
-      } as CSSProperties)
-    : undefined;
+  const durMs = clamp(genome.anim.bobMs * 0.95, 800, 2200);
+  const initialDeg =
+    ((((genome.seed >>> 0) ^ (limb.segment * 9917) ^ limb.angleDeg) % 2000) /
+      2000) *
+      (ampDeg * 2) -
+    ampDeg;
 
   const wrap = (node: JSX.Element) => {
     if (!animate) return node;
     return (
-      <g transform={`translate(${anchor.x} ${anchor.y})`}>
-        <g className="mon-swing" style={swingStyle}>
-          <g transform={`translate(${-anchor.x} ${-anchor.y})`}>{node}</g>
-        </g>
+      <g transform={`rotate(${initialDeg} ${anchor.x} ${anchor.y})`}>
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          additive="sum"
+          values={`${-ampDeg} ${anchor.x} ${anchor.y}; ${ampDeg} ${anchor.x} ${anchor.y}; ${-ampDeg} ${anchor.x} ${anchor.y}`}
+          dur={`${durMs}ms`}
+          repeatCount="indefinite"
+        />
+        {node}
       </g>
     );
   };
