@@ -24,6 +24,7 @@
   - the former List button opens System Config
   - the former Config button triggers Copy/Export (in relevant contexts)
 - **FR-019 (Polish)**: Render a subtle footer credit outside the device UI with "Built with Unpack" and a GitHub repo link.
+- **FR-020 (Polish)**: Idle animations include subtle part-level pivot motion (head/tail/limbs) around attachment points, in addition to blink + bob; respect reduced-motion.
 
 ## Non-functional requirements
 
@@ -88,4 +89,9 @@
 
 **ADDED: footer credit requirement**
 - Add a subtle footer with "Built with Unpack" and a GitHub repo link.
+
+### Phase 19 — Part Pivot Animations (Idle Micro-Motion) (D-048)
+
+**ADDED: idle micro-motion requirement**
+- Add subtle head/tail/limb pivot animations around attachment points (in addition to blink + bob), deterministic per genome and disabled under reduced motion.
 <!-- unpack:1.0.0 -->

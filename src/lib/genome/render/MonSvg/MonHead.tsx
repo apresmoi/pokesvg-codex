@@ -123,257 +123,276 @@ export function MonHead({ genome, frames, strokeW, animate }: MonHeadProps) {
             mouthY + 10
           } Z`;
 
+  const swayStyle = animate
+    ? ({
+        ["--swing-amp" as never]: `${clamp(headW * 0.015, 1.5, 4.5)}deg`,
+        animationDuration: `${clamp(genome.anim.bobMs * 1.05, 900, 2400)}ms`,
+        animationDelay: `${(((genome.seed >>> 0) ^ 0x1f4a7c15) % 900) * -1}ms`,
+      } as CSSProperties)
+    : undefined;
+
   return (
-    <g transform={`rotate(${headRot} ${headCx} ${headCy})`}>
-      {/* Head */}
-      <path d={headPath} fill={base} stroke={outline} strokeWidth={strokeW} />
-
-      {/* Ears */}
-      {genome.head.earType !== "none" ? (
-        genome.head.earType === "pointy" ? (
-          <>
+    <g transform={`translate(${headCx} ${headCy})`}>
+      <g className={animate ? "mon-swing" : undefined} style={swayStyle}>
+        <g transform={`translate(${-headCx} ${-headCy})`}>
+          <g transform={`rotate(${headRot} ${headCx} ${headCy})`}>
+            {/* Head */}
             <path
-              d={`M ${headLeft + headW * 0.18} ${headTop + headH * 0.22} L ${
-                headLeft + headW * 0.05
-              } ${headTop - headH * 0.12} L ${headLeft + headW * 0.28} ${
-                headTop + headH * 0.12
-              } Z`}
-              fill={accent}
-              stroke={outline}
-              strokeWidth={strokeW}
-              strokeLinejoin="round"
-            />
-            <path
-              d={`M ${headLeft + headW * 0.82} ${headTop + headH * 0.22} L ${
-                headLeft + headW * 0.95
-              } ${headTop - headH * 0.12} L ${headLeft + headW * 0.72} ${
-                headTop + headH * 0.12
-              } Z`}
-              fill={accent}
-              stroke={outline}
-              strokeWidth={strokeW}
-              strokeLinejoin="round"
-            />
-          </>
-        ) : (
-          <>
-            <circle
-              cx={headLeft + headW * 0.18}
-              cy={headTop + headH * 0.18}
-              r={Math.max(10, Math.round(headW * 0.09))}
-              fill={accent}
+              d={headPath}
+              fill={base}
               stroke={outline}
               strokeWidth={strokeW}
             />
-            <circle
-              cx={headLeft + headW * 0.82}
-              cy={headTop + headH * 0.18}
-              r={Math.max(10, Math.round(headW * 0.09))}
-              fill={accent}
-              stroke={outline}
-              strokeWidth={strokeW}
-            />
-          </>
-        )
-      ) : null}
 
-      {/* Horns */}
-      {genome.head.hornCount > 0 ? (
-        <g>
-          {Array.from({ length: genome.head.hornCount }).map((_, i) => {
-            const x =
-              genome.head.hornCount === 1
-                ? headCx
-                : i === 0
-                  ? headCx - headW * 0.18
-                  : headCx + headW * 0.18;
-            return (
+            {/* Ears */}
+            {genome.head.earType !== "none" ? (
+              genome.head.earType === "pointy" ? (
+                <>
+                  <path
+                    d={`M ${headLeft + headW * 0.18} ${
+                      headTop + headH * 0.22
+                    } L ${headLeft + headW * 0.05} ${headTop - headH * 0.12} L ${
+                      headLeft + headW * 0.28
+                    } ${headTop + headH * 0.12} Z`}
+                    fill={accent}
+                    stroke={outline}
+                    strokeWidth={strokeW}
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d={`M ${headLeft + headW * 0.82} ${
+                      headTop + headH * 0.22
+                    } L ${headLeft + headW * 0.95} ${headTop - headH * 0.12} L ${
+                      headLeft + headW * 0.72
+                    } ${headTop + headH * 0.12} Z`}
+                    fill={accent}
+                    stroke={outline}
+                    strokeWidth={strokeW}
+                    strokeLinejoin="round"
+                  />
+                </>
+              ) : (
+                <>
+                  <circle
+                    cx={headLeft + headW * 0.18}
+                    cy={headTop + headH * 0.18}
+                    r={Math.max(10, Math.round(headW * 0.09))}
+                    fill={accent}
+                    stroke={outline}
+                    strokeWidth={strokeW}
+                  />
+                  <circle
+                    cx={headLeft + headW * 0.82}
+                    cy={headTop + headH * 0.18}
+                    r={Math.max(10, Math.round(headW * 0.09))}
+                    fill={accent}
+                    stroke={outline}
+                    strokeWidth={strokeW}
+                  />
+                </>
+              )
+            ) : null}
+
+            {/* Horns */}
+            {genome.head.hornCount > 0 ? (
+              <g>
+                {Array.from({ length: genome.head.hornCount }).map((_, i) => {
+                  const x =
+                    genome.head.hornCount === 1
+                      ? headCx
+                      : i === 0
+                        ? headCx - headW * 0.18
+                        : headCx + headW * 0.18;
+                  return (
+                    <path
+                      key={`horn-${i}`}
+                      d={`M ${x} ${headTop + headH * 0.1} L ${x - headW * 0.08} ${
+                        headTop - headH * 0.16
+                      } L ${x + headW * 0.08} ${headTop - headH * 0.16} Z`}
+                      fill={shade}
+                      stroke={outline}
+                      strokeWidth={strokeW}
+                      strokeLinejoin="round"
+                    />
+                  );
+                })}
+              </g>
+            ) : null}
+
+            {/* Accessories (head-mounted) */}
+            {accessory.kind === "gem" ? (
               <path
-                key={`horn-${i}`}
-                d={`M ${x} ${headTop + headH * 0.1} L ${x - headW * 0.08} ${
-                  headTop - headH * 0.16
-                } L ${x + headW * 0.08} ${headTop - headH * 0.16} Z`}
-                fill={shade}
+                d={`M ${headCx} ${headTop + headH * 0.16} L ${
+                  headCx - Math.max(10, Math.round(headW * 0.08))
+                } ${headTop + headH * 0.24} L ${headCx} ${headTop + headH * 0.32} L ${
+                  headCx + Math.max(10, Math.round(headW * 0.08))
+                } ${headTop + headH * 0.24} Z`}
+                fill={accent}
+                stroke={outline}
+                strokeWidth={strokeW}
+                strokeLinejoin="round"
+                opacity="0.95"
+              />
+            ) : null}
+
+            {accessory.kind === "antenna" ? (
+              <g opacity="0.95">
+                {Array.from({ length: accessory.count }).map((_, i) => {
+                  const dx =
+                    accessory.count === 1
+                      ? 0
+                      : i === 0
+                        ? -headW * 0.14
+                        : headW * 0.14;
+                  const x = headCx + dx;
+                  const y0 = headTop + headH * 0.08;
+                  const y1 = headTop - headH * 0.18;
+                  return (
+                    <g key={`ant-${i}`}>
+                      <path
+                        d={`M ${x} ${y0} C ${x + dx * 0.12} ${(y0 + y1) / 2} ${x} ${y1} ${x} ${y1}`}
+                        fill="none"
+                        stroke={accent}
+                        strokeWidth={Math.max(4, Math.round(strokeW * 0.9))}
+                        strokeLinecap="round"
+                      />
+                      <circle
+                        cx={x}
+                        cy={y1}
+                        r={Math.max(6, Math.round(headW * 0.045))}
+                        fill={eye}
+                        stroke={outline}
+                        strokeWidth={strokeW}
+                      />
+                    </g>
+                  );
+                })}
+              </g>
+            ) : null}
+
+            {/* Eyes */}
+            <g>
+              {eyeXs.map((x, i) => {
+                const blinkStyle = animate
+                  ? ({
+                      animationDuration: `${genome.anim.blinkMs}ms`,
+                      animationDelay: `${((genome.seed >>> 0) % 1200) + i * 120}ms`,
+                    } as CSSProperties)
+                  : undefined;
+
+                if (genome.face.eyeType === "dot") {
+                  return (
+                    <g
+                      key={`eye-${i}`}
+                      className={animate ? "mon-blink" : undefined}
+                      style={blinkStyle}
+                    >
+                      <circle cx={x} cy={eyeY} r={eyeSize * 0.42} fill={eye} />
+                      <circle
+                        cx={x + eyeSize * 0.12}
+                        cy={eyeY + 1}
+                        r={eyeSize * 0.16}
+                        fill={outline}
+                      />
+                    </g>
+                  );
+                }
+
+                if (genome.face.eyeType === "slit") {
+                  return (
+                    <g
+                      key={`eye-${i}`}
+                      className={animate ? "mon-blink" : undefined}
+                      style={blinkStyle}
+                    >
+                      <ellipse
+                        cx={x}
+                        cy={eyeY}
+                        rx={eyeSize * 0.6}
+                        ry={eyeSize * 0.2}
+                        fill={eye}
+                      />
+                      <ellipse
+                        cx={x + eyeSize * 0.1}
+                        cy={eyeY}
+                        rx={eyeSize * 0.22}
+                        ry={eyeSize * 0.12}
+                        fill={outline}
+                      />
+                    </g>
+                  );
+                }
+
+                return (
+                  <g
+                    key={`eye-${i}`}
+                    className={animate ? "mon-blink" : undefined}
+                    style={blinkStyle}
+                  >
+                    <ellipse
+                      cx={x}
+                      cy={eyeY}
+                      rx={eyeSize * 0.62}
+                      ry={eyeSize * 0.42}
+                      fill={eye}
+                    />
+                    <circle
+                      cx={x + eyeSize * 0.1}
+                      cy={eyeY + 1}
+                      r={eyeSize * 0.18}
+                      fill={outline}
+                    />
+                  </g>
+                );
+              })}
+            </g>
+
+            {/* Mouth */}
+            {genome.face.mouthType === "beak" ? (
+              <path
+                d={mouthD}
+                fill={accent}
                 stroke={outline}
                 strokeWidth={strokeW}
                 strokeLinejoin="round"
               />
-            );
-          })}
-        </g>
-      ) : null}
-
-      {/* Accessories (head-mounted) */}
-      {accessory.kind === "gem" ? (
-        <path
-          d={`M ${headCx} ${headTop + headH * 0.16} L ${
-            headCx - Math.max(10, Math.round(headW * 0.08))
-          } ${headTop + headH * 0.24} L ${headCx} ${headTop + headH * 0.32} L ${
-            headCx + Math.max(10, Math.round(headW * 0.08))
-          } ${headTop + headH * 0.24} Z`}
-          fill={accent}
-          stroke={outline}
-          strokeWidth={strokeW}
-          strokeLinejoin="round"
-          opacity="0.95"
-        />
-      ) : null}
-
-      {accessory.kind === "antenna" ? (
-        <g opacity="0.95">
-          {Array.from({ length: accessory.count }).map((_, i) => {
-            const dx =
-              accessory.count === 1
-                ? 0
-                : i === 0
-                  ? -headW * 0.14
-                  : headW * 0.14;
-            const x = headCx + dx;
-            const y0 = headTop + headH * 0.08;
-            const y1 = headTop - headH * 0.18;
-            return (
-              <g key={`ant-${i}`}>
-                <path
-                  d={`M ${x} ${y0} C ${x + dx * 0.12} ${(y0 + y1) / 2} ${x} ${y1} ${x} ${y1}`}
-                  fill="none"
-                  stroke={accent}
-                  strokeWidth={Math.max(4, Math.round(strokeW * 0.9))}
-                  strokeLinecap="round"
-                />
-                <circle
-                  cx={x}
-                  cy={y1}
-                  r={Math.max(6, Math.round(headW * 0.045))}
-                  fill={eye}
-                  stroke={outline}
-                  strokeWidth={strokeW}
-                />
-              </g>
-            );
-          })}
-        </g>
-      ) : null}
-
-      {/* Eyes */}
-      <g>
-        {eyeXs.map((x, i) => {
-          const blinkStyle = animate
-            ? ({
-                animationDuration: `${genome.anim.blinkMs}ms`,
-                animationDelay: `${((genome.seed >>> 0) % 1200) + i * 120}ms`,
-              } as CSSProperties)
-            : undefined;
-
-          if (genome.face.eyeType === "dot") {
-            return (
-              <g
-                key={`eye-${i}`}
-                className={animate ? "mon-blink" : undefined}
-                style={blinkStyle}
-              >
-                <circle cx={x} cy={eyeY} r={eyeSize * 0.42} fill={eye} />
-                <circle
-                  cx={x + eyeSize * 0.12}
-                  cy={eyeY + 1}
-                  r={eyeSize * 0.16}
-                  fill={outline}
-                />
-              </g>
-            );
-          }
-
-          if (genome.face.eyeType === "slit") {
-            return (
-              <g
-                key={`eye-${i}`}
-                className={animate ? "mon-blink" : undefined}
-                style={blinkStyle}
-              >
-                <ellipse
-                  cx={x}
-                  cy={eyeY}
-                  rx={eyeSize * 0.6}
-                  ry={eyeSize * 0.2}
-                  fill={eye}
-                />
-                <ellipse
-                  cx={x + eyeSize * 0.1}
-                  cy={eyeY}
-                  rx={eyeSize * 0.22}
-                  ry={eyeSize * 0.12}
-                  fill={outline}
-                />
-              </g>
-            );
-          }
-
-          return (
-            <g
-              key={`eye-${i}`}
-              className={animate ? "mon-blink" : undefined}
-              style={blinkStyle}
-            >
-              <ellipse
-                cx={x}
-                cy={eyeY}
-                rx={eyeSize * 0.62}
-                ry={eyeSize * 0.42}
-                fill={eye}
-              />
-              <circle
-                cx={x + eyeSize * 0.1}
-                cy={eyeY + 1}
-                r={eyeSize * 0.18}
-                fill={outline}
-              />
-            </g>
-          );
-        })}
-      </g>
-
-      {/* Mouth */}
-      {genome.face.mouthType === "beak" ? (
-        <path
-          d={mouthD}
-          fill={accent}
-          stroke={outline}
-          strokeWidth={strokeW}
-          strokeLinejoin="round"
-        />
-      ) : (
-        <path
-          d={mouthD}
-          fill="none"
-          stroke={outline}
-          strokeWidth={strokeW}
-          strokeLinecap="round"
-        />
-      )}
-
-      {/* Fangs */}
-      {genome.face.fangs > 0 ? (
-        <g>
-          {Array.from({ length: genome.face.fangs }).map((_, i) => {
-            const x =
-              genome.face.fangs === 1
-                ? headCx
-                : i === 0
-                  ? headCx - 10
-                  : headCx + 10;
-            const y = mouthY + 2;
-            return (
+            ) : (
               <path
-                key={`fang-${i}`}
-                d={`M ${x} ${y} L ${x - 6} ${y + 12} L ${x + 6} ${y + 12} Z`}
-                fill={eye}
+                d={mouthD}
+                fill="none"
                 stroke={outline}
-                strokeWidth={3}
-                strokeLinejoin="round"
+                strokeWidth={strokeW}
+                strokeLinecap="round"
               />
-            );
-          })}
+            )}
+
+            {/* Fangs */}
+            {genome.face.fangs > 0 ? (
+              <g>
+                {Array.from({ length: genome.face.fangs }).map((_, i) => {
+                  const x =
+                    genome.face.fangs === 1
+                      ? headCx
+                      : i === 0
+                        ? headCx - 10
+                        : headCx + 10;
+                  const y = mouthY + 2;
+                  return (
+                    <path
+                      key={`fang-${i}`}
+                      d={`M ${x} ${y} L ${x - 6} ${y + 12} L ${x + 6} ${y + 12} Z`}
+                      fill={eye}
+                      stroke={outline}
+                      strokeWidth={3}
+                      strokeLinejoin="round"
+                    />
+                  );
+                })}
+              </g>
+            ) : null}
+          </g>
         </g>
-      ) : null}
+      </g>
     </g>
   );
 }

@@ -56,6 +56,7 @@ export function MonSvg({
           strokeW={strokeW}
           bodyClipId={bodyClipId}
           bodyPath={bodyPath}
+          animate={animate}
         />
 
         <MonHead

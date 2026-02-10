@@ -140,6 +140,18 @@ body {
   }
 }
 
+@keyframes mon-swing {
+  0% {
+    transform: rotate(calc(var(--swing-amp, 3deg) * -1));
+  }
+  50% {
+    transform: rotate(var(--swing-amp, 3deg));
+  }
+  100% {
+    transform: rotate(calc(var(--swing-amp, 3deg) * -1));
+  }
+}
+
 .mon-bob {
   animation-name: mon-bob;
   animation-timing-function: ease-in-out;
@@ -154,9 +166,18 @@ body {
   transform-box: fill-box;
 }
 
+.mon-swing {
+  animation-name: mon-swing;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mon-bob,
-  .mon-blink {
+  .mon-blink,
+  .mon-swing {
     animation: none;
   }
 

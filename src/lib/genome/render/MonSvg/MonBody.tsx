@@ -11,6 +11,7 @@ type MonBodyProps = {
   strokeW: number;
   bodyClipId: string;
   bodyPath: string;
+  animate: boolean;
 };
 
 export function MonBody({
@@ -19,6 +20,7 @@ export function MonBody({
   strokeW,
   bodyClipId,
   bodyPath,
+  animate,
 }: MonBodyProps) {
   const outline = genome.palette.outline;
   const base = genome.palette.base;
@@ -41,7 +43,12 @@ export function MonBody({
   return (
     <>
       {/* Tail behind body */}
-      <MonTail genome={genome} strokeW={strokeW} baseFrame={frames[0]} />
+      <MonTail
+        genome={genome}
+        strokeW={strokeW}
+        baseFrame={frames[0]}
+        animate={animate}
+      />
 
       {/* Limbs behind body */}
       <g opacity="0.98">
@@ -55,6 +62,7 @@ export function MonBody({
               strokeW={strokeW}
               frame={frame}
               limb={limb}
+              animate={animate}
             />
           );
         })}
@@ -103,6 +111,7 @@ export function MonBody({
               strokeW={strokeW}
               frame={frame}
               limb={limb}
+              animate={animate}
             />
           );
         })}

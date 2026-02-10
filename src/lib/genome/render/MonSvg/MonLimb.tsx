@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import type { Genome } from "../../types";
 import type { SpineFrame } from "../tubePath";
 
@@ -8,6 +10,7 @@ type MonLimbProps = {
   strokeW: number;
   frame: SpineFrame;
   limb: Genome["limbs"][number];
+  animate: boolean;
 };
 
 function strokeTube(
@@ -38,7 +41,13 @@ function strokeTube(
   );
 }
 
-export function MonLimb({ genome, strokeW, frame, limb }: MonLimbProps) {
+export function MonLimb({
+  genome,
+  strokeW,
+  frame,
+  limb,
+  animate,
+}: MonLimbProps) {
   const outline = genome.palette.outline;
   const base = genome.palette.base;
   const shade = genome.palette.shade;
@@ -56,19 +65,43 @@ export function MonLimb({ genome, strokeW, frame, limb }: MonLimbProps) {
   const w = clamp(frame.r * 0.32 * limb.scale, 6, 22);
   const tip = limbTip(anchor, angle, lenPx);
 
+  const ampDeg = clamp(
+    limb.slot === "wing" ? 10 : limb.family === "tentacle" ? 7 : 5,
+    3,
+    12,
+  );
+  const swingStyle = animate
+    ? ({
+        ["--swing-amp" as never]: `${ampDeg}deg`,
+        animationDuration: `${clamp(genome.anim.bobMs * 0.95, 800, 2200)}ms`,
+        animationDelay: `${(((genome.seed >>> 0) ^ (limb.segment * 9917)) % 900) * -1}ms`,
+      } as CSSProperties)
+    : undefined;
+
+  const wrap = (node: JSX.Element) => {
+    if (!animate) return node;
+    return (
+      <g transform={`translate(${anchor.x} ${anchor.y})`}>
+        <g className="mon-swing" style={swingStyle}>
+          <g transform={`translate(${-anchor.x} ${-anchor.y})`}>{node}</g>
+        </g>
+      </g>
+    );
+  };
+
   if (limb.family === "fin") {
     const a = degToRad(22);
     const p1 = limbTip(anchor, angle + a, lenPx * 0.95);
     const p2 = limbTip(anchor, angle - a, lenPx * 0.95);
     const d = `M ${anchor.x} ${anchor.y} L ${p1.x} ${p1.y} L ${tip.x} ${tip.y} L ${p2.x} ${p2.y} Z`;
-    return (
+    return wrap(
       <path
         d={d}
         fill={accent}
         stroke={outline}
         strokeWidth={strokeW}
         strokeLinejoin="round"
-      />
+      />,
     );
   }
 
@@ -83,7 +116,7 @@ export function MonLimb({ genome, strokeW, frame, limb }: MonLimbProps) {
       x0 - wingSpan * 0.45
     } ${y0 - wingH * 0.2}, ${x0} ${y0} Z`;
     const angleSvg = (angle * 180) / Math.PI;
-    return (
+    return wrap(
       <g transform={`rotate(${angleSvg} ${anchor.x} ${anchor.y})`}>
         <path d={d} fill={accent} stroke={outline} strokeWidth={strokeW} />
         <path
@@ -93,7 +126,7 @@ export function MonLimb({ genome, strokeW, frame, limb }: MonLimbProps) {
           strokeOpacity="0.22"
           strokeWidth={2}
         />
-      </g>
+      </g>,
     );
   }
 
@@ -104,11 +137,11 @@ export function MonLimb({ genome, strokeW, frame, limb }: MonLimbProps) {
     const forkB = limbTip(mid, angle - degToRad(26), lenPx * 0.28);
     const dA = `M ${anchor.x} ${anchor.y} Q ${mid.x} ${mid.y} ${forkA.x} ${forkA.y}`;
     const dB = `M ${anchor.x} ${anchor.y} Q ${mid.x} ${mid.y} ${forkB.x} ${forkB.y}`;
-    return (
-      <>
+    return wrap(
+      <g>
         {strokeTube(dA, w, outline, shade, strokeW)}
         {strokeTube(dB, w, outline, shade, strokeW)}
-      </>
+      </g>,
     );
   }
 
@@ -120,8 +153,8 @@ export function MonLimb({ genome, strokeW, frame, limb }: MonLimbProps) {
       y: tip.y + frame.n.y * wiggle * 0.35,
     };
     const d = `M ${anchor.x} ${anchor.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${tip.x} ${tip.y}`;
-    return (
-      <>
+    return wrap(
+      <g>
         {strokeTube(d, w, outline, shade, strokeW)}
         <circle
           cx={tip.x}
@@ -131,14 +164,14 @@ export function MonLimb({ genome, strokeW, frame, limb }: MonLimbProps) {
           stroke={outline}
           strokeWidth={strokeW}
         />
-      </>
+      </g>,
     );
   }
 
   // stub / claw
   const d = `M ${anchor.x} ${anchor.y} L ${tip.x} ${tip.y}`;
-  return (
-    <>
+  return wrap(
+    <g>
       {strokeTube(d, w, outline, shade, strokeW)}
       {limb.family === "claw" ? (
         <path
@@ -153,6 +186,6 @@ export function MonLimb({ genome, strokeW, frame, limb }: MonLimbProps) {
           strokeLinejoin="round"
         />
       ) : null}
-    </>
+    </g>,
   );
 }

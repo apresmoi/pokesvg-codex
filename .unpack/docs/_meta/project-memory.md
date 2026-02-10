@@ -361,4 +361,11 @@ Append-only log of decisions, constraints, and rationale.
 - Decision: Export/copy should produce a compact base64-coded share string rather than raw JSON. Paste/import should accept and decode the share code (raw JSON may be accepted for backward compatibility).
 - Rationale: Raw JSON is awkward to share; a share code is friendlier for messaging.
 - Evidence: User request: “copy of the genome should be coded into a b64 hash...”; plus request to add "Built with Unpack" in the footer linking to the GitHub page.
+
+### D-048 - Part pivot micro-animations (head/tail/limbs) without schema changes (Explicit)
+
+- Date: 2026-02-10
+- Decision: Extend idle motion beyond blink + bob by adding subtle part-level animations that rotate head/tail/limbs around attachment/pivot points. Motion should be deterministic per genome (seed-derived), should not require changing the exported genome schema, and must respect reduced-motion settings.
+- Rationale: Current idle feels too static; pivot motion reads more "alive" than a global bob.
+- Evidence: User request: “move their parts on their pivots/attachment points somehow”.
 <!-- unpack:1.0.0 -->

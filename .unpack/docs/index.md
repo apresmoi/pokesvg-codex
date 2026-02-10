@@ -80,6 +80,8 @@ Standards are loaded during project init from the `.unpack/standards/` library. 
 | [16](./phases/phase-16.md) | Steering: Share Code Export (Base64) + Footer Credit | steering | done | 12 | 2026-02-10 |
 | [17](./phases/phase-17.md) | Share Codes + Footer: Base64 Export/Import + Unpack Credit | delivery | done | 16 | 2026-02-10 |
 | [18](./phases/phase-18.md) | UI Polish: A/B Button Margin | delivery | done | 17 | 2026-02-10 |
+| [19](./phases/phase-19.md) | Steering: Part Pivot Animations (Idle Micro-Motion) | steering | done | 18 | 2026-02-10 |
+| [20](./phases/phase-20.md) | Part Animations: Head/Tail/Limbs Pivot Micro-Motion | delivery | done | 19 | 2026-02-10 |
 
 ### Current focus
 
