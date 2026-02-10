@@ -102,11 +102,11 @@ export function App() {
 
       <footer className="pokesvg-footer">
         <a
-          href="https://github.com/apresmoi/pokesvg-codex/tree/main/.unpack"
+          href="https://github.com/apresmoi/unpack"
           target="_blank"
           rel="noreferrer"
         >
-          Built with Unpack
+          {"\uD83D\uDCE6"} Built with Unpack
         </a>
         <span className="pokesvg-footerSep">|</span>
         <a
